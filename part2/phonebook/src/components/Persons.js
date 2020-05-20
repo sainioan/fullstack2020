@@ -1,6 +1,7 @@
 import React from 'react';
 
 
+
 const Persons = ({persons, newFilter}) => {
   const personsToShow = () =>  
   persons.filter((person)=> 
