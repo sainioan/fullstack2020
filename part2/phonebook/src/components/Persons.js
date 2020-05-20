@@ -1,25 +1,21 @@
-import React from 'react'
-import Person from './Person'
+import React from 'react';
 
-const Persons = ({ filter, persons }) => {
-    return (
-      persons.filter(person =>
-        person.name.includes(filter)).map(person =>
-          <div key={person.id}>
-            <Person 
-              name={person.name} 
-              number={person.number} 
-            />
-            {' '}
-            <button 
-              type="button" 
-              value={person.id}
-              >
-             
-            </button>
-            <br />
-          </div>
-        )
-    )
-  }
+
+const Persons = ({persons, newFilter}) => {
+  const personsToShow = () =>  
+  persons.filter((person)=> 
+  person.name.toLowerCase().includes(newFilter.toLowerCase())).map((person) => (
+    <div key ={person.name}> 
+    {person.name} {person.number}
+    </div>
+  ))
+return(
+  <div>
+    <h3>Numbers</h3>
+    {personsToShow()}
+  </div>
+
+)
+
+}
 export default Persons
