@@ -32,8 +32,34 @@ const handleFilterChange = (event) => {
 const filteredCountries = countries.filter(country => country.name.toLowerCase().includes(newFilter.toLowerCase()))
 
 const countriesToShow = () => {
+if(filteredCountries.length ===1 ) {
+  return (
+    <div>
+{filteredCountries
+  .map((country) => 
+  
+<div key={country.name}><h2>{country.name}</h2>
+<p>capital {country.capital}</p> 
+<p>population {country.population}</p>
+<h4>languages</h4>
+ <div><ul>{filteredCountries
+ .map((country) => country.languages.map((language) =>
+  
+     <li key={language.name}>{language.name}</li>
 
-  if(filteredCountries.length < 11){
+  ))}</ul></div> 
+
+<div>
+  <img src = {country.flag} width = "200"/>
+  </div> 
+</div>
+
+  )}
+  </div>
+  )
+  
+}
+  if(filteredCountries.length < 11 & filteredCountries.length > 1){
   return(
  <div>
 {filteredCountries
