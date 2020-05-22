@@ -7,9 +7,7 @@ import axios from 'axios'
 
 
 const App = () => {
-	const [ persons, setPersons ] = useState([
-  ])
-  
+	const [ persons, setPersons ] = useState([])
 	const [ newName, setNewName ] = useState('')
 	const [ newFilter, setNewFilter ] = useState('')
 	const [newNumber, setNewNumber] = useState('')
@@ -30,7 +28,7 @@ const addPerson = (event) => {
       number: newNumber
 	}
 	
-if (persons.some(o => o.name.toLowerCase() === personObject.name.toLowerCase())) {
+if (persons.some(contact => contact.name.toLowerCase() === personObject.name.toLowerCase())) {
 	if (window.confirm(`${personObject.name} is already in the phonebook, do you want to replace the old number with the new one?`)) {
 	  updatePerson(personObject.name, personObject.number)
 	  setNewName('')
@@ -88,7 +86,7 @@ const updatePerson = (name, newNumber) => {
 	}).catch(error => {
 	  const messageToBeShown = {
 		type: `error`,
-		text: `Person ${personToBeUpdated.name} has already been deleted`
+		text: `${personToBeUpdated.name} has already been deleted`
 	  }
 	  setMessage(messageToBeShown)
 	  setTimeout(() => { setMessage(null) }, 5000)
@@ -129,7 +127,6 @@ const updatePerson = (name, newNumber) => {
 			newNumber={newNumber} 
 			handleNumberChange={handleNumberChange} 
 			addPerson={addPerson} />
-    
 			<Persons persons={persons} newFilter={newFilter} remove = {handleRemove}/>
 		</div>
 	)
