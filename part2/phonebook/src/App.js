@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
+import Notification from './components/Notification'
 import PersonForm from './components/PersonForm'
 import personsService from './services/persons';
+import './App.css';
+import './index.css';
 import axios from 'axios'
 
 
+
 const App = () => {
-	const [ persons, setPersons ] = useState([])
-	const [ newName, setNewName ] = useState('')
-	const [ newFilter, setNewFilter ] = useState('')
+	const [persons, setPersons] = useState([])
+	const [newName, setNewName] = useState('')
+	const [newFilter, setNewFilter] = useState('')
 	const [newNumber, setNewNumber] = useState('')
 	const [message, setMessage] = useState(null)
+	const [styleType, setStyleType ] = useState(null);
   
 	useEffect(() => {
 	personsService.
@@ -44,14 +49,16 @@ if (persons.some(contact => contact.name.toLowerCase() === personObject.name.toL
 
   } else {
 	  personsService
-	.create({ name: newName, number: newNumber })
+	  .create({ name: newName, number: newNumber })
 	  .then(response => {
 		setPersons(persons.concat(response))
 		const messageToBeShown = {
 		  type: `notification`,
 		  text: `${personObject.name} added`
 		}
-		setMessage(messageToBeShown)
+	
+		setMessage(`${personObject.name} added`)
+		setStyleType('notification');
 		setTimeout(() => { setMessage(null) }, 5000)
 		setNewName('')
 		setNewNumber('')
@@ -62,7 +69,11 @@ if (persons.some(contact => contact.name.toLowerCase() === personObject.name.toL
 		  text: `${error.response.data.error}`
 		}
 		setMessage(errorToBeShown)
-		setTimeout(() => { setMessage(null) }, 5000)
+		setTimeout(() => { 
+			setMessage(null) 
+			setStyleType(null)
+		}, 5000)
+		
 	  })
   }
 }
@@ -73,23 +84,31 @@ const updatePerson = (name, newNumber) => {
   personToBeUpdated.number = newNumber
 
   personsService.update(personToBeUpdated.id, personToBeUpdated)
-	.then(returnedPerson => {
-	  setPersons(persons.map(person => person.id !== personToBeUpdated.id ? person : returnedPerson))
+	.then(thisPerson => {
+	  setPersons(persons.map(person => person.id !== personToBeUpdated.id ? person : thisPerson))
 	})
-	.then(a => {
-	  const messageToBeShown = {
-		type: `notification`,
-		text: `${personToBeUpdated.name}'s number updated`
-	  }
-	  setMessage(messageToBeShown)
-	  setTimeout(() => { setMessage(null) }, 5000)
-	}).catch(error => {
-	  const messageToBeShown = {
-		type: `error`,
-		text: `${personToBeUpdated.name} has already been deleted`
-	  }
-	  setMessage(messageToBeShown)
-	  setTimeout(() => { setMessage(null) }, 5000)
+	.then(mess => {
+
+	  setMessage(`${personToBeUpdated.name}'s number updated`)
+	  setStyleType('notification')
+	  setTimeout(() => {
+		   setMessage(null)
+			setStyleType(null)
+		}, 5000)
+	})
+	.catch(error => {
+		const messageToBeShown = {
+			type: `error`,
+			text: `${personToBeUpdated.name} has already been deleted`
+		  }
+		setMessage(messageToBeShown)
+		setMessage(	`${personToBeUpdated.name} has already been deleted`)
+		setStyleType('error');
+        setTimeout(() => {
+		  setMessage(null)
+		  setStyleType(null);
+        }, 5000)  
+
 	})
 
 }
@@ -107,9 +126,23 @@ const updatePerson = (name, newNumber) => {
 	};
 	
 	const handleRemove = (id) => {
-		const entry = persons.find((person) => person.id === id);
-		const alert = window.confirm(`Are you sure you want to delete the entry ${entry.name}?`);
+		
+		const personToBeUpdated = persons.find((person) => person.id === id);
+		const alert = window.confirm(`Are you sure you want to delete the entry ${personToBeUpdated.name}?`);
 		personsService.remove(id)
+		.catch(error => {
+			const messageToBeShown = {
+				type: 'error',
+				text: `${personToBeUpdated.name} has already been deleted`
+			  }
+			setStyleType('error')
+			setMessage(	`${personToBeUpdated.name} has already been deleted`)
+			setStyleType('error')
+			setTimeout(() => {
+				setMessage(null)
+				setStyleType(null)
+			  }, 5000)
+		})
 
 	.then(response => {
 	  const updatedPersons = persons.filter(person => person.id !== id)
@@ -121,6 +154,8 @@ const updatePerson = (name, newNumber) => {
 	return (
 		<div>
 			<Filter value={newFilter} onChange={handleFilterChange} />
+			<p></p>
+			<Notification message={message}  type={styleType} />
 			<PersonForm 
 			newName={newName}
 			handleNameChange={handleNameChange} 

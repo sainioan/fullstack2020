@@ -10,6 +10,7 @@ const Persons = ({persons, newFilter, remove}) => {
     {person.name} {person.number} <button onClick={() => remove(person.id)}>delete</button>
     </div>
   ))
+  
 return(
   <div>
     <h3>Numbers</h3>

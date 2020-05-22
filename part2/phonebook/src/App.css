@@ -36,6 +36,22 @@ li:before {
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.messageToBeShown {
+  color: green;
+  font-size: 20x;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.errorToBeShown {
+  color: red;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
 
 .App-link {
   color: #61dafb;
