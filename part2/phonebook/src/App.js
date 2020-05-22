@@ -29,7 +29,7 @@ const addPerson = (event) => {
 	}
 	
 if (persons.some(contact => contact.name.toLowerCase() === personObject.name.toLowerCase())) {
-	if (window.confirm(`${personObject.name} is already in the phonebook, do you want to replace the old number with the new one?`)) {
+	if (window.confirm(`${personObject.name} is already added to the phonebook. Do you want to replace the old number with a new one?`)) {
 	  updatePerson(personObject.name, personObject.number)
 	  setNewName('')
 	  setNewNumber('')
