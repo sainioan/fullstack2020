@@ -8,14 +8,15 @@ import './App.css';
 
 
 const apiUrl = "http://api.weatherstack.com/current";
-const apiKey = "131935c31c533fc15040a364749cde90";
+// const api_key = "131935c31c533fc15040a364749cde90";
+const api_key = process.env.REACT_APP_API_KEY;
 
 const Weather = ({country}) => {
     const [newWeather,setWeather] = useState(null);
 
     useEffect(() => {
        
-        axios.get(`${apiUrl}?access_key=${apiKey}&query=${country.capital}`).
+        axios.get(`${apiUrl}?access_key=${api_key}&query=${country.capital}`).
         then((response) => {
     
           // const data = response.data
