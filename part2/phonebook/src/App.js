@@ -43,6 +43,7 @@ if (persons.some(contact => contact.name.toLowerCase() === personObject.name.toL
 	  }
 	  setMessage(messageToBeShown)
 	  setTimeout(() => { setMessage(null) }, 5000)
+	  return
 	}
 
   } else {
@@ -117,6 +118,7 @@ const updatePerson = (name, newNumber) => {
 		
 		const personToBeUpdated = persons.find((person) => person.id === id);
 		const alert = window.confirm(`Are you sure you want to delete the entry ${personToBeUpdated.name}?`);
+		if(alert) {
 		personsService.remove(id)
 		.catch(error => {
 			setStyleType('error')
@@ -132,6 +134,9 @@ const updatePerson = (name, newNumber) => {
 	  const updatedPersons = persons.filter(person => person.id !== id)
 	  setPersons(updatedPersons)
 	})
+} else {
+	return;
+}
 }
 	return (
 		<div>
