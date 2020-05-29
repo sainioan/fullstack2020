@@ -67,8 +67,7 @@ if (persons.some(contact => contact.name.toLowerCase() === personObject.name.toL
 	  }).catch(error => {
 		const errorM = JSON.stringify(error.response.data)
 		console.log(error.response.data);
-		//setMessage(`${errorM}`);
-		setMessage(`${error.response.data.message}`);
+		setMessage(`${errorM}`);
 	    setStyleType('error');
 		setTimeout(() => { 
 			setMessage(null) 
