@@ -37,13 +37,11 @@ if (persons.some(contact => contact.name.toLowerCase() === personObject.name.toL
 	  setNewName('')
 	  setNewNumber('')
 	} else {
-	  const messageToBeShown = {
-		type: `notification`,
-		text: `Number was not changed`
-	  }
-	  setMessage(messageToBeShown)
+
+	  setMessage(`${personObject.name}'s number updated`)
+	  setStyleType('notification')
 	  setTimeout(() => { setMessage(null) }, 5000)
-	  return
+	  return;
 	}
 
   } else {
