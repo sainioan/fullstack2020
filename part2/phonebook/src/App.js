@@ -49,13 +49,14 @@ if (persons.some(contact => contact.name.toLowerCase() === personObject.name.toL
 
   } else {
 	  personsService
-	  .create({ name: newName, number: newNumber })
+	//  .create({ name: newName, number: newNumber })
+	  .create(personObject)
 	  .then(response => {
 		setPersons(persons.concat(response))
-		const messageToBeShown = {
+/* 		const messageToBeShown = {
 		  type: `notification`,
 		  text: `${personObject.name} added`
-		}
+		} */
 	
 		setMessage(`${personObject.name} added`)
 		setStyleType('notification');
@@ -64,11 +65,18 @@ if (persons.some(contact => contact.name.toLowerCase() === personObject.name.toL
 		setNewNumber('')
 
 	  }).catch(error => {
-		const errorToBeShown = {
-		  type: `error`,
-		  text: `${error.response.data.error}`
+		const errorM = JSON.stringify(error.response.data)
+		console.log(error.response.data);
+		setMessage(`${errorM}`);
+		
+		/* const messageToBeShown = {
+            type: `error`,
+			text: `${error.response.data}`
+			
 		}
-		setMessage(errorToBeShown)
+	 	setMessage(messageToBeShown);
+		setMessage(JSON.stringify(error.response.data)); */
+	    setStyleType('error');
 		setTimeout(() => { 
 			setMessage(null) 
 			setStyleType(null)
