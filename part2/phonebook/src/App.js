@@ -118,14 +118,12 @@ const updatePerson = (name, newNumber) => {
 		const personToBeUpdated = persons.find((person) => person.id === id);
 		const alert = window.confirm(`Are you sure you want to delete the entry ${personToBeUpdated.name}?`);
 		personsService.remove(id)
-
-		.then(response => {
-			const updatedPersons = persons.filter(person => person.id !== id)
-			setPersons(updatedPersons)
-			setStyleType('notification')
-			setMessage(	`${personToBeUpdated.name} has been deleted`)
-		  })
 		.catch(error => {
+			const messageToBeShown = {
+				type: 'error',
+				text: `${personToBeUpdated.name} has already been deleted`
+			  }
+			setStyleType('error')
 			setMessage(	`${personToBeUpdated.name} has already been deleted`)
 			setStyleType('error')
 			setTimeout(() => {
@@ -134,7 +132,12 @@ const updatePerson = (name, newNumber) => {
 			  }, 5000)
 		})
 
+	.then(response => {
+	  const updatedPersons = persons.filter(person => person.id !== id)
+	  setPersons(updatedPersons)
+	})
 }
+
 	return (
 		<div>
 			<Filter value={newFilter} onChange={handleFilterChange} />
