@@ -119,10 +119,6 @@ const updatePerson = (name, newNumber) => {
 		const alert = window.confirm(`Are you sure you want to delete the entry ${personToBeUpdated.name}?`);
 		personsService.remove(id)
 		.catch(error => {
-			const messageToBeShown = {
-				type: 'error',
-				text: `${personToBeUpdated.name} has already been deleted`
-			  }
 			setStyleType('error')
 			setMessage(	`${personToBeUpdated.name} has already been deleted`)
 			setStyleType('error')
@@ -137,7 +133,6 @@ const updatePerson = (name, newNumber) => {
 	  setPersons(updatedPersons)
 	})
 }
-
 	return (
 		<div>
 			<Filter value={newFilter} onChange={handleFilterChange} />
