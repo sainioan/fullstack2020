@@ -38,8 +38,8 @@ if (persons.some(contact => contact.name.toLowerCase() === personObject.name.toL
 	  setNewNumber('')
 	} else {
 
-	  setMessage(`${personObject.name}'s number updated`)
-	  setStyleType('notification')
+	  setMessage(`${personObject.name}'s number wasn't changed`)
+	  setStyleType('error')
 	  setTimeout(() => { setMessage(null) }, 5000)
 	  return;
 	}
