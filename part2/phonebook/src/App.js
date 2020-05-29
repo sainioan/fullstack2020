@@ -6,7 +6,6 @@ import PersonForm from './components/PersonForm'
 import personsService from './services/persons';
 import './App.css';
 import './index.css';
-import axios from 'axios'
 
 
 
@@ -19,8 +18,7 @@ const App = () => {
 	const [styleType, setStyleType ] = useState(null);
   
 	useEffect(() => {
-	personsService.
-	getAll().then((response) => {setPersons(response);
+	personsService.getAll().then((response) => {setPersons(response);
 	});
 }, []);	
 
@@ -49,15 +47,11 @@ if (persons.some(contact => contact.name.toLowerCase() === personObject.name.toL
 
   } else {
 	  personsService
-	//  .create({ name: newName, number: newNumber })
+
 	  .create(personObject)
 	  .then(response => {
 		setPersons(persons.concat(response))
-/* 		const messageToBeShown = {
-		  type: `notification`,
-		  text: `${personObject.name} added`
-		} */
-	
+
 		setMessage(`${personObject.name} added`)
 		setStyleType('notification');
 		setTimeout(() => { setMessage(null) }, 5000)
@@ -95,13 +89,7 @@ const updatePerson = (name, newNumber) => {
 		   setMessage(null)
 			setStyleType(null)
 		}, 5000)
-	})
-	.catch(error => {
-		const messageToBeShown = {
-			type: `error`,
-			text: `${personToBeUpdated.name} has already been deleted`
-		  }
-		setMessage(messageToBeShown)
+	}).catch(error => {
 		setMessage(	`${personToBeUpdated.name} has already been deleted`)
 		setStyleType('error');
         setTimeout(() => {
@@ -130,12 +118,14 @@ const updatePerson = (name, newNumber) => {
 		const personToBeUpdated = persons.find((person) => person.id === id);
 		const alert = window.confirm(`Are you sure you want to delete the entry ${personToBeUpdated.name}?`);
 		personsService.remove(id)
+
+		.then(response => {
+			const updatedPersons = persons.filter(person => person.id !== id)
+			setPersons(updatedPersons)
+			setStyleType('notification')
+			setMessage(	`${personToBeUpdated.name} has been deleted`)
+		  })
 		.catch(error => {
-			const messageToBeShown = {
-				type: 'error',
-				text: `${personToBeUpdated.name} has already been deleted`
-			  }
-			setStyleType('error')
 			setMessage(	`${personToBeUpdated.name} has already been deleted`)
 			setStyleType('error')
 			setTimeout(() => {
@@ -144,13 +134,7 @@ const updatePerson = (name, newNumber) => {
 			  }, 5000)
 		})
 
-	.then(response => {
-	  const updatedPersons = persons.filter(person => person.id !== id)
-	  setPersons(updatedPersons)
-	})
 }
-
-
 	return (
 		<div>
 			<Filter value={newFilter} onChange={handleFilterChange} />
