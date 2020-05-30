@@ -1,0 +1,37 @@
+{
+  "name": "ls",
+  "version": "1.0.0",
+  "description": "bloglist",
+  "main": "index.js",
+  "scripts": {
+    "test": "\"echo \\\"Error: no test specified\\\" && exit 1\"",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sainioan/fullstack2020.git"
+  },
+  "keywords": [
+    "bloglist"
+  ],
+  "author": "anniinasainio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sainioan/fullstack2020/issues"
+  },
+  "homepage": "https://github.com/sainioan/fullstack2020#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.16",
+    "mongoose-unique-validator": "^2.0.3",
+    "react-scripts": "^3.4.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.1.0",
+    "nodemon": "^2.0.2"
+  }
+}
