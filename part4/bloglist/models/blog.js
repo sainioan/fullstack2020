@@ -14,18 +14,16 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const blogSchema = new mongoose.Schema({
 
-  content: {
-    title: String,
+  title: {
+    type: String,
     minlength: 5,
     required: true
   },
   author: { 
     type: String,
-    minlength: 5,
     required: true
   }, url: { 
     type: String,
-    minlength: 5,
     required: true
   },  likes: { 
     type:  Number,
