@@ -1,7 +1,5 @@
 const info = (...params) => {
-{
-    console.log(...params)
-  }
+  console.log(...params)
 }
 
 const error = (...params) => {
