@@ -1,4 +1,9 @@
 
-POST http://localhost:3003/api/blogs content-type:application/json
+post http://localhost:3003/api/blogs
+content-type: application/json
 
-{"title": "Runner's Streching Guide", "author": "Rita the Runner", "url": "runners.com", "likes": 100}
+
+{       "title": "Runners Blog",
+        "author": "Rita the Runner",
+        "url": "http://runners.comh",
+        "likes": 10000  }
