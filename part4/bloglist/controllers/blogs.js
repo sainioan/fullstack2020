@@ -18,6 +18,14 @@ blogsRouter.get('/:id', (request, response, next) => {
     })
     .catch(error => next(error))
 })
+blogsRouter.post('/', (request, response) => {
+  const blog = new Blog(request.body)
+  blog
+    .save()
+    .then(result => {
+      response.status(201).json(result)
+    })
+})
 
 blogsRouter.post('/', (request, response, next) => {
   const body = request.body
@@ -61,5 +69,5 @@ blogsRouter.put('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-module.exports = blogsRouter
+module.exports = blogsRouter;
  
