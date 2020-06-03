@@ -17,20 +17,33 @@ const totalLikes = (blogs) => {
 
 const favoriteBlog = (blogs) => {
 
-  const favorite = blogs.reduce((a,b) => 
+  const favorite = blogs.reduce((a,b) =>
     a === null|| b.likes > a.likes ? b:a, null)
   return favorite
 }
 
 const mostBlogs = (blogs) => {
 
-  const entryArray = ( _(blogs).countBy('author')
+  const blogArray = ( _(blogs).countBy('author')
     .entries()
     .max())
   return blogs.length === 0
-    ? null : { author: entryArray[0], blogs: entryArray[1] }
+    ? null : { author: blogArray[0], blogs: blogArray[1] }
 }
 
+const mostLikes = (blogs) => {
+
+  const blogArray = (_(blogs)
+
+    .chain(blogs)
+    .groupBy('author')
+    .map((likes, author) => ({ 'author': author, 'likes': _.sumBy(likes, 'likes') }))
+    .sortBy('likes')
+    .last()
+    .value())
+  return blogs.length === 0
+    ? null: blogArray
+}
 module.exports = {
-  dummy, totalLikes, favoriteBlog, mostBlogs
+  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }
