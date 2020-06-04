@@ -6,13 +6,16 @@ const blogSchema = new mongoose.Schema({
   title: {
     type: String,
     minlength: 5,
+    required: true
   },
   author: {
     type: String,
   }, url: {
     type: String,
+    required: true
   },  likes: {
     type:  Number,
+    default: 0
   },
 
 })
@@ -25,4 +28,5 @@ blogSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('Blog', blogSchema)
+const Blog = mongoose.model('Blog', blogSchema)
+module.exports = Blog

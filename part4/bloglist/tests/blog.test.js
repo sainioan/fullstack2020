@@ -20,9 +20,7 @@ beforeEach(async () => {
   blogObject = new Blog(helper.initialBlogs[1])
   await blogObject.save()
 })
-afterAll(() => {
-  mongoose.connection.close()
-})
+
 
 test('all blogs are returned', async () => {
   const response = await api.get('/api/blogs')
@@ -38,4 +36,44 @@ test('a specific blog is within the returned blogs', async () => {
   expect(titles).toContain(
     'HappyRunningBlog'
   )
+})
+test('a valid blog can be added ', async () => {
+  const newBlog = {
+    'title': 'HappyCodingBlog',
+    'author': 'Carlie the Coder',
+    'url': 'http://happycoders.com',
+    'likes': 550000  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  const titles = blogsAtEnd.map(n => n.title)
+  expect(titles).toContain(
+    'HappyCodingBlog'
+  )
+})
+
+test('blog without title is not added', async () => {
+  const newBlog = {
+    likes: 5
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+
+afterAll(() => {
+  mongoose.connection.close()
 })

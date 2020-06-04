@@ -114,7 +114,7 @@ describe('most blogs', () => {
     const res = listHelper.mostBlogs(listWithOneBlog)
     expect(res).toEqual({
       author:'Edsger W. Dijkstra',
-      blogs: 1 
+      blogs: 1
     })
   })
   test('of an empty list is null', () => {
