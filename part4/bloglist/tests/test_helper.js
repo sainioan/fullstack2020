@@ -1,5 +1,5 @@
 const Blog = require('../models/blog')
-
+const User = require('../models/user')
 const initialBlogs = [
   {
     'title': 'HappyCodingBlog',
@@ -12,6 +12,20 @@ const initialBlogs = [
     'author': 'Rita the Runner',
     'url': 'http://happyrunners.com',
     'likes': 1110000
+  },
+]
+const initialUsers = [
+  {
+    'username': 'firstUser',
+    'name': 'first',
+    'password': '',
+    'blogs': initialBlogs[0]
+  },
+  {
+    'username': 'secondUser',
+    'name': 'second',
+    'password': '',
+    'blogs': initialBlogs[1]
   },
 ]
 
@@ -28,7 +42,11 @@ const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())
 }
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(user => user.toJSON())
+}
 
 module.exports = {
-  initialBlogs, nonExistingId, blogsInDb
+  initialBlogs, initialUsers, nonExistingId, blogsInDb, usersInDb
 }
