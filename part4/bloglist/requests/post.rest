@@ -8,11 +8,7 @@ content-type: application/json
         "url": "http://runners.comh",
         "likes": 10000  }
 
-{       "title": "HappyCodingBlog",
-        "author": "Carlie the Coder",
-        "url": "http://happycoders.com",
-        "likes": 550000  }
-        
+
 
 
 

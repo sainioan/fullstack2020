@@ -1,7 +1,5 @@
-PUT http://localhost:3003/api/blogs/5ed54b5533904e03834db0f4
+PUT http://localhost:3003/api/blogs/5ed8dd39a3d0c21299482f2a 
+content-type: application/json
 
-Content-Type: application/json
 
-{
-"title": "newTitle", "author": "newAuthor", "url": "newUrl.com", "likes": 1112222
-}
+{ "title":"HappyCodingBlogPartII", "author":"CoderPo",  "url":"happycoders2.com", "likes":1112222, "id":"5ed8dd39a3d0c21299482f2a"}
