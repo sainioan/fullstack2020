@@ -14,21 +14,6 @@ const initialBlogs = [
     'likes': 1110000
   },
 ]
-const initialUsers = [
-  {
-    'username': 'firstUser',
-    'name': 'first',
-    'password': '',
-    'blogs': initialBlogs[0]
-  },
-  {
-    'username': 'secondUser',
-    'name': 'second',
-    'password': '',
-    'blogs': initialBlogs[1]
-  },
-]
-
 
 const nonExistingId = async () => {
   const blog = new Blog({ title: 'willremovethissoon' })
@@ -48,5 +33,5 @@ const usersInDb = async () => {
 }
 
 module.exports = {
-  initialBlogs, initialUsers, nonExistingId, blogsInDb, usersInDb
+  initialBlogs, nonExistingId, blogsInDb, usersInDb
 }
