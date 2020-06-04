@@ -1,22 +1,20 @@
 
 
    post http://localhost:3003/api/blogs
-content-type: application/json
+content-type: application/json 
 
+{       "title": "Runners Blog",
+        "author": "Rita the Runner",
+        "url": "http://runners.comh",
+        "likes": 10000  }
 
 {       "title": "HappyCodingBlog",
         "author": "Carlie the Coder",
         "url": "http://happycoders.com",
         "likes": 550000  }
         
-        post http://localhost:3003/api/blogs
-
-content-type: application/json
 
 
-{       "title": "Runners Blog",
-        "author": "Rita the Runner",
-        "url": "http://runners.comh",
-        "likes": 10000  }
+
 
      

@@ -62,7 +62,7 @@ test('a valid blog can be added ', async () => {
     'title': 'newBlog',
     'author': 'Rookie Blogger',
     'url': 'http://MyFirstBlog.com',
-     }
+  }
 
   await api
     .post('/api/blogs')
@@ -73,6 +73,24 @@ test('a valid blog can be added ', async () => {
   const blogs = await helper.blogsInDb()
   const likes = blogs.map(n => n.likes)
   expect(likes[likes.length-1]).toBe(0)
+})
+test('a blog has id ', async () => {
+  const newBlog = {
+    'title': 'newBlog2',
+    'author': 'a Blogger',
+    'url': 'http://MySecondBlog.com',
+    likes:5
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogs = await helper.blogsInDb()
+  const ids = blogs.map(n => n.id)
+  expect(ids[ids.length-1]).toBeDefined()
 })
 test('blog without title is not added', async () => {
   const newBlog = {
