@@ -4,7 +4,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
 const api = supertest(app)
-test('blogss are returned as json', async () => {
+test('blogs are returned as json', async () => {
   await api
     .get('/api/blogs')
     .expect(200)
@@ -37,7 +37,7 @@ describe('when there is initially some blogs saved', () => {
     )
   })
 })
-describe('addition of a new note', () => {
+describe('addition of a new blog', () => {
   test('a valid blog can be added ', async () => {
     const newBlog = {
       'title': 'HappyCodingBlog',
@@ -93,7 +93,8 @@ describe('addition of a new note', () => {
 
     const blogs = await helper.blogsInDb()
     const ids = blogs.map(n => n.id)
-    expect(ids[ids.length-1]).toBeDefined()
+    const thisID = ids[ids.length-1]
+    expect(thisID).toBeDefined()
   })
   test('blog without title is not added', async () => {
     const newBlog = {
@@ -111,7 +112,7 @@ describe('addition of a new note', () => {
   })
 })
 
-describe('viewing a specific note', () => {
+describe('viewing a specific blog', () => {
   test('a specific blog can be viewed', async () => {
     const blogAtStart = await helper.blogsInDb()
 
@@ -134,7 +135,7 @@ describe('viewing a specific note', () => {
   })
 })
 
-describe('deletion of a note', () => {
+describe('deletion of a blog', () => {
   test('a blog can be deleted', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
@@ -155,6 +156,28 @@ describe('deletion of a note', () => {
   })
 })
 
+describe('PUT requests', () => {
+  test('succeeds with valid data', async () => {
+    // Update the blog from 12 to 1000 likes.
+    const updatedBlog = {
+      'title': 'Carefree Coding',
+      'author': 'Anonymous',
+      'url': 'www.cafefreecoding.com',
+      'likes': 5
+    }
+
+    const blogsAtStart = await helper.blogsInDb()
+    await api
+      .put(`/api/blogs/${blogsAtStart[0].id}`)
+      .send(updatedBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    const likes = blogsAtEnd.map(n => n.likes)
+    expect(likes[0]).toBe(5)
+  })
+})
 afterAll(() => {
   mongoose.connection.close()
 })
