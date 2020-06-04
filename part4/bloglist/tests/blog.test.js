@@ -11,15 +11,6 @@ test('blogss are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-/* beforeEach(async () => {
-  await Blog.deleteMany({})
-
-  let blogObject = new Blog(helper.initialBlogs[0])
-  await blogObject.save()
-
-  blogObject = new Blog(helper.initialBlogs[1])
-  await blogObject.save()
-}) */
 beforeEach(async () => {
   await Blog.deleteMany({})
 
@@ -66,6 +57,23 @@ test('a valid blog can be added ', async () => {
   )
 })
 
+test('a valid blog can be added ', async () => {
+  const newBlog = {
+    'title': 'newBlog',
+    'author': 'Rookie Blogger',
+    'url': 'http://MyFirstBlog.com',
+     }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogs = await helper.blogsInDb()
+  const likes = blogs.map(n => n.likes)
+  expect(likes[likes.length-1]).toBe(0)
+})
 test('blog without title is not added', async () => {
   const newBlog = {
     likes: 5
@@ -112,6 +120,7 @@ test('a blog can be deleted', async () => {
 
   expect(titles).not.toContain(blogToDelete.title)
 })
+
 afterAll(() => {
   mongoose.connection.close()
 })
