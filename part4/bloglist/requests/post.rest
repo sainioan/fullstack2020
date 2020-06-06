@@ -1,15 +1,11 @@
 
 
-   post http://localhost:3003/api/blogs
-content-type: application/json 
+POST http://localhost:3003/api/blogs 
+content-type: application/json
 
-{       "title": "Runners Blog",
-        "author": "Rita the Runner",
-        "url": "http://runners.comh",
-        "likes": 10000  }
-
-
-
+{
+"title": "Vegan Runners Blog", "author": "Friend of the Animals", "url": "http://www.vegetarianRunners.com", "likes": "5000"
+}
 
 
 

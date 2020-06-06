@@ -4,6 +4,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
 const api = supertest(app)
+
 test('blogs are returned as json', async () => {
   await api
     .get('/api/blogs')
@@ -40,11 +41,11 @@ describe('when there is initially some blogs saved', () => {
 describe('addition of a new blog', () => {
   test('a valid blog can be added ', async () => {
     const newBlog = {
-      'title': 'HappyCodingBlog',
-      'author': 'Carlie the Coder',
-      'url': 'http://happycoders.com',
-      'likes': 550000  }
-
+      title: 'Type wars',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+      likes: 2
+    }
     await api
       .post('/api/blogs')
       .send(newBlog)
