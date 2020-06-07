@@ -7,10 +7,26 @@ const app = require('../app')
 const api = supertest(app)
 //...
 
+const initalUsers = [
+  {
+    name: 'TestUser',
+    username: 'testuser',
+    passwordHash: 'asecret'
+  },
+  {
+    name: 'TestUser2',
+    username: 'testuser2',
+    passwordHash: 'asecret'
+  }
+]
 describe('when there is initially one user in db', () => {
   beforeEach(async () => {
     await User.deleteMany({})
 
+    const usersArray = initalUsers.map(user => new User(user))
+    const promiseArray = usersArray.map(user => user.save())
+
+    await Promise.all(promiseArray)
     const passwordHash = await bcrypt.hash('secret', 10)
     const user = new User({ username: 'root', passwordHash })
 
@@ -40,5 +56,6 @@ describe('when there is initially one user in db', () => {
   })
 })
 afterAll(() => {
-    mongoose.connection.close()
-  })
+  mongoose.connection.close()
+})
+
