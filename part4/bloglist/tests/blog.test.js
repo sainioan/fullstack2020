@@ -41,6 +41,21 @@ describe('when there is initially some blogs saved', () => {
   })
 })
 describe('addition of a new blog', () => {
+  test('a blog without authorization cannot be added ', async () => {
+    const newBlog = {
+      title: 'Type wars',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+      likes: 2
+    }
+
+
+    await api
+      .post('/api/blogs')
+      .set('Authorization', 'Bearer' + '$2b$10$UABR.rHdqjKIDcUqUWPjh.YYXomggr7tJbNzL/jN9gfn72QKOY1iK')
+      .send(newBlog)
+      .expect(401)
+  })
 
   test('a valid blog can be added ', async () => {
     const newBlog = {
@@ -53,12 +68,11 @@ describe('addition of a new blog', () => {
       username: 'Monday1',
       password: 'asecret'
     }
-       
-  
+
     const getToken = async () => {
-       await api
-      .post('/api/users ')
-      .send(toBeLoggedIn )
+      await api
+        .post('/api/users ')
+        .send(toBeLoggedIn )
 
       const response = await api
         .post('/api/login')
@@ -72,7 +86,7 @@ describe('addition of a new blog', () => {
       .send(newBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
-    
+
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
@@ -95,16 +109,16 @@ describe('addition of a new blog', () => {
     }
     const getToken = async () => {
       await api
-     .post('/api/users ')
-     .send(toBeLoggedIn )
+        .post('/api/users ')
+        .send(toBeLoggedIn )
 
-     const response = await api
-       .post('/api/login')
-       .send(toBeLoggedIn)
-     return response.body
-   }
- const token = await getToken()  
- await api
+      const response = await api
+        .post('/api/login')
+        .send(toBeLoggedIn)
+      return response.body
+    }
+    const token = await getToken()
+    await api
       .post('/api/blogs')
       .set('Authorization', 'bearer ' + token.token)
       .send(newBlog)
@@ -128,15 +142,15 @@ describe('addition of a new blog', () => {
     }
     const getToken = async () => {
       await api
-     .post('/api/users ')
-     .send(toBeLoggedIn )
+        .post('/api/users ')
+        .send(toBeLoggedIn )
 
-     const response = await api
-       .post('/api/login')
-       .send(toBeLoggedIn)
-     return response.body
-   }
- const token = await getToken()  
+      const response = await api
+        .post('/api/login')
+        .send(toBeLoggedIn)
+      return response.body
+    }
+    const token = await getToken()
 
     await api
       .post('/api/blogs')
@@ -160,15 +174,15 @@ describe('addition of a new blog', () => {
     }
     const getToken = async () => {
       await api
-     .post('/api/users ')
-     .send(toBeLoggedIn )
+        .post('/api/users ')
+        .send(toBeLoggedIn )
 
-     const response = await api
-       .post('/api/login')
-       .send(toBeLoggedIn)
-     return response.body
-   }
- const token = await getToken()  
+      const response = await api
+        .post('/api/login')
+        .send(toBeLoggedIn)
+      return response.body
+    }
+    const token = await getToken()
 
     await api
       .post('/api/blogs')
@@ -209,35 +223,35 @@ describe('viewing a specific blog', () => {
 describe('deletion of a blog', () => {
   test('a blog can be deleted', async () => {
 
- const newBlog = {
-  'title': 'newBlog2',
-  'author': 'Rookie2 Blogger',
-  'url': 'http://MyDraftBlog.com',
-}
-const toBeLoggedIn = {
-  username: 'Monday5',
-  password: 'asecret'
-}
-const getToken = async () => {
-  await api
- .post('/api/users ')
- .send(toBeLoggedIn )
+    const newBlog = {
+      'title': 'newBlog2',
+      'author': 'Rookie2 Blogger',
+      'url': 'http://MyDraftBlog.com',
+    }
+    const toBeLoggedIn = {
+      username: 'Monday5',
+      password: 'asecret'
+    }
+    const getToken = async () => {
+      await api
+        .post('/api/users ')
+        .send(toBeLoggedIn )
 
- const response = await api
-   .post('/api/login')
-   .send(toBeLoggedIn)
- return response.body
-}
-const token = await getToken()  
-await api
-  .post('/api/blogs')
-  .set('Authorization', 'bearer ' + token.token)
-  .send(newBlog)
-  .expect(200)
-  .expect('Content-Type', /application\/json/)
+      const response = await api
+        .post('/api/login')
+        .send(toBeLoggedIn)
+      return response.body
+    }
+    const token = await getToken()
+    await api
+      .post('/api/blogs')
+      .set('Authorization', 'bearer ' + token.token)
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
-   const blogs = await helper.blogsInDb()
-   const blogToDelete = blogs[blogs.length-1]
+    const blogs = await helper.blogsInDb()
+    const blogToDelete = blogs[blogs.length-1]
     await api
       .delete(`/api/blogs/${blogs[blogs.length-1].id}`)
       .set('Authorization', 'bearer ' + token.token)
@@ -257,7 +271,7 @@ await api
 
 describe('PUT requests', () => {
   test('succeeds with valid data', async () => {
-   
+
     const updatedBlog = {
       'title': 'Carefree Coding',
       'author': 'Anonymous',
