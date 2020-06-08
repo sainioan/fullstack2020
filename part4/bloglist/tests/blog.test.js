@@ -3,6 +3,7 @@ const helper = require('./test_helper')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const api = supertest(app)
 
 test('blogs are returned as json', async () => {
@@ -19,6 +20,7 @@ beforeEach(async () => {
     .map(blog => new Blog(blog))
   const promiseArray = blogObjects.map(blog => blog.save())
   await Promise.all(promiseArray)
+
 })
 
 describe('when there is initially some blogs saved', () => {
@@ -39,6 +41,7 @@ describe('when there is initially some blogs saved', () => {
   })
 })
 describe('addition of a new blog', () => {
+
   test('a valid blog can be added ', async () => {
     const newBlog = {
       title: 'Type wars',
@@ -46,11 +49,30 @@ describe('addition of a new blog', () => {
       url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
       likes: 2
     }
+    const toBeLoggedIn = {
+      username: 'Monday1',
+      password: 'asecret'
+    }
+       
+  
+    const getToken = async () => {
+       await api
+      .post('/api/users ')
+      .send(toBeLoggedIn )
+
+      const response = await api
+        .post('/api/login')
+        .send(toBeLoggedIn)
+      return response.body
+    }
+    const token= await getToken()
     await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer ' + token.token)
       .send(newBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
+    
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
@@ -67,9 +89,24 @@ describe('addition of a new blog', () => {
       'author': 'Rookie Blogger',
       'url': 'http://MyFirstBlog.com',
     }
+    const toBeLoggedIn = {
+      username: 'Monday2',
+      password: 'asecret'
+    }
+    const getToken = async () => {
+      await api
+     .post('/api/users ')
+     .send(toBeLoggedIn )
 
-    await api
+     const response = await api
+       .post('/api/login')
+       .send(toBeLoggedIn)
+     return response.body
+   }
+ const token = await getToken()  
+ await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer ' + token.token)
       .send(newBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -85,9 +122,25 @@ describe('addition of a new blog', () => {
       'url': 'http://MySecondBlog.com',
       likes:5
     }
+    const toBeLoggedIn = {
+      username: 'Monday3',
+      password: 'asecret'
+    }
+    const getToken = async () => {
+      await api
+     .post('/api/users ')
+     .send(toBeLoggedIn )
+
+     const response = await api
+       .post('/api/login')
+       .send(toBeLoggedIn)
+     return response.body
+   }
+ const token = await getToken()  
 
     await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer ' + token.token)
       .send(newBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -101,11 +154,28 @@ describe('addition of a new blog', () => {
     const newBlog = {
       likes: 5
     }
+    const toBeLoggedIn = {
+      username: 'Monday4',
+      password: 'asecret'
+    }
+    const getToken = async () => {
+      await api
+     .post('/api/users ')
+     .send(toBeLoggedIn )
+
+     const response = await api
+       .post('/api/login')
+       .send(toBeLoggedIn)
+     return response.body
+   }
+ const token = await getToken()  
 
     await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer ' + token.token)
       .send(newBlog)
       .expect(400)
+      .expect('Content-Type', /application\/json/)
 
     const blogsAtEnd = await helper.blogsInDb()
 
@@ -138,17 +208,45 @@ describe('viewing a specific blog', () => {
 
 describe('deletion of a blog', () => {
   test('a blog can be deleted', async () => {
-    const blogsAtStart = await helper.blogsInDb()
-    const blogToDelete = blogsAtStart[0]
 
+ const newBlog = {
+  'title': 'newBlog2',
+  'author': 'Rookie2 Blogger',
+  'url': 'http://MyDraftBlog.com',
+}
+const toBeLoggedIn = {
+  username: 'Monday5',
+  password: 'asecret'
+}
+const getToken = async () => {
+  await api
+ .post('/api/users ')
+ .send(toBeLoggedIn )
+
+ const response = await api
+   .post('/api/login')
+   .send(toBeLoggedIn)
+ return response.body
+}
+const token = await getToken()  
+await api
+  .post('/api/blogs')
+  .set('Authorization', 'bearer ' + token.token)
+  .send(newBlog)
+  .expect(200)
+  .expect('Content-Type', /application\/json/)
+
+   const blogs = await helper.blogsInDb()
+   const blogToDelete = blogs[blogs.length-1]
     await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
+      .delete(`/api/blogs/${blogs[blogs.length-1].id}`)
+      .set('Authorization', 'bearer ' + token.token)
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
 
     expect(blogsAtEnd).toHaveLength(
-      helper.initialBlogs.length - 1
+      helper.initialBlogs.length
     )
 
     const titles = blogsAtEnd.map(r => r.title)
@@ -159,7 +257,7 @@ describe('deletion of a blog', () => {
 
 describe('PUT requests', () => {
   test('succeeds with valid data', async () => {
-    // Update the blog from 12 to 1000 likes.
+   
     const updatedBlog = {
       'title': 'Carefree Coding',
       'author': 'Anonymous',
