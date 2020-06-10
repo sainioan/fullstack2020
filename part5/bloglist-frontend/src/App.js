@@ -5,25 +5,22 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  const [newBlog, setNewBlog] = useState('')
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null) 
+  const [errorMessage, setErrorMessage] = useState(null)
+
+
 
   useEffect(() => {
-    async function fetchData() {
-      const initialBlogs = await blogService.getAll();
-      setBlogs(initialBlogs);
-    }
-    fetchData();
-  }, []);
-
-/*   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs( blogs ),
+      console.log(blogs)
     )  
-  }, []) */
+  }, [])
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -39,7 +36,7 @@ const App = () => {
       })
 
       window.localStorage.setItem(
-        'loggedNoteappUser', JSON.stringify(user)
+        'loggedBlogAppUser', JSON.stringify(user)
       ) 
       blogService.setToken(user.token)
       setUser(user)
@@ -47,7 +44,16 @@ const App = () => {
       setPassword('')
     } catch (exception) {
      console.log(exception.message)
+     setErrorMessage(`wrong username or password`)
+     setTimeout(() => {
+       setErrorMessage(null)
+     }, 5000)
     }
+  }
+
+  const handleLogOut = async (event) => {
+    window.localStorage.clear()
+    setUser(null)
   }
   if (user === null) {
     return (
