@@ -102,9 +102,9 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {
-     console.log(exception.message)
-     notifyWith(`the new blog could not be created`, 'error')
+    } catch(error) {
+      notifyWith(`wrong username or password `, 'error')
+      console.log(error.message)
     }
   }
 
