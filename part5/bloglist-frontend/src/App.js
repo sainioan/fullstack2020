@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import NewBlog from './components/CreateBlog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -12,7 +13,7 @@ const App = () => {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null) 
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification ] = useState(null)
 
 
 
@@ -22,6 +23,13 @@ const App = () => {
       console.log(blogs)
     )  
   }, [])
+
+  const notifyWith = (message, type='success') => {
+    setNotification({ message, type })
+    setTimeout(() => {
+      setNotification(null)
+    }, 8000)
+  }
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
@@ -43,25 +51,28 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
+        notifyWith(`a new blog ${newTitle} ${newAuthor} added`)
         setNewTitle('')
         setNewAuthor('')
         setNewUrl('')
+      }).catch(error => {
+        notifyWith(`${error.response.data.error} `, 'error')
+        console.log(error.response.data.error)
       })
-      console.log(blogs)
+      
+
   }
   const handleTitleChange = (event) => {
-    setNewTitle(event.target.value)
+  setNewTitle(event.target.value)
   
   }
   const handleAuthorChange = (event) => {
-   setNewAuthor(event.target.value)
+  setNewAuthor(event.target.value)
   
   }
   const handleUrlChange = (event) => {
- 
-    setNewUrl(event.target.value)
-   
-   }
+  setNewUrl(event.target.value)
+  }
 
   const blogForm = () => (
     <div buttonLabel="new blog">
@@ -93,10 +104,7 @@ const App = () => {
       setPassword('')
     } catch (exception) {
      console.log(exception.message)
-     setErrorMessage(`wrong username or password`)
-     setTimeout(() => {
-       setErrorMessage(null)
-     }, 5000)
+     notifyWith(`the new blog could not be created`, 'error')
     }
   }
 
@@ -108,6 +116,8 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+
+      <Notification notification={notification} />
         <form onSubmit={handleLogin}>
         <div>
           username
@@ -136,6 +146,7 @@ const App = () => {
   return (
     <div>
        <div>
+      <Notification notification={notification} />
         <p>{user.name} logged in</p>
         <button onClick= {handleLogOut}>logout</button>
         <p></p>
