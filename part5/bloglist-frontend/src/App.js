@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import NewBlog from './components/CreateBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState('')
+  const [newTitle, setNewTitle] = useState('')
+  const [newAuthor, setNewAuthor] = useState('')
+  const [newUrl, setNewUrl] = useState('')
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null) 
@@ -27,7 +30,53 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+  const addBlog = (event) => {
+    event.preventDefault()
+    const blogObject = {
+     title: newTitle,
+     author: newAuthor,
+     url: newUrl
+  
+    }
+    console.log(blogObject)
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setNewTitle('')
+        setNewAuthor('')
+        setNewUrl('')
+      })
+      console.log(blogs)
+  }
+  const handleTitleChange = (event) => {
+    setNewTitle(event.target.value)
+  
+  }
+  const handleAuthorChange = (event) => {
+   setNewAuthor(event.target.value)
+  
+  }
+  const handleUrlChange = (event) => {
+ 
+    setNewUrl(event.target.value)
+   
+   }
 
+  const blogForm = () => (
+    <div buttonLabel="new blog">
+      <NewBlog
+        onSubmit={addBlog}
+        title={newTitle}
+
+        handleTitleChange={handleTitleChange}
+        author={newAuthor}
+        handleAuthorChange={handleAuthorChange}
+        url = {newUrl}
+        handleUrlChange={handleUrlChange}
+      />
+    </div>
+  )
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -86,12 +135,21 @@ const App = () => {
 
   return (
     <div>
+       <div>
+        <p>{user.name} logged in</p>
+        <button onClick= {handleLogOut}>logout</button>
+        <p></p>
+        {blogForm()}
+       </div>
+      <div>
       <h2>blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
+    </div>
   )
+
 }
 
 export default App
