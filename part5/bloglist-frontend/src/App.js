@@ -9,6 +9,7 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  const [likes, setLikes] = useState([])
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
@@ -17,6 +18,7 @@ const App = () => {
   const [user, setUser] = useState(null) 
   const [notification, setNotification ] = useState(null)
   const [loginVisible, setLoginVisible] = useState(false)
+
 
   const blogFormRef = React.createRef()
   useEffect(() => {
@@ -46,7 +48,8 @@ const App = () => {
     const blogObject = {
      title: newTitle,
      author: newAuthor,
-     url: newUrl
+     url: newUrl,
+     likes: likes
   
     }
     console.log(blogObject)
@@ -78,6 +81,9 @@ const App = () => {
   const handleUrlChange = (event) => {
   setNewUrl(event.target.value)
   }
+  const handleLikeChange = (event) => {
+    setLikes(event.target.value)
+  }
   const handleUsernameChange = (event) => {
   setUsername(event.target.value)  
   }
@@ -98,6 +104,8 @@ const App = () => {
         handleAuthorChange={handleAuthorChange}
         url = {newUrl}
         handleUrlChange={handleUrlChange}
+        likes = {likes}
+        handleLikeChange ={handleLikeChange}
       />
     </Togglable>
   )
@@ -135,6 +143,11 @@ const App = () => {
     window.localStorage.clear()
     setUser(null)
   }
+
+
+
+
+
   if (user === null) {
     return (
       <div>
@@ -174,10 +187,12 @@ const App = () => {
         <p>{user.name} logged in</p>
         <button onClick= {handleLogOut}>logout</button>
         <p></p>
-        {blogForm()}     
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        {blogForm()}   
+        {blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} blogs = {blogs}
+         />
       )}
+     
     </div>
     </div>
   )
