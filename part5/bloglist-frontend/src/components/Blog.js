@@ -3,12 +3,14 @@ import React, { useState, useEffect, useReducer } from 'react'
 
 const Blog = ({ blog, blogs, user, blogService, setBlogs, setNotification}) => {
 
- // const Blog = ({ blog, blogs, user, increaseLikes}) => {
-const increaseLikes =  () => { 
-/*   
-  const item = e.target.value;
-  console.log(item) */
-  
+  const deleteBlog =  () => {
+    const ok = window.confirm(`Delete ${blog.title}?`)
+    if(ok)
+    blogService.remove(blog).then(
+    setBlogs(blogs.filter(b => b.id !== blog.id)))
+}
+  const increaseLikes =  () => { 
+
     const changedBlog = {
       title: blog.title,
       author: blog.author,
@@ -68,6 +70,9 @@ const increaseLikes =  () => {
         {increaseLikes}
         >like</button></div>
       <div></div> user: {user.name}
+      </div>
+      <div>
+        <button onClick={deleteBlog}>remove</button>
       </div>
     
   </div>

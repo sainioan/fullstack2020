@@ -74,7 +74,23 @@ const App = () => {
       
 
   }
+/*   const deleteBlog = id => {
+    
 
+      const toDelete = blogs.find(b => b.id === id)
+      const ok = window.confirm(`Delete ${toDelete.title}`)
+      if (ok) {
+        blogService.remove(id)
+          .then(response => {
+            setBlogs(blogs.filter(b => b.id !== id))
+            notifyWith(`Deleted ${toDelete.title}`)
+          }).catch(() => {
+            setBlogs(blogs.filter(b=> b.id !== id))
+            notifyWith(`${toDelete.title} had already been removed`, 'error')
+          })
+      }
+    } */
+  
   const handleTitleChange = (event) => {
   setNewTitle(event.target.value)
   
@@ -93,7 +109,7 @@ const App = () => {
   const handlePasswordChange = (event) => {
   setPassword(event.target.value)  
   }
-  if(user!== null) console.log(user.username)
+
   const blogForm = () => (
     <Togglable buttonLabel="new blog"  ref={blogFormRef}>
       <h2>create new</h2>
@@ -130,7 +146,7 @@ const App = () => {
       console.log(error.message)
     }
   }
-  const increaseLikes =  (id) => { 
+  /* const increaseLikes =  (id) => { 
   
   
     const blog = blogs.find(n => n.id === id)
@@ -153,7 +169,7 @@ const App = () => {
           setNotification(null)
         }, 5000)
       })
-  }
+  } */
 /*   const loginForm=  () =>{
     <Togglable buttonLabel='login'>
     <LoginForm
@@ -169,7 +185,6 @@ const App = () => {
     window.localStorage.clear()
     setUser(null)
   }
-
 
   if (user === null) {
     return (
@@ -211,7 +226,6 @@ const App = () => {
         <button onClick= {handleLogOut}>logout</button>
         <p></p>
         {blogForm()} 
-       
         {blogs.sort((a, b) => b.likes - a.likes).map((blog,i) =>
         <Blog 
         key={i} 
