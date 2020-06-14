@@ -4,7 +4,7 @@ import React, { useState, useEffect, useReducer } from 'react'
 const Blog = ({ blog, blogs, user, blogService, setBlogs, setNotification}) => {
 
   const deleteBlog =  () => {
-    const ok = window.confirm(`Delete ${blog.title}?`)
+    const ok = window.confirm(`Delete ${blog.title} by ${blog.author}?`)
     if(ok)
     blogService.remove(blog).then(
     setBlogs(blogs.filter(b => b.id !== blog.id)))
