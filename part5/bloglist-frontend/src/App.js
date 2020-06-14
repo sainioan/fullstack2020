@@ -16,12 +16,15 @@ const App = () => {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null) 
+  const [users, setUsers] = useState(null)
   const [notification, setNotification ] = useState(null)
   const [loginVisible, setLoginVisible] = useState(false)
 
 
+  const currentUser = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
   const blogFormRef = React.createRef()
   useEffect(() => {
+
     blogService.getAll().then(blogs =>
       setBlogs( blogs ),
       console.log(blogs)
@@ -49,8 +52,8 @@ const App = () => {
      title: newTitle,
      author: newAuthor,
      url: newUrl,
-     likes: likes
-  
+     likes: likes,
+     user: username
     }
     console.log(blogObject)
 
@@ -63,6 +66,7 @@ const App = () => {
         setNewTitle('')
         setNewAuthor('')
         setNewUrl('')
+        setUser('')
       }).catch(error => {
         notifyWith(`${error.response.data.error} `, 'error')
         console.log(error.response.data.error)
@@ -70,6 +74,7 @@ const App = () => {
       
 
   }
+
   const handleTitleChange = (event) => {
   setNewTitle(event.target.value)
   
@@ -81,9 +86,6 @@ const App = () => {
   const handleUrlChange = (event) => {
   setNewUrl(event.target.value)
   }
-  const handleLikeChange = (event) => {
-    setLikes(event.target.value)
-  }
   const handleUsernameChange = (event) => {
   setUsername(event.target.value)  
   }
@@ -91,24 +93,24 @@ const App = () => {
   const handlePasswordChange = (event) => {
   setPassword(event.target.value)  
   }
- 
+  if(user!== null) console.log(user.username)
   const blogForm = () => (
     <Togglable buttonLabel="new blog"  ref={blogFormRef}>
       <h2>create new</h2>
       <NewBlog
         onSubmit={addBlog}
         title={newTitle}
-
         handleTitleChange={handleTitleChange}
         author={newAuthor}
         handleAuthorChange={handleAuthorChange}
         url = {newUrl}
         handleUrlChange={handleUrlChange}
         likes = {likes}
-        handleLikeChange ={handleLikeChange}
-      />
+        username = {user.username}
+      /> 
     </Togglable>
   )
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -122,11 +124,35 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
-      setPassword('')
+      setPassword('')    
     } catch(error) {
       notifyWith(`wrong username or password `, 'error')
       console.log(error.message)
     }
+  }
+  const increaseLikes =  (id) => { 
+  
+  
+    const blog = blogs.find(n => n.id === id)
+      const changedBlog = {
+        title: blog.title,
+        author: blog.author,
+        url: blog.url,
+        likes: blog.likes + 1,
+        user: blog.user.id || blog.user 
+      }
+      blogService.update(id, changedBlog)
+      .then(returnedBlog => {
+      setBlogs(blogs.map(bl=> bl.id === id ? bl: returnedBlog))
+    })
+      .catch((e) => {
+        setNotification(
+          ` '${e.message}'`, 'error'
+        )
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+      })
   }
 /*   const loginForm=  () =>{
     <Togglable buttonLabel='login'>
@@ -143,9 +169,6 @@ const App = () => {
     window.localStorage.clear()
     setUser(null)
   }
-
-
-
 
 
   if (user === null) {
@@ -187,16 +210,22 @@ const App = () => {
         <p>{user.name} logged in</p>
         <button onClick= {handleLogOut}>logout</button>
         <p></p>
-        {blogForm()}   
-        {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} blogs = {blogs}
+        {blogForm()} 
+       
+        {blogs.map((blog,i) =>
+        <Blog 
+        key={i} 
+        blog={blog} 
+        blogs = {blogs} 
+        user = {user} 
+        blogService={blogService}
+        setBlogs={setBlogs} 
+        setNotification = {setNotification}  
          />
       )}
-     
     </div>
     </div>
   )
-
 }
 
 export default App

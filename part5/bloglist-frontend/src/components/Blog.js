@@ -1,7 +1,35 @@
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 
-const Blog = ({ blog, blogs }) => {
+const Blog = ({ blog, blogs, user, blogService, setBlogs, setNotification}) => {
+
+ // const Blog = ({ blog, blogs, user, increaseLikes}) => {
+const increaseLikes =  () => { 
+/*   
+  const item = e.target.value;
+  console.log(item) */
+  
+    const changedBlog = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+      user: blog.user.id || blog.user 
+    }
+    blogService.update(blog.id, changedBlog)
+    .then(returnedBlog => {
+    setBlogs(blogs.map(bl=> bl.id === blog.id ? bl: returnedBlog))
+  })
+    .catch((e) => {
+      setNotification(
+        ` '${e.message}'`, 'error'
+      )
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    })
+    window.location.reload(true)
+}
   const [viewEverything, setViewEverything] = useState(true)
   const blogsToView = viewEverything
   ? blogs
@@ -13,24 +41,19 @@ const Blog = ({ blog, blogs }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
   if(!viewEverything)
   return (
+   
     <div style={blogStyle}>
      <div> title: {blog.title} <button onClick={() => setViewEverything(!viewEverything)}>
          {viewEverything ? 'hide' : 'view' }
         </button> 
         </div>      
-{/*       <ul>
-        {blogsToView.map((blog, i) => 
-          <blog
-            key={i}
-            blog={blog.title} 
-          />
-        )}
-      </ul> */}
       </div>
   )   
       if(viewEverything)
+  
       return (
         <div style={blogStyle}>
         <div> title: {blog.title} <button onClick={() => setViewEverything(!viewEverything)}>
@@ -39,8 +62,12 @@ const Blog = ({ blog, blogs }) => {
            </div>   
       <div>
       <div></div>url: {blog.url}
-      <div> likes: {blog.likes} <button type ="submit" >like</button></div>
       <div></div> author: {blog.author} 
+      <div> likes: {blog.likes}   <button
+        onClick=
+        {increaseLikes}
+        >like</button></div>
+      <div></div> user: {user.name}
       </div>
     
   </div>
