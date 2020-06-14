@@ -27,13 +27,13 @@ const create = async newObject => {
 }
 
 const remove = async Object => {
-  const url = `${baseUrl}/${Object.id}`;
+  const url = `${baseUrl}/${Object.id}`
   const config = {
     headers: { Authorization: token },
   }
 
   const response = await axios.delete(url, config)
 
-  return response;
+  return response
 }
 export default { getAll, create, update, setToken, remove }
