@@ -32,10 +32,10 @@ const Blog = ({ blog, blogs, user, blogService, setBlogs, setNotification }) => 
       })
     window.location.reload(true)
   }
-  const [viewEverything, setViewEverything] = useState(true)
-  const blogsToView = viewEverything
+  const [viewEverything, setViewEverything] = useState(false)
+/*   const blogsToView = viewEverything
     ? blogs
-    : blogs.map(blog => blog.title)
+    : blogs.map(blog => blog.title) */
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -49,7 +49,7 @@ const Blog = ({ blog, blogs, user, blogService, setBlogs, setNotification }) => 
 
       <div style={blogStyle}>
         <div> title: {blog.title} <button onClick={() => setViewEverything(!viewEverything)}>
-          {viewEverything ? 'hide' : 'view' }
+          {!viewEverything ? 'view' : 'hide' }
         </button>
         </div>
       </div>
