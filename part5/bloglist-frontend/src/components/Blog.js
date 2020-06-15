@@ -48,7 +48,7 @@ const Blog = ({ blog, blogs, user, blogService, setBlogs, setNotification }) => 
     return (
 
       <div style={blogStyle}>
-        <div> title: {blog.title} <button onClick={() => setViewEverything(!viewEverything)}>
+        <div> title: {blog.title} <p>author: {blog.author}</p><button onClick={() => setViewEverything(!viewEverything)}>
           {!viewEverything ? 'view' : 'hide' }
         </button>
         </div>
