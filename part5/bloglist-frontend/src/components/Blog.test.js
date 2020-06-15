@@ -25,10 +25,7 @@ test('renders title and author', () => {
       const mockHandler = jest.fn()
       const mockHandler_2 = jest.fn()
       const mockHandler_3 = jest.fn()
-/* 
-      increaseLikes = {mockHandler_2}
 
-      viewEverything ={mockHandler} */
       const   component = render(
         <Blog
           blog={blog}
@@ -48,9 +45,53 @@ test('renders title and author', () => {
       expect(component.container).not.toHaveTextContent(
           'testurl.com'
           )
-    expect(component.container).not.toHaveTextContent(
+     expect(component.container).not.toHaveTextContent(
             5000
             )
+
+})
+
+test('renders title and author', () => {
+    const blog = {
+        title: 'Component testing is done with react-testing-library',
+        url: 'testurl.com',
+        author: 'testblogger',
+        likes: 5000,
+        user: { username: 'user', name: 'u1', password: 'asecret' }
+      }
+      const user = {
+    
+        username: 'user',
+        name: 'u1',
+        password: 'asecret'
+      }
+     
+
+      const[blogs, setBlogs] = [blog]
+      const[notification, setNotification] = []
+      const mockHandler = jest.fn()
+      const mockHandler_2 = jest.fn()
+      const mockHandler_3 = jest.fn()
+
+      const   component = render(
+        <Blog
+          blog={blog}
+          user = {user}
+          blogs= {blogs}
+          setBlogs={setBlogs}
+          blogService = {mockHandler_3}
+          setNotification = {setNotification} />
+      )
+      const button = component.getByText('view')
+
+      fireEvent.click(button)
+
+      expect(component.container).toHaveTextContent(
+        'testurl.com'
+        )
+     expect(component.container).toHaveTextContent(
+          5000
+          )
 
 })
 
@@ -90,17 +131,6 @@ test('renders title and author', () => {
     component.debug()
   })
 
-  test('renders title and author', () => {
-
-
-    expect(component.container).toHaveTextContent(
-      'Component testing is done with react-testing-library'
-    )
-    expect(component.container).toHaveTextContent(
-      'testblogger'
-    )
- 
-})
   test('button of a component is pressed twice handler is running twice', () => {
     const button = component.getByText('like');
     fireEvent.click(button);
@@ -117,7 +147,7 @@ test('renders title and author', () => {
 
     } */
 
-/*     const button = component.getByText('hide')
+/*     const button = component.getByText('view')
     fireEvent.click(button)
 
     expect(mockHandler.mock.calls).toHaveLength(1) */
