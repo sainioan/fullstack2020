@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import NewBlog from './components/CreateBlog'
+import NewBlog from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
@@ -100,20 +100,23 @@ const App = () => {
   const handleUrlChange = (event) => {
     setNewUrl(event.target.value)
   }
+  const handleLikeChange = (event) => {
+    setLikes(event.target.value)
+  }
 
   const blogForm = () => (
     <Togglable buttonLabel="new blog"  ref={blogFormRef}>
-      <h2>create new</h2>
       <NewBlog
         onSubmit={addBlog}
-        title={newTitle}
+/*         title={newTitle}
         handleTitleChange={handleTitleChange}
         author={newAuthor}
         handleAuthorChange={handleAuthorChange}
         url = {newUrl}
         handleUrlChange={handleUrlChange}
         likes = {likes}
-        username = {user.username}
+        handleLikeChange = {handleLikeChange}
+        username = {user.username} */
       />
     </Togglable>
   )
@@ -197,14 +200,9 @@ const App = () => {
         {blogs.sort((a, b) => b.likes - a.likes).map(blog => (          <Blog
           key={blog.id}
           blog={blog}
-          //  blogs = {blogs}
           user = {user}
           removeBlog={removeBlog}
           increaseLikes = {increaseLikes}
-          /*
-            blogService={blogService}
-            setBlogs={setBlogs}
-            setNotification = {setNotification} */
         />
         ))}
       </div>

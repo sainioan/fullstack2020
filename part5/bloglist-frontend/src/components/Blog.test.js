@@ -2,6 +2,7 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import Blog from './Blog'
 import Togglable from './Togglable'
+import BlogForm from './BlogForm'
 import { render, fireEvent } from '@testing-library/react'
 
 test('renders title and author', () => {
@@ -20,20 +21,14 @@ test('renders title and author', () => {
   }
 
 
-  const[blogs, setBlogs] = [blog]
-  const[notification, setNotification] = []
   const mockHandler = jest.fn()
   const mockHandler_2 = jest.fn()
-  const mockHandler_3 = jest.fn()
 
   const   component = render(
     <Blog
-      blog={blog}
-      user = {user}
-      blogs= {blogs}
-      setBlogs={setBlogs}
-      blogService = {mockHandler_3}
-      setNotification = {setNotification} />
+    blog={blog}
+    increaseLikes = {mockHandler}
+    handleRemove = {mockHandler_2} />
   )
 
   expect(component.container).toHaveTextContent(
@@ -67,20 +62,15 @@ test('renders url and likes when the view button is clicked', () => {
   }
 
 
-  const[blogs, setBlogs] = [blog]
-  const[notification, setNotification] = []
   const mockHandler = jest.fn()
   const mockHandler_2 = jest.fn()
-  const mockHandler_3 = jest.mock()
 
   const   component = render(
     <Blog
-      blog={blog}
-      user = {user}
-      blogs= {blogs}
-      setBlogs={setBlogs}
-      blogService = {mockHandler_3}
-      setNotification = {setNotification} />
+
+    blog={blog}
+    increaseLikes = {mockHandler}
+    handleRemove = {mockHandler_2}/>
   )
   const button = component.getByText('view')
 
@@ -109,7 +99,6 @@ test('if the like button is clicked twice, the event handler the component recei
     password: 'asecret'
   }
 
-  const[blogs, setBlogs] = [blog]
   const mockHandler = jest.fn()
   const mockHandler_2 = jest.fn()
 
@@ -127,12 +116,41 @@ test('if the like button is clicked twice, the event handler the component recei
   fireEvent.click(button)
   fireEvent.click(button)
 
-  //expect(mockHandler.mock.calls).toHaveLength(2)
   expect(mockHandler.mock.calls.length).toBe(2)
 
 })
+test('<BlogForm /> updates parent state and calls onSubmit', () => {
+  const onSubmit = jest.fn()
 
+  const component = render(
+    <BlogForm submit ={onSubmit} />
+  )
+ 
+  const title = component.container.querySelector('#title')
+  const author = component.container.querySelector('#author')
+  const url= component.container.querySelector('#url')
+  const form = component.container.querySelector('#form')
 
+  fireEvent.change(title, {
+      target: { value: 'TestBlog' }
+  })
+
+  fireEvent.change(author, {
+      target: { value: 'testBlogger' }
+  })
+
+  fireEvent.change(url, {
+      target: { value: 'testing.com' }
+  })
+
+  fireEvent.submit(form)
+
+  expect(onSubmit.mock.calls.length).toBe(1)
+ 
+  
+  expect(onSubmit.mock.calls[0][0].title).toBe('TestBlog' )
+
+})
 describe('<Togglable />', () => {
   let component
 
