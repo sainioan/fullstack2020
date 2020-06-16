@@ -5,98 +5,6 @@ import Togglable from './Togglable'
 import { render, fireEvent } from '@testing-library/react'
 
 test('renders title and author', () => {
-    const blog = {
-        title: 'Component testing is done with react-testing-library',
-        url: 'testurl.com',
-        author: 'testblogger',
-        likes: 5000,
-        user: { username: 'user', name: 'u1', password: 'asecret' }
-      }
-      const user = {
-    
-        username: 'user',
-        name: 'u1',
-        password: 'asecret'
-      }
-     
-
-      const[blogs, setBlogs] = [blog]
-      const[notification, setNotification] = []
-      const mockHandler = jest.fn()
-      const mockHandler_2 = jest.fn()
-      const mockHandler_3 = jest.fn()
-
-      const   component = render(
-        <Blog
-          blog={blog}
-          user = {user}
-          blogs= {blogs}
-          setBlogs={setBlogs}
-          blogService = {mockHandler_3}
-          setNotification = {setNotification} />
-      )
-
-      expect(component.container).toHaveTextContent(
-        'Component testing is done with react-testing-library'
-      )
-      expect(component.container).toHaveTextContent(
-        'testblogger'
-      )
-      expect(component.container).not.toHaveTextContent(
-          'testurl.com'
-          )
-     expect(component.container).not.toHaveTextContent(
-            5000
-            )
-
-})
-
-test('renders title and author', () => {
-    const blog = {
-        title: 'Component testing is done with react-testing-library',
-        url: 'testurl.com',
-        author: 'testblogger',
-        likes: 5000,
-        user: { username: 'user', name: 'u1', password: 'asecret' }
-      }
-      const user = {
-    
-        username: 'user',
-        name: 'u1',
-        password: 'asecret'
-      }
-     
-
-      const[blogs, setBlogs] = [blog]
-      const[notification, setNotification] = []
-      const mockHandler = jest.fn()
-      const mockHandler_2 = jest.fn()
-      const mockHandler_3 = jest.fn()
-
-      const   component = render(
-        <Blog
-          blog={blog}
-          user = {user}
-          blogs= {blogs}
-          setBlogs={setBlogs}
-          blogService = {mockHandler_3}
-          setNotification = {setNotification} />
-      )
-      const button = component.getByText('view')
-
-      fireEvent.click(button)
-
-      expect(component.container).toHaveTextContent(
-        'testurl.com'
-        )
-     expect(component.container).toHaveTextContent(
-          5000
-          )
-
-})
-
-//describe('<Blog />', () => {
-  /* let component
   const blog = {
     title: 'Component testing is done with react-testing-library',
     url: 'testurl.com',
@@ -110,59 +18,128 @@ test('renders title and author', () => {
     name: 'u1',
     password: 'asecret'
   }
-  beforeEach(() => {
-    const[blogs, setBlogs] = [blog]
-    const[notification, setNotification] = []
-    const mockHandler = jest.fn()
-    const mockHandler_2 = jest.fn()
-    const mockHandler_3 = jest.fn()
-    component = render(
-      <Blog
-        blog={blog}
-        viewEverything ={mockHandler}
-        user = {user}
-        blogs= {blogs}
-        setBlogs={setBlogs}
-        blogService = {mockHandler_3}
-        increaseLikes = {mockHandler_2}
-        setNotification = {setNotification} />
-    )
 
-    component.debug()
-  })
 
-  test('button of a component is pressed twice handler is running twice', () => {
-    const button = component.getByText('like');
-    fireEvent.click(button);
-    fireEvent.click(button);
-    expect(mockHandler_2.mock.calls.length).toBe(2);
-  }) */
- // test('clicking the button calls event handler once', () => {
-/*     const blog = {
-      title: 'Component testing is done with react-testing-library',
-      url: 'testurl.com',
-      author: 'testblogger',
-      likes: 5000,
-      user: { username: 'user', name: 'u1', password: 'asecret' }
+  const[blogs, setBlogs] = [blog]
+  const[notification, setNotification] = []
+  const mockHandler = jest.fn()
+  const mockHandler_2 = jest.fn()
+  const mockHandler_3 = jest.fn()
 
-    } */
+  const   component = render(
+    <Blog
+      blog={blog}
+      user = {user}
+      blogs= {blogs}
+      setBlogs={setBlogs}
+      blogService = {mockHandler_3}
+      setNotification = {setNotification} />
+  )
 
-/*     const button = component.getByText('view')
-    fireEvent.click(button)
+  expect(component.container).toHaveTextContent(
+    'Component testing is done with react-testing-library'
+  )
+  expect(component.container).toHaveTextContent(
+    'testblogger'
+  )
+  expect(component.container).not.toHaveTextContent(
+    'testurl.com'
+  )
+  expect(component.container).not.toHaveTextContent(
+    5000
+  )
 
-    expect(mockHandler.mock.calls).toHaveLength(1) */
+})
 
- /*    const { getByText } = render(
-      <Blog blog={blog} blogs = {blogs} user ={user} onClick={mockHandler} setNotification={setNotification} />
-    ) */
+test('renders url and likes when the view button is clicked', () => {
+  const blog = {
+    title: 'Component testing is done with react-testing-library',
+    url: 'testurl.com',
+    author: 'testblogger',
+    likes: 5000,
+    user: { username: 'user', name: 'u1', password: 'asecret' }
+  }
+  const user = {
 
-  /*   const button2 = getByText('like')
-    fireEvent.click(button2)
-    fireEvent.click(button2)
-    expect(mockHandler.mock.calls.length).toBe(2)
-  */
-/* })
-}) */
+    username: 'user',
+    name: 'u1',
+    password: 'asecret'
+  }
+
+
+  const[blogs, setBlogs] = [blog]
+  const[notification, setNotification] = []
+  const mockHandler = jest.fn()
+  const mockHandler_2 = jest.fn()
+  const mockHandler_3 = jest.mock()
+
+  const   component = render(
+    <Blog
+      blog={blog}
+      user = {user}
+      blogs= {blogs}
+      setBlogs={setBlogs}
+      blogService = {mockHandler_3}
+      setNotification = {setNotification} />
+  )
+  const button = component.getByText('view')
+
+  fireEvent.click(button)
+
+  expect(component.container).toHaveTextContent(
+    'testurl.com'
+  )
+  expect(component.container).toHaveTextContent(
+    5000
+  )
+
+})
+test('if the like button is clicked twice, the event handler the component received as props is called twice.', () => {
+  const blog = {
+    title: 'Component testing is done with react-testing-library',
+    url: 'testurl.com',
+    author: 'testblogger',
+    likes: 5000,
+    user: { username: 'user', name: 'u1', password: 'asecret' }
+  }
+  const user = {
+
+    username: 'user',
+    name: 'u1',
+    password: 'asecret'
+  }
+
+
+  const[blogs, setBlogs] = [blog]
+  const[notification, setNotification] = []
+  const mockHandler = jest.fn()
+  const mockHandler_2 = jest.fn()
+  const mockHandler_3 = jest.mock('../services/blogs')
+  
+
+  const{ getByText } = render(
+    <Blog
+      blog={blog}
+      user = {user}
+      blogs= {blogs}
+      setBlogs={setBlogs}
+      onClick = {mockHandler}
+      blogService = {mockHandler_3}
+      setNotification = {setNotification} />
+  )
+  const view_button = getByText('view')
+  fireEvent.click(view_button)
+
+  const button = getByText('like')
+
+  fireEvent.click(button)
+  fireEvent.click(button)
+
+  //expect(mockHandler.mock.calls).toHaveLength(2)
+  expect(mockHandler.mock.calls.length).toBe(2)
+
+})
+
 
 describe('<Togglable />', () => {
   let component

@@ -1,16 +1,18 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
+import blogService from '../services/blogs'
 
 const Blog = ({ blog, blogs, user, blogService, setBlogs, setNotification }) => {
-
-  const deleteBlog =  () => {
+  const [viewEverything, setViewEverything] = useState(false)
+  const deleteBlog =  (e) => {
+    e.preventDefault()
     const ok = window.confirm(`Delete ${blog.title} by ${blog.author}?`)
     if(ok)
       blogService.remove(blog).then(
         setBlogs(blogs.filter(b => b.id !== blog.id)))
   }
   const increaseLikes =  () => {
-
+  
     const changedBlog = {
       title: blog.title,
       author: blog.author,
@@ -30,12 +32,12 @@ const Blog = ({ blog, blogs, user, blogService, setBlogs, setNotification }) => 
           setNotification(null)
         }, 5000)
       })
-    window.location.reload(true)
+  //setViewEverything(true)  
+   window.location.reload(true)
+  // setViewEverything(true)  
   }
-  const [viewEverything, setViewEverything] = useState(false)
-/*   const blogsToView = viewEverything
-    ? blogs
-    : blogs.map(blog => blog.title) */
+  
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -48,9 +50,10 @@ const Blog = ({ blog, blogs, user, blogService, setBlogs, setNotification }) => 
     return (
 
       <div style={blogStyle}>
-        <div> title: {blog.title} <p>author: {blog.author}</p><button onClick={() => setViewEverything(!viewEverything)}>
-          {!viewEverything ? 'view' : 'hide' }
+        <div> title: { blog.title } <button onClick={() => setViewEverything(!viewEverything)}>
+          {viewEverything ? 'hide' : 'view' }
         </button>
+        <p>author: {blog.author}</p>
         </div>
       </div>
     )
@@ -58,7 +61,7 @@ const Blog = ({ blog, blogs, user, blogService, setBlogs, setNotification }) => 
 
     return (
       <div style={blogStyle}>
-        <div> title: {blog.title} <button onClick={() => setViewEverything(!viewEverything)}>
+        <div> title: {blog.title}  <button onClick={() => setViewEverything(!viewEverything)}>
           {viewEverything ? 'hide' : 'view' }
         </button>
         </div>
@@ -74,7 +77,6 @@ const Blog = ({ blog, blogs, user, blogService, setBlogs, setNotification }) => 
         <div>
           <button onClick={deleteBlog}>remove</button>
         </div>
-
       </div>
     )
 }
