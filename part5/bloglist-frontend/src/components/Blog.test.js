@@ -2,7 +2,7 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import Blog from './Blog'
 import Togglable from './Togglable'
-import BlogForm from './BlogForm'
+import BlogForm from './BlogForm_'
 import { render, fireEvent } from '@testing-library/react'
 
 test('renders title and author', () => {

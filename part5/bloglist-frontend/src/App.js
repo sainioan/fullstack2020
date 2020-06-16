@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import NewBlog from './components/BlogForm'
+import NewBlog from './components/BlogForm_'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
@@ -69,14 +69,68 @@ const App = () => {
         console.log(error.response.data.error)
       })
   }
+/* 
+  const addBlog = async (event) => {
+    event.preventDefault()
 
-  const increaseLikes = id => {
+    try {
+        const blogObject = {
+            title: newTitle,
+            url: newUrl,
+            author: newAuthor,
+            likes: likes
+        }
+        blogService.setToken(user.token)
+
+        blogFormRef.current.toggleVisibility()
+        const newBlog = await blogService.create(blogObject)
+        setBlogs(blogs.concat(newBlog))
+        setNewTitle('')
+        setNewAuthor('')
+        setNewUrl('')
+        notifyWith(`a new blog ${newTitle} ${newAuthor} added`)
+    } catch (error) {
+        notifyWith(`${error.response.data.error} `, 'error')
+    }
+} */
+/* 
+    const increaseLikes = id => {
+    try {
+       const blog = blogs.find(n => n.id === id)
+        blog.likes += 1
+        const updatedBlog = blogService
+        .update(blog.id, blog)
+        .then(setBlogs(blogs.map(blog => blog.id !== updatedBlog.id ? blog : updatedBlog).sort((a,b) => b.likes - a.likes)))
+    } catch (error) {
+        notifyWith(`${error.message} `, 'error')
+    }
+}
+/*   const increaseLikes = id => {
 
     const blog = blogs.find(n => n.id === id)
     const changedBlog = { ...blog, likes: blog.likes + 1 }
     blogService
       .update(id, changedBlog)
       .then(setBlogs(blogs.map(b => (b.id !== id ? b : { ...b, likes: b.likes + 1 }))))
+
+  } */
+  const increaseLikes = id => {
+try{
+    const blog = blogs.find(n => n.id === id)
+    const changedBlog = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+      user: blog.user.id || blog.user 
+    }
+   // const changedBlog = { ...blog, likes: blog.likes + 1 }
+    blogService
+      .update(id, changedBlog)
+      .then(setBlogs(blogs.map(b => (b.id !== id ? b : { ...b, likes: b.likes + 1 }))))
+  } catch (error){
+    console.log(error.message)
+  }
 
   }
   const removeBlog = id => {
@@ -108,7 +162,7 @@ const App = () => {
     <Togglable buttonLabel="new blog"  ref={blogFormRef}>
       <NewBlog
         onSubmit={addBlog}
-/*         title={newTitle}
+        title={newTitle}
         handleTitleChange={handleTitleChange}
         author={newAuthor}
         handleAuthorChange={handleAuthorChange}
@@ -116,7 +170,7 @@ const App = () => {
         handleUrlChange={handleUrlChange}
         likes = {likes}
         handleLikeChange = {handleLikeChange}
-        username = {user.username} */
+        username = {user.username}
       />
     </Togglable>
   )
@@ -197,12 +251,22 @@ const App = () => {
         <button onClick= {handleLogOut}>logout</button>
         <p></p>
         {blogForm()}
-        {blogs.sort((a, b) => b.likes - a.likes).map(blog => (          <Blog
+        {blogs.sort((a, b) => b.likes - a.likes).map(b => (
+          <Blog
+            key={b.id}
+            blog={b}
+            user = {user}
+            removeBlog={removeBlog}
+            removeBlog={removeBlog}
+            increaseLikes={increaseLikes}
+          />
+        ))}
+{/*         {blogs.sort((a, b) => b.likes - a.likes).map(blog => ( <Blog
           key={blog.id}
           blog={blog}
           user = {user}
           removeBlog={removeBlog}
-          increaseLikes = {increaseLikes}
+          increaseLikes = {increaseLikes(blog.id)} */}
         />
         ))}
       </div>

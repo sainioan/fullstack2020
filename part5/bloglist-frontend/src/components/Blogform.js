@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+/* import React, { useState } from 'react'
 
 export default ({ submit }) => {
   const [form, setForm] = useState({})
@@ -32,3 +32,4 @@ export default ({ submit }) => {
     </form>
   )
 }
+ */
