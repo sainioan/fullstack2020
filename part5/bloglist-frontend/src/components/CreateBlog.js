@@ -10,7 +10,7 @@ const CreateBlog = ({ onSubmit, handleTitleChange, handleAuthorChange, handleUrl
         <input title={title} onChange={handleTitleChange} />
         <p></p>
             author:
-        <input author={author} onChange={handleAuthorChange}/>
+        <input  id='author' author={author} onChange={handleAuthorChange}/>
         <p></p>
            url:
         <input url={url} onChange={handleUrlChange}/>

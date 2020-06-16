@@ -68,25 +68,26 @@ const App = () => {
         notifyWith(`${error.response.data.error} `, 'error')
         console.log(error.response.data.error)
       })
+  }
 
+  const increaseLikes = id => {
+
+    const blog = blogs.find(n => n.id === id)
+    const changedBlog = { ...blog, likes: blog.likes + 1 }
+    blogService
+      .update(id, changedBlog)
+      .then(setBlogs(blogs.map(b => (b.id !== id ? b : { ...b, likes: b.likes + 1 }))))
 
   }
-  /*   const deleteBlog = id => {
-
-
-      const toDelete = blogs.find(b => b.id === id)
-      const ok = window.confirm(`Delete ${toDelete.title}`)
-      if (ok) {
-        blogService.remove(id)
-          .then(response => {
-            setBlogs(blogs.filter(b => b.id !== id))
-            notifyWith(`Deleted ${toDelete.title}`)
-          }).catch(() => {
-            setBlogs(blogs.filter(b=> b.id !== id))
-            notifyWith(`${toDelete.title} had already been removed`, 'error')
-          })
-      }
-    } */
+  const removeBlog = id => {
+    const blog = blogs.find(n => n.id === id)
+    const ok = window.confirm(`Delete ${blog.title}`)
+    if(ok){
+      blogService.
+        remove(blog)
+        .then(setBlogs(blogs.filter(b => b.id !== id)))
+    }
+  }
 
   const handleTitleChange = (event) => {
     setNewTitle(event.target.value)
@@ -98,13 +99,6 @@ const App = () => {
   }
   const handleUrlChange = (event) => {
     setNewUrl(event.target.value)
-  }
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value)
-  }
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value)
   }
 
   const blogForm = () => (
@@ -143,30 +137,7 @@ const App = () => {
       console.log(error.message)
     }
   }
-  /* const increaseLikes =  (id) => {
 
-
-    const blog = blogs.find(n => n.id === id)
-      const changedBlog = {
-        title: blog.title,
-        author: blog.author,
-        url: blog.url,
-        likes: blog.likes + 1,
-        user: blog.user.id || blog.user
-      }
-      blogService.update(id, changedBlog)
-      .then(returnedBlog => {
-      setBlogs(blogs.map(bl=> bl.id === id ? bl: returnedBlog))
-    })
-      .catch((e) => {
-        setNotification(
-          ` '${e.message}'`, 'error'
-        )
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
-      })
-  } */
   /*   const loginForm=  () =>{
     <Togglable buttonLabel='login'>
     <LoginForm
@@ -223,20 +194,21 @@ const App = () => {
         <button onClick= {handleLogOut}>logout</button>
         <p></p>
         {blogForm()}
-        {blogs.sort((a, b) => b.likes - a.likes).map((blog,i) =>
-          <Blog
-            key={i}
-            blog={blog}
-            blogs = {blogs}
-            user = {user}
+        {blogs.sort((a, b) => b.likes - a.likes).map(blog => (          <Blog
+          key={blog.id}
+          blog={blog}
+          //  blogs = {blogs}
+          user = {user}
+          removeBlog={removeBlog}
+          increaseLikes = {increaseLikes}
+          /*
             blogService={blogService}
             setBlogs={setBlogs}
-            setNotification = {setNotification}
-          />
-        )}
+            setNotification = {setNotification} */
+        />
+        ))}
       </div>
     </div>
   )
 }
-
 export default App

@@ -109,23 +109,15 @@ test('if the like button is clicked twice, the event handler the component recei
     password: 'asecret'
   }
 
-
   const[blogs, setBlogs] = [blog]
-  const[notification, setNotification] = []
   const mockHandler = jest.fn()
   const mockHandler_2 = jest.fn()
-  const mockHandler_3 = jest.mock('../services/blogs')
-  
 
   const{ getByText } = render(
     <Blog
       blog={blog}
-      user = {user}
-      blogs= {blogs}
-      setBlogs={setBlogs}
-      onClick = {mockHandler}
-      blogService = {mockHandler_3}
-      setNotification = {setNotification} />
+      increaseLikes = {mockHandler}
+      handleRemove = {mockHandler_2} />
   )
   const view_button = getByText('view')
   fireEvent.click(view_button)
