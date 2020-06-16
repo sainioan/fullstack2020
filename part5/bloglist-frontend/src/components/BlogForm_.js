@@ -40,7 +40,7 @@ const BlogForm = (props) => {
 export default BlogForm */
 import React from 'react'
 // const CreateBlog = ({ onSubmit, handleTitleChange, handleAuthorChange, handleUrlChange, handleLikeChange, title, author, url,likes }) => {
-   const CreateBlog = (props) => {
+   const BlogForm = (props) => {
 
   return (
     <div>
@@ -70,4 +70,4 @@ import React from 'react'
   )
 }
 
-export default CreateBlog 
+export default BlogForm 

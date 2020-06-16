@@ -69,51 +69,6 @@ const App = () => {
         console.log(error.response.data.error)
       })
   }
-/* 
-  const addBlog = async (event) => {
-    event.preventDefault()
-
-    try {
-        const blogObject = {
-            title: newTitle,
-            url: newUrl,
-            author: newAuthor,
-            likes: likes
-        }
-        blogService.setToken(user.token)
-
-        blogFormRef.current.toggleVisibility()
-        const newBlog = await blogService.create(blogObject)
-        setBlogs(blogs.concat(newBlog))
-        setNewTitle('')
-        setNewAuthor('')
-        setNewUrl('')
-        notifyWith(`a new blog ${newTitle} ${newAuthor} added`)
-    } catch (error) {
-        notifyWith(`${error.response.data.error} `, 'error')
-    }
-} */
-/* 
-    const increaseLikes = id => {
-    try {
-       const blog = blogs.find(n => n.id === id)
-        blog.likes += 1
-        const updatedBlog = blogService
-        .update(blog.id, blog)
-        .then(setBlogs(blogs.map(blog => blog.id !== updatedBlog.id ? blog : updatedBlog).sort((a,b) => b.likes - a.likes)))
-    } catch (error) {
-        notifyWith(`${error.message} `, 'error')
-    }
-}
-/*   const increaseLikes = id => {
-
-    const blog = blogs.find(n => n.id === id)
-    const changedBlog = { ...blog, likes: blog.likes + 1 }
-    blogService
-      .update(id, changedBlog)
-      .then(setBlogs(blogs.map(b => (b.id !== id ? b : { ...b, likes: b.likes + 1 }))))
-
-  } */
   const increaseLikes = id => {
 try{
     const blog = blogs.find(n => n.id === id)
