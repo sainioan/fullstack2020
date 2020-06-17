@@ -22,12 +22,6 @@ test('renders title and author', () => {
     likes: 5000,
     user: { username: 'user', name: 'u1', password: 'asecret' }
   }
-/*   const user = {
-
-    username: 'user',
-    name: 'u1',
-    password: 'asecret'
-  } */
 
 
   const mockHandler = jest.fn()
@@ -63,13 +57,6 @@ test('renders url and likes when the view button is clicked', () => {
     likes: 5000,
     user: { username: 'user', name: 'u1', password: 'asecret' }
   }
-/*   const user = {
-
-    username: 'user',
-    name: 'u1',
-    password: 'asecret'
-  } */
-
 
   const mockHandler = jest.fn()
   const mockHandler_2 = jest.fn()
@@ -101,12 +88,6 @@ test('if the like button is clicked twice, the event handler the component recei
     likes: 5000,
     user: { username: 'user', name: 'u1', password: 'asecret' }
   }
-/*   const user = {
-
-    username: 'user',
-    name: 'u1',
-    password: 'asecret'
-  } */
 
   const mockHandler = jest.fn()
   const mockHandler_2 = jest.fn()
@@ -132,41 +113,29 @@ test('if the like button is clicked twice, the event handler the component recei
 test('BlogForm works correctly', () => {
 
   const createBlog = jest.fn()
-
+  const handleTitleChange = jest.fn()
+  const handleAuthorChange = jest.fn()
   const component = render(
     <BlogForm
-      onSubmit ={createBlog}>
+      onSubmit ={createBlog} handleTitleChange = {handleTitleChange} handleAuthorChange = {handleAuthorChange}>
       <div className="testDiv" />
     </BlogForm>
   )
 
-  const input = component.container.querySelector('input')
-  const form = component.container.querySelector('form')
   const title = component.container.querySelector('#title')
   const author = component.container.querySelector('#author')
   const url = component.container.querySelector('#url')
   const likes = component.container.querySelector('#likes')
+  const form = component.container.querySelector('form')
 
-
-  fireEvent.change(input, {
-    target: { value: 'testing of forms could be easier' }
-  })
-  fireEvent.change(title, { target: { value: 'Test Blog' } })
-
-  fireEvent.change(author, {
-    target: { value: 'blogger' }
-  })
-
-  fireEvent.change(url, {
-    target: { value: 'testing.com' }
-  })
-  fireEvent.change(likes, {
-    target: { value: 5 }
-  })
-
-
+  fireEvent.change(title, { target: { title: "Test Blog" } })
+  fireEvent.change(author, { target: { author: "blogger" } })
+  fireEvent.change(url, { target: { url: "blog.com" }})
+  fireEvent.change(likes, { target: { likes: 5 }})
   fireEvent.submit(form)
+
   console.log(prettyDOM(title))
+
   expect(component.container.querySelector('.testDiv')).toBeDefined()
 
   expect(createBlog.mock.calls.length).toBe(1)
