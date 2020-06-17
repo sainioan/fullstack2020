@@ -22,23 +22,25 @@ const BlogForm = ({ onSubmit }) => {
       <div>
         <h3>Create new blog</h3>
         <form  onSubmit={createBlog}>
-          <div className="formDiv">
-            <label htmlFor="title">title: </label>
+          <p className="formDiv">
+            Title:
             <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-          </div>
-          <div className="formDiv">
-            <label htmlFor="author">author: </label>
+          </p>
+          <p className="formDiv">
+            Author:
             <input id="author" type="text" value={author} onChange={(e) => setAuthor(e.target.value)} />
-          </div>
-          <div className="formDiv">
-            <label htmlFor="url">url: </label>
+          </p>
+          <p className="formDiv">
+           Url:
             <input id="url" type="text" value={url} onChange={(e) => setUrl(e.target.value)} />
-          </div>
-          <div className="formDiv">
-            <label htmlFor="likes">likes: </label>
+          </p>
+          <p className="formDiv">
+            Likes:
             <input id="likes" type="number" value={likes} onChange={(e) => setLikes(e.target.value)} />
-          </div>
-          <button id="createButton">create</button>
+          </p>
+          <p>
+            <button id="createButton">Create</button>
+          </p>
         </form>
       </div>
     </div>

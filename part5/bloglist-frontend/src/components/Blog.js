@@ -27,11 +27,11 @@ const Blog = ({ blog, increaseLikes, removeBlog }) => {
             <p>Author: {blog.author}</p>
             <div>
             Likes: {blog.likes}{' '}
-              <button onClick={e => increaseLikes(blog.id)}>like</button>
+              <button onClick={e => increaseLikes(blog.id)}>Like</button>
             </div>
           </div>
           <div>
-            <button onClick={e => removeBlog(blog.id)}>remove</button>
+            <button onClick={e => removeBlog(blog.id)}>Remove</button>
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@ const Blog = ({ blog, increaseLikes, removeBlog }) => {
           <p>
           Title: {blog.title}{' '}
             <button onClick={() => setViewEverything(!viewEverything)}>
-              {viewEverything ? 'hide' : 'view'}
+              {viewEverything ? 'Hide' : 'View'}
             </button>
           </p>
           <p>Author: {blog.author}</p>
