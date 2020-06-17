@@ -133,15 +133,6 @@ try{
     <Togglable buttonLabel="new blog"  ref={blogFormRef}>
       <NewBlog
         onSubmit={addBlog}
-/*         title={newTitle}
-        handleTitleChange={handleTitleChange}
-        author={newAuthor}
-        handleAuthorChange={handleAuthorChange}
-        url = {newUrl}
-        handleUrlChange={handleUrlChange}
-        likes = {likes}
-        handleLikeChange = {handleLikeChange} */
-       // toggleVisibility = {blogFormRef.current.toggleVisibility()}
         toggleVisibility = {Togglable.toggleVisibility}
         username = {user.username}
       />
@@ -218,7 +209,7 @@ try{
   return (
     <div>
       <div>
-        <h2>blogs</h2>
+        <h2>Blogs</h2>
         <Notification notification={notification} />
         <p>{user.name} logged in</p>
         <button onClick= {handleLogOut}>logout</button>
