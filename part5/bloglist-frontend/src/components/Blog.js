@@ -59,7 +59,7 @@ Blog.propTypes = {
     author: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     user: PropTypes.shape({
-      id: PropTypes.string.isRequired,
+     // id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired
     })

@@ -1,10 +1,19 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import '@testing-library/jest-dom/extend-expect'
+import { prettyDOM } from '@testing-library/dom'
 import Blog from './Blog'
 import Togglable from './Togglable'
 import BlogForm from './BlogForm_'
 import { render, fireEvent } from '@testing-library/react'
 
+jest.mock('react', () => {
+  const originReact = jest.requireActual('react')
+  const mUseRef = jest.fn()
+  return {
+    ...originReact,
+    useRef: mUseRef,
+  }
+})
 test('renders title and author', () => {
   const blog = {
     title: 'Component testing is done with react-testing-library',
@@ -13,12 +22,12 @@ test('renders title and author', () => {
     likes: 5000,
     user: { username: 'user', name: 'u1', password: 'asecret' }
   }
-  const user = {
+/*   const user = {
 
     username: 'user',
     name: 'u1',
     password: 'asecret'
-  }
+  } */
 
 
   const mockHandler = jest.fn()
@@ -26,9 +35,9 @@ test('renders title and author', () => {
 
   const   component = render(
     <Blog
-    blog={blog}
-    increaseLikes = {mockHandler}
-    handleRemove = {mockHandler_2} />
+      blog={blog}
+      increaseLikes = {mockHandler}
+      handleRemove = {mockHandler_2} />
   )
 
   expect(component.container).toHaveTextContent(
@@ -54,12 +63,12 @@ test('renders url and likes when the view button is clicked', () => {
     likes: 5000,
     user: { username: 'user', name: 'u1', password: 'asecret' }
   }
-  const user = {
+/*   const user = {
 
     username: 'user',
     name: 'u1',
     password: 'asecret'
-  }
+  } */
 
 
   const mockHandler = jest.fn()
@@ -68,9 +77,9 @@ test('renders url and likes when the view button is clicked', () => {
   const   component = render(
     <Blog
 
-    blog={blog}
-    increaseLikes = {mockHandler}
-    handleRemove = {mockHandler_2}/>
+      blog={blog}
+      increaseLikes = {mockHandler}
+      handleRemove = {mockHandler_2}/>
   )
   const button = component.getByText('view')
 
@@ -92,12 +101,12 @@ test('if the like button is clicked twice, the event handler the component recei
     likes: 5000,
     user: { username: 'user', name: 'u1', password: 'asecret' }
   }
-  const user = {
+/*   const user = {
 
     username: 'user',
     name: 'u1',
     password: 'asecret'
-  }
+  } */
 
   const mockHandler = jest.fn()
   const mockHandler_2 = jest.fn()
@@ -120,43 +129,50 @@ test('if the like button is clicked twice, the event handler the component recei
 
 })
 
-test('BlogForm sends correct data.', () => {
+test('BlogForm works correctly', () => {
+
   const createBlog = jest.fn()
 
-
-
   const component = render(
-      <BlogForm
-      onSubmit ={createBlog}
-       
-      />
+    <BlogForm
+      onSubmit ={createBlog}>
+      <div className="testDiv" />
+    </BlogForm>
   )
 
+  const input = component.container.querySelector('input')
+  const form = component.container.querySelector('form')
   const title = component.container.querySelector('#title')
   const author = component.container.querySelector('#author')
   const url = component.container.querySelector('#url')
-  const form = component.container.querySelector('#form')
+  const likes = component.container.querySelector('#likes')
 
+
+  fireEvent.change(input, {
+    target: { value: 'testing of forms could be easier' }
+  })
   fireEvent.change(title, { target: { value: 'Test Blog' } })
-  console.log('title', title)
-/*   fireEvent.change(title, {
-      target: { value: 'Test Blog' }
-  }) */
 
   fireEvent.change(author, {
-      target: { value: 'blogger' }
+    target: { value: 'blogger' }
   })
 
   fireEvent.change(url, {
-      target: { value: 'testing.com' }
+    target: { value: 'testing.com' }
+  })
+  fireEvent.change(likes, {
+    target: { value: 5 }
   })
 
+
   fireEvent.submit(form)
+  console.log(prettyDOM(title))
+  expect(component.container.querySelector('.testDiv')).toBeDefined()
 
   expect(createBlog.mock.calls.length).toBe(1)
- 
- // expect(createBlog.mock.calls[0][0].title).toBe('Test Blog' )
+
 })
+
 describe('<Togglable />', () => {
   let component
 
