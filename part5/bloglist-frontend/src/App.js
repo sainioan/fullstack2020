@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import NewBlog from './components/BlogForm_'
+import NewBlog from './components/Blogform'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
@@ -43,7 +43,7 @@ const App = () => {
     }
   }, [])
 
-  const addBlog = (event) => {
+/*   const addBlog = (event) => {
     event.preventDefault()
     const blogObject = {
       title: newTitle,
@@ -68,6 +68,23 @@ const App = () => {
         notifyWith(`${error.response.data.error} `, 'error')
         console.log(error.response.data.error)
       })
+  } */
+
+  const addBlog = async (newBlog) => {
+
+    try {
+      const blog = await blogService.create(newBlog, user)
+      setBlogs(blogs.concat(blog))
+      notifyWith(`New blog by ${user.username} added`)
+
+
+   // blogFormRef.current.toggleVisibility()
+    
+    } catch (error) {
+      notifyWith(`${error.message}`, error)
+      console.log(error.message)
+    }
+
   }
   const increaseLikes = id => {
 try{
@@ -79,7 +96,6 @@ try{
       likes: blog.likes + 1,
       user: blog.user.id || blog.user 
     }
-   // const changedBlog = { ...blog, likes: blog.likes + 1 }
     blogService
       .update(id, changedBlog)
       .then(setBlogs(blogs.map(b => (b.id !== id ? b : { ...b, likes: b.likes + 1 }))))
@@ -117,14 +133,16 @@ try{
     <Togglable buttonLabel="new blog"  ref={blogFormRef}>
       <NewBlog
         onSubmit={addBlog}
-        title={newTitle}
+/*         title={newTitle}
         handleTitleChange={handleTitleChange}
         author={newAuthor}
         handleAuthorChange={handleAuthorChange}
         url = {newUrl}
         handleUrlChange={handleUrlChange}
         likes = {likes}
-        handleLikeChange = {handleLikeChange}
+        handleLikeChange = {handleLikeChange} */
+       // toggleVisibility = {blogFormRef.current.toggleVisibility()}
+        toggleVisibility = {Togglable.toggleVisibility}
         username = {user.username}
       />
     </Togglable>

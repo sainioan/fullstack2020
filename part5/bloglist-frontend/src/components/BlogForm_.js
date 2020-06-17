@@ -1,26 +1,26 @@
-import React, {  useImperativeHandle }from 'react'
-// const CreateBlog = ({ onSubmit, handleTitleChange, handleAuthorChange, handleUrlChange, handleLikeChange, title, author, url,likes }) => {
+import React, { useState, useImperativeHandle }from 'react'
+
    const BlogForm = (props) => {
 
   return (
     <div>
       <h2>Create a new blog</h2>
-      <form onSubmit={props.onSubmit}>
+      <form className="Blog Form" onSubmit={props.onSubmit}>
         <p>
-           title:
-          <input id='title' type="text" title={props.title} onChange={props.handleTitleChange} />
+           <label htmlFor="title">Title: </label>
+          <input id='title' type="text" name ="title" title={props.title} onChange={props.handleTitleChange} />
         </p>
         <p>
-            author:
-          <input  id='author' type="text"  author={props.author} onChange={props.handleAuthorChange}/>
+        <label htmlFor="author">Author: </label>
+          <input id="author" type="text"  name ="author" author={props.author}  onChange={props.handleAuthorChange}/>
         </p>
         <p>
-           url:
-          <input id='url' type="text" url={props.url} onChange={props.handleUrlChange}/>
+        <label htmlFor="url">Url: </label>
+          <input id='url' type="text" name ="url" url={props.url} onChange={props.handleUrlChange}/>
         </p>
         <p>
-           likes:
-          <input id='likes' type="number" likes = {props.likes} onChange = {props.handleLikeChange}/>
+        <label htmlFor="likes">Likes: </label>
+          <input id='likes' type="number" name="likes" likes = {props.likes} onChange = {props.handleLikeChange}/>
         </p>
         <p>
           <button type="submit">create</button>

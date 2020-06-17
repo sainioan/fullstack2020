@@ -1,35 +1,50 @@
-/* import React, { useState } from 'react'
+import React, { useState } from 'react'
 
-export default ({ submit }) => {
-  const [form, setForm] = useState({})
 
-  const handleChange = name => e =>
-    setForm({ ...form, [name]: e.target.value })
+const BlogForm = ({ onSubmit }) => {
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+  const [likes,setLikes] = useState('')
 
-  const submitForm = e => {
-    e.preventDefault()
-    submit(form)
-    setForm({})
+  const createBlog = (event) => {
+    event.preventDefault()
+    const newBlog= {
+      title,
+      author,
+      url,
+      likes
+    }
+    onSubmit(newBlog)
   }
-
   return (
-    <form id='form' onSubmit={submitForm}>
-      <p>
-        Title: <input id='title' title={form.title} onChange={handleChange('title')} />
-      </p>
-      <p>
-        Author: <input id='author' author={form.author} onChange={handleChange('author')} />
-      </p>
-      <p>
-        Url: <input  id='url' url={form.url} onChange={handleChange('url')} />
-      </p>
-      <p>
-        Likes: <input  id='likes'likes={form.likes} onChange={handleChange('likes')} />
-      </p>
-      <p>
-        <button type="submit">Create</button>
-      </p>
-    </form>
+    <div className="formDiv">
+      <div>
+        <h3>Create new blog</h3>
+        <form  onSubmit={createBlog}>
+          <div className="formDiv">
+            <label htmlFor="title">title: </label>
+            <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+          </div>
+          <div className="formDiv">
+            <label htmlFor="author">author: </label>
+            <input id="author" type="text" value={author} onChange={(e) => setAuthor(e.target.value)} />
+          </div>
+          <div className="formDiv">
+            <label htmlFor="url">url: </label>
+            <input id="url" type="text" value={url} onChange={(e) => setUrl(e.target.value)} />
+          </div>
+          <div className="formDiv">
+            <label htmlFor="likes">likes: </label>
+            <input id="likes" type="number" value={likes} onChange={(e) => setLikes(e.target.value)} />
+          </div>
+          <button id="createButton">create</button>
+        </form>
+      </div>
+    </div>
   )
 }
- */
+
+export default BlogForm
+
+

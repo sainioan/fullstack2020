@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { prettyDOM } from '@testing-library/dom'
 import Blog from './Blog'
 import Togglable from './Togglable'
-import BlogForm from './BlogForm_'
+import BlogForm from './Blogform'
 import { render, fireEvent } from '@testing-library/react'
 
 jest.mock('react', () => {
@@ -113,32 +113,39 @@ test('if the like button is clicked twice, the event handler the component recei
 test('BlogForm works correctly', () => {
 
   const createBlog = jest.fn()
-  const handleTitleChange = jest.fn()
-  const handleAuthorChange = jest.fn()
   const component = render(
     <BlogForm
-      onSubmit ={createBlog} handleTitleChange = {handleTitleChange} handleAuthorChange = {handleAuthorChange}>
+      onSubmit={createBlog}>
       <div className="testDiv" />
     </BlogForm>
   )
 
-  const title = component.container.querySelector('#title')
-  const author = component.container.querySelector('#author')
-  const url = component.container.querySelector('#url')
-  const likes = component.container.querySelector('#likes')
-  const form = component.container.querySelector('form')
+  const titleInput = component.container.querySelector('#title')
+  const authorInput = component.container.querySelector('#author')
+  const urlInput = component.container.querySelector('#url')
+  const likesInput = component.container.querySelector('#likes')
+  const formInput = component.container.querySelector('form')
 
-  fireEvent.change(title, { target: { title: "Test Blog" } })
-  fireEvent.change(author, { target: { author: "blogger" } })
-  fireEvent.change(url, { target: { url: "blog.com" }})
-  fireEvent.change(likes, { target: { likes: 5 }})
-  fireEvent.submit(form)
+  fireEvent.change(titleInput, {target: { value: 'test blog' }})
+  fireEvent.change(authorInput, { target: { value: "blogger" } })
+  fireEvent.change(urlInput, { target: { value: "blog.com" }})
+  fireEvent.change(likesInput, { target: { value: 5 }})
+  fireEvent.submit(formInput)
 
-  console.log(prettyDOM(title))
+  console.log(prettyDOM(titleInput))
+  console.log(prettyDOM(authorInput))
+  console.log(prettyDOM(urlInput))
+  console.log(prettyDOM(likesInput))
 
   expect(component.container.querySelector('.testDiv')).toBeDefined()
 
   expect(createBlog.mock.calls.length).toBe(1)
+
+  expect(createBlog.mock.calls[0][0].title).toBe('test blog')
+  expect(createBlog.mock.calls[0][0].author).toBe('blogger')
+  expect(createBlog.mock.calls[0][0].url).toBe('blog.com')
+  expect(createBlog.mock.calls[0][0].likes).toBe('5')
+  console.log(createBlog.mock.calls[0][0].title)
 
 })
 
