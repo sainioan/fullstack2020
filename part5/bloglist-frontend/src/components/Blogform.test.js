@@ -1,8 +1,8 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { prettyDOM } from '@testing-library/dom'
-import Blog from './Blog'
-import Togglable from './Togglable'
+/* import Blog from './Blog'
+import Togglable from './Togglable' */
 import BlogForm from './Blogform'
 import { render, fireEvent } from '@testing-library/react'
 

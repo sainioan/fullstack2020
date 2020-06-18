@@ -79,7 +79,7 @@ const App = () => {
     }
   }
   const blogForm = () => (
-    <Togglable buttonLabel="New Blog"  ref={blogFormRef}>
+    <Togglable id= 'New Blog' buttonLabel= 'New Blog'  ref={blogFormRef}>
       <NewBlog
         onSubmit={addBlog}
         toggleVisibility = {Togglable.toggleVisibility}
@@ -92,7 +92,7 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password,
+        username, password
       })
 
       window.localStorage.setItem(
@@ -134,6 +134,7 @@ const App = () => {
           <div>
           username
             <input
+              id = 'username'
               type="text"
               value={username}
               name="Username"
@@ -143,13 +144,14 @@ const App = () => {
           <div>
           password
             <input
+              id = 'password'
               type="password"
               value={password}
               name="Password"
               onChange={({ target }) => setPassword(target.value)}
             />
           </div>
-          <button type="submit">Login</button>
+          <button id="login-button" type="submit">Login</button>
         </form>
       </div>
     )
@@ -164,15 +166,17 @@ const App = () => {
         <button onClick= {handleLogOut}>Logout</button>
         <p></p>
         {blogForm()}
-        {blogs.sort((a, b) => b.likes - a.likes).map(b => (
-          <Blog
-            key={b.id}
-            blog={b}
-            user = {user}
-            removeBlog={removeBlog}
-            increaseLikes={increaseLikes}
-          />
-        ))}
+        <div className="blogList">
+          {blogs.sort((a, b) => b.likes - a.likes).map(b => (
+            <Blog
+              key={b.id}
+              blog={b}
+              user = {user}
+              removeBlog={removeBlog}
+              increaseLikes={increaseLikes}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )
