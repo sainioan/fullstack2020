@@ -32,6 +32,9 @@ export const asObject = (anecdote) => {
 }
 
 const initialState = anecdotesAtStart.map(asObject)
+export const anecdoteReducer = (state = initialState, action) => {
+
+}
 export const createAnecdote = (content) => {
   return {
     type: 'ADD',
@@ -42,6 +45,5 @@ export const createAnecdote = (content) => {
     }
   }
 }
-
 
 export default reducer
