@@ -1,21 +1,36 @@
-import PropTypes from 'prop-types'
-//import Anecdote from './AnecdoteItem'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+const AnecdoteList = () => {
 
-const AnecdoteList = ({ filteredAnecdotes, actions }) => (
-  <ul className="anecdote-list">
-  {/*   {filteredAnecdote.map(todo =>
-      <Anecdote key={anecdote.id} anecdote={anecdote} {...actions} /> */}
-    )}
-  </ul>
-)
 
-AnecdoteList.propTypes = {
-  filteredTodos: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    completed: PropTypes.bool.isRequired,
-    text: PropTypes.string.isRequired
-  }).isRequired).isRequired,
-  actions: PropTypes.object.isRequired
+  const dispatch = useDispatch()
+  const anecdotes = useSelector(state => state)
+
+
+  const vote = (id) => {
+    console.log('vote', id)
+    dispatch({
+      type: 'VOTE',
+      data: { id }
+    })
+  }
+  
+  return(
+    <ul>
+        {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
+        <div key={anecdote.id}>
+          <div>
+            {anecdote.content}
+          </div>
+          <div>
+            has {anecdote.votes}
+            <button onClick={() => vote(anecdote.id)}>vote</button>
+          </div>
+        </div>
+      )}
+    </ul>
+  )
 }
+
 
 export default AnecdoteList
