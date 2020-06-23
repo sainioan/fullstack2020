@@ -19,17 +19,17 @@ const Notification = () => {
     padding: 10,
     borderWidth: 1 */
   }
-  if(notification === null || notification === '') {
-    return (
-        <div></div>
-    )
-}
-else
+  if(notification) 
+
   return (
     <div style={style}>
       {notification}
     </div>
-  )
+  ) 
+  else 
+  return (
+    <div></div>
+)
 }
 
 export default Notification
