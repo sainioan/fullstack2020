@@ -17,11 +17,11 @@ export const notify = (notification) => {
 } 
 
 
-export const clear = () => {
+/* export const clear = () => {
   return {
       type: 'CLEAR',
       data: ''
   }
-}
+} */
 
 export default notificationReducer

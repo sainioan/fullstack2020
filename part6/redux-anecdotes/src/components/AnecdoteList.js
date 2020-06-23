@@ -1,20 +1,22 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { filterChange } from '../reducers/filterReducer'
 const AnecdoteList = () => {
 
 
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => state.anecdotes)
-
-  const vote = (id) => {
+  const anecdotes = useSelector(({ anecdotes, filter }) => {
+    return anecdotes.filter(a => a.content.toLowerCase().includes(filter.toLowerCase()))  
+})
+    const vote = (id) => {
     console.log('vote', id)
     dispatch({
       type: 'VOTE',
       data: { id }
     })
   }
-  
   return(
+    <div>
     <ul>
         {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
         <div key={anecdote.id}>
@@ -28,6 +30,7 @@ const AnecdoteList = () => {
         </div>
       )}
     </ul>
+    </div>
   )
 }
 
