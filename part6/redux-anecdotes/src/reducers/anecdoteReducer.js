@@ -32,6 +32,7 @@ export const asObject = (anecdote) => {
 }
 
 const initialState = anecdotesAtStart.map(asObject)
+
 export const anecdoteReducer = (state = initialState, action) => {
 
 }

@@ -1,27 +1,30 @@
 import React from 'react'
-import { useSelector } from 'react-redux'/* 
+import { useSelector } from 'react-redux'
 
-export const displayNotification = (payload) => {
-  return {
-    type: 'SET_NOTIFICATION',
-    payload,
-  }
-}
 
-export const removeNotification = (payload) => {
-    return {
-        type: 'REMOVE_NOTIFICATION',
-        payload
-    }
-} */
 const Notification = () => {
-  const notification = useSelector(state => state.notification)
-
+ // const notification = useSelector(state => state.notification)
+  const notification = useSelector(({notification}) => {
+    return notification
+})
   const style = {
-    border: 'solid',
+    background: 'lightgrey',
+    color:'green',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 5,
+    marginBottom: 10
+ /*    border: 'solid',
     padding: 10,
-    borderWidth: 1
+    borderWidth: 1 */
   }
+  if(notification === null || notification === '') {
+    return (
+        <div></div>
+    )
+}
+else
   return (
     <div style={style}>
       {notification}
