@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { filterChange } from '../reducers/filterReducer'
+import { addVote } from '../reducers/anecdoteReducer'
 const AnecdoteList = () => {
 
 
@@ -9,11 +10,13 @@ const AnecdoteList = () => {
     return anecdotes.filter(a => a.content.toLowerCase().includes(filter.toLowerCase()))  
 })
     const vote = (id) => {
+     const anecdote =  anecdotes.find(a => a.id === id)
     console.log('vote', id)
-    dispatch({
+  /*   dispatch({
       type: 'VOTE',
       data: { id }
-    })
+    }) */
+    dispatch(addVote(anecdote))
   }
   return(
     <div>
