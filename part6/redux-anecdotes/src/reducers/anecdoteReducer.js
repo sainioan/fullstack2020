@@ -5,9 +5,11 @@ const reducer = (state = [], action) => {
   console.log('action', action)
   switch(action.type){
     case 'VOTE':
-      const anecdote = state.find(anecdote => anecdote.id === action.id)
-      const voted_anecdote = {...anecdote, votes: anecdote.votes +1}
-    return state.map(anecdote => anecdote.id!== action.id? anecdote: voted_anecdote )
+
+      const previous = state.filter(a => a.id !==action.id)
+      const addVote = state.find(a => a.id === action.id)
+  
+      return [...previous, { ...addVote, votes: addVote.votes + 1 } ]
     case 'ADD':
     return [...state, action.data] 
     case 'INIT_ANECDOTES':
@@ -56,11 +58,5 @@ export const createAnecdote = content => {
     })
   }
 }
-/* export const createAnecdote = (data) => {
-  return {
-    type: 'ADD',
-    data,
-  }
-} */
 
 export default reducer
