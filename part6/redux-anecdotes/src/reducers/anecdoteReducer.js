@@ -48,11 +48,6 @@ export const createAnecdote = (data) => {
   return {
     type: 'ADD',
     data,
- /*    data: {
-      content,
-      id: getId(),
-      votes: 0
-    } */
   }
 }
 
