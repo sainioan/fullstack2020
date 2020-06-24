@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react'
-import { useDispatch } from 'react-redux'
 import { connect } from 'react-redux' 
 import { initializeAnecdotes } from './reducers/anecdoteReducer'
 import AnecdoteForm from './components/AnecdoteForm'

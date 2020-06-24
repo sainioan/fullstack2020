@@ -1,7 +1,6 @@
   
 import React from 'react'
 import { filterChange } from '../reducers/filterReducer'
-import { useDispatch } from 'react-redux'
 import { connect } from 'react-redux' 
 //const Filter = () => {
 const Filter = (props) => {
