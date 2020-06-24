@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { filterChange } from '../reducers/filterReducer'
 import { addVote } from '../reducers/anecdoteReducer'
+import { notify } from '../reducers/notificationReducer'
 const AnecdoteList = () => {
 
 
@@ -17,6 +18,8 @@ const AnecdoteList = () => {
       data: { id }
     }) */
     dispatch(addVote(anecdote))
+
+    dispatch(notify(`anecdote ${anecdote.content} voted`,5))
   }
   return(
     <div>

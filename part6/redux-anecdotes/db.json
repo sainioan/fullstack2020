@@ -3,7 +3,7 @@
     {
       "content": "If it hurts, do it more often",
       "id": "1",
-      "votes": 5
+      "votes": 6
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
@@ -32,18 +32,8 @@
     },
     {
       "content": "anecdote of the day",
-      "votes": 0,
+      "votes": 1,
       "id": "vBPh4k-"
-    },
-    {
-      "content": "no pain, no gain",
-      "votes": 0,
-      "id": "Ame_-TA"
-    },
-    {
-      "content": "no pain, no gain",
-      "votes": 0,
-      "id": "JkvB0Pl"
     },
     {
       "content": "no pain, no gain",
@@ -52,8 +42,13 @@
     },
     {
       "content": "Anyone can criticize; few can create.",
-      "votes": 0,
+      "votes": 1,
       "id": "x05XW7w"
+    },
+    {
+      "content": "to err is human, to forgive is divine",
+      "votes": 2,
+      "id": "pBwHFUv"
     }
   ]
 }
