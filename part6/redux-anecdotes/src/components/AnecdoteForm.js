@@ -3,28 +3,22 @@ import { connect } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
 import { notify } from '../reducers/notificationReducer'
 
-//const AnecdoteForm = () => {
-  //const dispatch = useDispatch()
+
   const AnecdoteForm = (props) => {
- //   const dispatch = useDispatch()
+
 
   const addAnecdote = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''      
-  //  dispatch(createAnecdote(content))
+
   props.createAnecdote(content)
-  props.notify(`you voted '${content}'`, 10)
-  setTimeout(() => {
+  props.notify(`anecdote '${content}' created`, 10)
+  const timeout1 = setTimeout(() => {
     props.notify(null)
     }, 5000) 
+    clearTimeout(timeout1 - 1) 
   }
-  //  dispatch(notify(`you voted '${content}'`, 10))
-  /*    setTimeout(() => {
-    dispatch(notify(null))
-    }, 5000) 
-  } */
-
   
   return(
     <div>
@@ -39,4 +33,3 @@ import { notify } from '../reducers/notificationReducer'
 }
 
 export default connect(null, { createAnecdote, notify}) (AnecdoteForm)
-//export default AnecdoteForm

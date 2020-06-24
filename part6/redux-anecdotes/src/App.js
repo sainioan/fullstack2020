@@ -12,18 +12,8 @@ import Filter from './components/Filter'
 const App = (props) => {
   useEffect(() => {
     props.initializeAnecdotes()
-  }, [])
+  }, [props])
 
-/*   const App = () => {
-
-      const dispatch = useDispatch() */
- /*      useEffect(() => {
-        anecdoteService
-          .getAll().then(anecdotes => dispatch(initializeAnecdotes(anecdotes)))
-      }, [dispatch]) */
-      // useEffect(() => {
-/*         dispatch(initializeAnecdotes())  
-      },[dispatch])  */
 
   return (
     <div>
