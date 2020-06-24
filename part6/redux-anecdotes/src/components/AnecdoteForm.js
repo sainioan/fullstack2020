@@ -12,11 +12,10 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''      
     dispatch(createAnecdote(content))
-   // dispatch(notify(`you created anecdote ${content}`))
     dispatch(notify(`you voted '${content}'`, 10))
-  /*   setTimeout(() => {
+     setTimeout(() => {
     dispatch(notify(null))
-    }, 5000) */
+    }, 5000) 
   }
 
   

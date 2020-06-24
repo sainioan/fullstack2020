@@ -20,6 +20,9 @@ const AnecdoteList = () => {
     dispatch(addVote(anecdote))
 
     dispatch(notify(`anecdote ${anecdote.content} voted`,5))
+    setTimeout(() => {
+      dispatch(notify(null))
+      }, 5000) 
   }
   return(
     <div>
