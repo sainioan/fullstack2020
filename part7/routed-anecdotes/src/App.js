@@ -143,10 +143,12 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }  
   const match = useRouteMatch('/anecdotes/:id')
-  const anecdote = match
+ /*  const anecdote = match
     ? anecdotes.find(a => a.id === match.params.id)
+    : null  */
+    const anecdote = match
+    ?  anecdoteById(match.params.id) 
     : null 
-   //const anecdote = anecdoteById(match.params.id) 
   return (
     <div>
      
