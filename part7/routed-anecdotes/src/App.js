@@ -3,6 +3,7 @@ import { BrowserRouter as  Router,
   Switch, 
   Route, 
   Link,
+  useHistory,
   useRouteMatch,
 } from 'react-router-dom'
 
@@ -34,7 +35,7 @@ const Anecdote = ({ anecdote }) => {
   return (
     <div>
       <h2>{anecdote.content}</h2>
-      <div>by {anecdote.setAuthor}</div>
+      <div>by {anecdote.author}</div>
       <p>has {anecdote.votes} votes</p>
       <p>for more info see {anecdote.info}</p>
     </div>
@@ -63,6 +64,7 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
+  const history = useHistory()
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
@@ -76,6 +78,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    history.push('/')
   }
 
   return (
