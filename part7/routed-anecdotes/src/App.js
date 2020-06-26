@@ -41,6 +41,21 @@ const Anecdote = ({ anecdote }) => {
     </div>
   )
 }
+const Notification = ({notification}) => {
+  if (!notification) {
+    return null
+  }
+  const style = {
+    border: 'solid',
+    padding: 10,
+    borderWidth: 1
+  }
+  return (
+    <div style={style}>
+      {notification}
+    </div>
+  )
+}
 const About = () => (
   <div>
     <h2>About anecdote app</h2>
@@ -130,8 +145,12 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`${anecdote.content} added`)
+    setTimeout(() => {
+      setNotification(null)
+    }, 10000)
   }
-
+  
   const anecdoteById = (id) =>
     anecdotes.find(a => a.id === id)
 
@@ -169,6 +188,7 @@ const App = () => {
         </Route>
         <Route path="/">
           <AnecdoteList anecdotes={anecdotes}/>
+          <Notification notification ={notification}/>
         </Route>
       </Switch> 
     <Footer />
