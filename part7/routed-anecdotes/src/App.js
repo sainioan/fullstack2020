@@ -8,6 +8,8 @@ import { BrowserRouter as  Router,
 } from 'react-router-dom'
 
 import  { useField } from './hooks/index'
+
+const WrappedInput = ({reset, ...props}) => <input {...props} />
  const Menu = () => {
   const padding = {
     paddingRight: 5
@@ -35,7 +37,7 @@ const AnecdoteList = ({ anecdotes }) => (
 const Anecdote = ({ anecdote }) => {
   return (
     <div>
-      <h2>{anecdote.content}</h2>
+      <h3>{anecdote.content}</h3>
       <div>by {anecdote.author}</div>
       <p>has {anecdote.votes} votes</p>
       <p>for more info see {anecdote.info}</p>
@@ -87,42 +89,38 @@ const CreateNew = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.addNew({content: content.value, author: author.value, info: info.value, vote: 0})
+    props.addNew({content: content.value, author: author.value, info: info.value, votes: 0,})
     history.push('/')
   }
 
 
-  
   const handleReset = (e) => {
     e.preventDefault()
-    return (
-      content.reset(),
-      author.reset(),
-      info.reset()
-
-    )
+    content.reset()
+    author.reset()
+    info.reset()
   }
+
 return (
   <div>
     <h2>create a new anecdote</h2>
     <form onSubmit={handleSubmit}>
-      <div>
+     <div>
         content
-        <input type={content.type} value={content.value} onChange={content.onChange} />
+        <WrappedInput name='content' {...content} />
       </div>
       <div>
         author
-        <input type={author.type} value={author.value} onChange={author.onChange} />
+        <WrappedInput name='author' {...author} />{/*  */}
       </div>
       <div>
         url for more info
-        < input type={info.type} value={info.value} onChange={info.onChange} />
-      </div>
-      <button>create</button> 
-      <button onClick = { handleReset }>reset</button>
+        <WrappedInput name='info' {...info} />
+      </div> 
+        <button>create</button> 
+        <button onClick = { handleReset }>reset</button>
     </form>
-  
-  </div>
+  </div> 
 )
 }
 
