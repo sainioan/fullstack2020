@@ -25,13 +25,14 @@ const useResource = (baseUrl) => {
       setResources(response.data)
     }
     fetchData()
-  }, [resources]); // Or [] 
+  }, [baseUrl, resources]); // Or [] 
 
   
   const create = async (resource) => {
    
 
       const response = await axios.post(baseUrl, resource)
+      setResources(resources.concat(response.data))
       return response.data
     }
   
