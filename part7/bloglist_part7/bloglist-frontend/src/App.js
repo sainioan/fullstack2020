@@ -7,7 +7,9 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import { initializeBlogs } from './reducers/blogReducer'
+import { setNotification } from './reducers/notificationReducer'
 import Bloglist from './components/bloglist'
+import storage from './utils/storage'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -18,34 +20,38 @@ const App = () => {
   const currentUser = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
   const blogFormRef = React.createRef()
 
+
   const dispatch = useDispatch()
 
        useEffect(() => {
          dispatch(initializeBlogs())  
        },[dispatch]) 
 
-  
-/*   useEffect(() => {
+    const notifyWith = (message, type='success') => {
+        dispatch(setNotification(message, type, 10))
+        setTimeout(() => {
+          setNotification(null)
+        }, 10000)
+      }
 
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs ),
-    console.log(blogs)
-    )
-  }, []) */
-
-  const notifyWith = (message, type='success') => {
+/*   const notifyWith = (message, type='success') => {
     setNotification({ message, type })
     setTimeout(() => {
       setNotification(null)
     }, 8000)
-  }
-  useEffect(() => {
+  } */
+/*   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
     }
+  }, []) */
+
+  useEffect(() => {
+    const user = storage.loadUser()
+    setUser(user)
   }, [])
 
   const addBlog = async (newBlog) => {
@@ -61,7 +67,7 @@ const App = () => {
     }
 
   }
-  const increaseLikes = id => {
+/*   const increaseLikes = id => {
     try{
       const blog = blogs.find(n => n.id === id)
       const changedBlog = {
@@ -78,7 +84,7 @@ const App = () => {
       console.log(error.message)
     }
 
-  }
+  } */
   const removeBlog = id => {
     const blog = blogs.find(n => n.id === id)
     const ok = window.confirm(`Delete ${blog.title}`)
@@ -105,13 +111,14 @@ const App = () => {
         username, password
       })
 
-      window.localStorage.setItem(
+  /*     window.localStorage.setItem(
         'loggedBlogAppUser', JSON.stringify(user)
       )
-      blogService.setToken(user.token)
-      setUser(user)
+      blogService.setToken(user.token) */
+   
       setUsername('')
       setPassword('')
+      setUser(user)
     } catch(error) {
       notifyWith('wrong username or password ', 'error')
       console.log(error.message)
@@ -176,18 +183,7 @@ const App = () => {
         <button onClick= {handleLogOut}>Logout</button>
         <p></p>
         {blogForm()}
-        <div><Bloglist/> </div>
-        <div className="blogList">
-          {blogs.sort((a, b) => b.likes - a.likes).map(b => (
-            <Blog
-              key={b.id}
-              blog={b}
-              user = {user}
-              removeBlog={removeBlog}
-              increaseLikes={increaseLikes}
-            />
-          ))}
-        </div>
+        <div><Bloglist  user = {user} /> </div>
       </div>
     </div>
   )

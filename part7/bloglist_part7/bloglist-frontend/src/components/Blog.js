@@ -1,8 +1,18 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import {likeBlog} from '../reducers/blogReducer'
 
-const Blog = ({ blog, increaseLikes, removeBlog }) => {
+const Blog = ({ blog, removeBlog }) => {
+
+  const dispatch = useDispatch()
+  const blogs = useSelector(({ blogs }) => {
+    return blogs
+})
+
+const increaseLikes = async () => {
+  dispatch(likeBlog(blog))
+}
   const [viewEverything, setViewEverything] = useState(false)
 
   const blogStyle = {
@@ -27,7 +37,7 @@ const Blog = ({ blog, increaseLikes, removeBlog }) => {
             <p>Author: {blog.author}</p>
             <div>
             Likes: {blog.likes}{' '}
-              <button onClick={e => increaseLikes(blog.id)}>Like</button>
+              <button onClick={e => increaseLikes(blog)}>Like</button>
             </div>
           </div>
           <div>

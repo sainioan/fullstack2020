@@ -8,8 +8,13 @@ const reducer = (state = [], action) => {
   case 'INIT':
     return action.data.sort(byLikes)
   case 'LIKE':
-    const liked = action.data
-    return state.map(a => a.id===liked.id ? liked : a).sort(byLikes)
+   // const blog = state.find(blog => blog.id === action.data.id)
+    // return   state.map(blog => blog.id === action.data.id ? action.data : blog)
+    // return state.map(a => a.id===liked.id ? liked : a).sort(byLikes)
+  //  const liked_blog = { ...blog, likes: blog.likes +1 }
+  //  return state.map(blog => blog.id!== action.data.id?blog: liked_blog)
+  return state.map(blog => blog.id=== action.data.id? action.data: blog)
+
   case 'CREATE':
     return [...state, action.data]
   default:
@@ -39,13 +44,13 @@ export const initializeBlogs = () => {
 
 export const likeBlog = (blog) => {
   return async dispatch => {
-    const toLike = { ...blog, likes: blog.likes + 1 }
-    const data = await blogService.update(toLike)
+    const data = await blogService.update({ ...blog, likes: blog.likes + 1, user: blog.user.id })
     dispatch({
       type: 'LIKE',
-      data
+      data: data
     })
   }
 }
+
 
 export default reducer
