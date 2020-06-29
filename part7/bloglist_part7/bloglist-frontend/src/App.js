@@ -16,7 +16,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notification, setNotification ] = useState(null)
+ // const [notification, setNotification ] = useState(null)
   const currentUser = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
   const blogFormRef = React.createRef()
 
@@ -27,8 +27,9 @@ const App = () => {
          dispatch(initializeBlogs())  
        },[dispatch]) 
 
-    const notifyWith = (message, type='success') => {
-        dispatch(setNotification(message, type, 10))
+       //    const notifyWith = (message, type='success') => {
+    const notifyWith = (message) => {
+        dispatch(setNotification(message, 10))
         setTimeout(() => {
           setNotification(null)
         }, 10000)
@@ -146,7 +147,7 @@ const App = () => {
       <div>
         <h2>Log in to application</h2>
 
-        <Notification notification={notification} />
+        <Notification />
         <form onSubmit={handleLogin}>
           <div>
           username
@@ -178,7 +179,7 @@ const App = () => {
     <div>
       <div>
         <h2>Blogs</h2>
-        <Notification notification={notification} />
+        <Notification />
         <p>{user.name} logged in</p>
         <button onClick= {handleLogOut}>Logout</button>
         <p></p>
