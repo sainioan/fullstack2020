@@ -17,6 +17,9 @@ const reducer = (state = [], action) => {
 
   case 'CREATE':
     return [...state, action.data]
+  case 'DELETE_BLOG':
+      const newState = state.filter( b => b.id !== action.data)
+      return newState
   default:
     return state
   }
@@ -31,7 +34,16 @@ export const createBlog = (blog) => {
     })
   }
 }
+export const deleteBlog = (blog) => {
 
+  return async dispatch => {
+  const data = await blogService.remove(blog.id)
+   dispatch({
+     type: 'DELETE_BLOG',
+     data: blog
+   })
+  }
+}
 export const initializeBlogs = () => {
   return async dispatch => {
     const data = await blogService.getAll()

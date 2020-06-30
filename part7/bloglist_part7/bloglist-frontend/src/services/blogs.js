@@ -28,20 +28,7 @@ const create = (blog) => {
   return request.then(response => response.data)
 }
 
-/* 
-const create = async (newObject, user) => {
-  const response = await axios({
-    url: baseUrl,
-    method: 'POST',
-    data: newObject,
-    headers: {
-      Authorization: `Bearer ${user.token}`
-    }
-  }) */
 
-/*   return response.data
-}
- */
 
 const remove = (id) => {
   const request = axios.delete(`${baseUrl}/${id}`, getConfig())

@@ -1,17 +1,24 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {likeBlog} from '../reducers/blogReducer'
+import { likeBlog, deleteBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, removeBlog }) => {
+const Blog = ({ blog }) => {
 
   const dispatch = useDispatch()
   const blogs = useSelector(({ blogs }) => {
     return blogs
-})
+  })
 
-const increaseLikes = async () => {
-  dispatch(likeBlog(blog))
+  const increaseLikes = async () => {
+    dispatch(likeBlog(blog))
+  }
+
+  const removeBlog = async(blog) => {
+    const ok = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
+    if (ok) {
+    dispatch(deleteBlog(blog))
+    }
 }
   const [viewEverything, setViewEverything] = useState(false)
 
@@ -41,7 +48,7 @@ const increaseLikes = async () => {
             </div>
           </div>
           <div>
-            <button onClick={e => removeBlog(blog.id)}>Remove</button>
+            <button onClick={e => removeBlog(blog)}>Remove</button>
           </div>
         </div>
       </div>
