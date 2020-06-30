@@ -4,12 +4,8 @@ import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 
-const BlogForm = ({ onSubmit }) => {
+const BlogForm = () => {
   const dispatch = useDispatch()
-/*   const title = useField('text')
-  const author = useField('text')
-  const url = useField('text')
-  const likes = useField('number') */
  
    
     const title = useField('text')
@@ -26,18 +22,10 @@ const BlogForm = ({ onSubmit }) => {
         likes: likes.value || 0,}
      dispatch(createBlog(blog))
      // history.push('/')
+     dispatch(setNotification((`New blog '${blog.title}' by ${blog.author} added`),10))
     
   }
-/*   const createBlog = (event) => {
-    event.preventDefault()
-    const newBlog= {
-      title,
-      author,
-      url,
-      likes
-    }
-    onSubmit(newBlog)
-  } */
+
   return (
     <div className="formDiv">
       <div>
