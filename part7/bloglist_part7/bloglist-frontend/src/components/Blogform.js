@@ -1,13 +1,34 @@
 import React, { useState } from 'react'
-
+import  { useField } from '../hooks/index'
+import { setNotification } from '../reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
 
 const BlogForm = ({ onSubmit }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-  const [likes,setLikes] = useState('')
-
-  const createBlog = (event) => {
+  const dispatch = useDispatch()
+/*   const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
+  const likes = useField('number') */
+ 
+   
+    const title = useField('text')
+    const author = useField('text')
+    const url = useField('text')
+    const likes = useField('number')
+  
+    const handleSubmit = (e) => {
+      e.preventDefault()
+      const blog = {
+        title: title.value, 
+        author: author.value, 
+        url: url.value, 
+        likes: likes.value || 0,}
+     dispatch(createBlog(blog))
+     // history.push('/')
+    
+  }
+/*   const createBlog = (event) => {
     event.preventDefault()
     const newBlog= {
       title,
@@ -16,27 +37,28 @@ const BlogForm = ({ onSubmit }) => {
       likes
     }
     onSubmit(newBlog)
-  }
+  } */
   return (
     <div className="formDiv">
       <div>
         <h3>Create a new blog</h3>
-        <form  onSubmit={createBlog}>
+        <form  onSubmit={handleSubmit}>
           <p className="formDiv">
             Title:
-            <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <input id="title" type={title.type} value={title.value} onChange = {title.onChange}  />
           </p>
           <p className="formDiv">
             Author:
-            <input id="author" type="text" value={author} onChange={(e) => setAuthor(e.target.value)} />
+            <input id="author" type={author.type} value={author.value} onChange = {author.onChange}  />
           </p>
           <p className="formDiv">
            Url:
-            <input id="url" type="text" value={url} onChange={(e) => setUrl(e.target.value)} />
+           
+           <input id="url" type={url.type} value={url.value} onChange = {url.onChange}  />
           </p>
           <p className="formDiv">
-            Likes:
-            <input id="likes" type="number" value={likes} onChange={(e) => setLikes(e.target.value)} />
+            Likes:   
+            <input id="likes" type={likes.type} value={likes.value} onChange = {likes.onChange}  />
           </p>
           <p>
             <button id="createButton">Create</button>

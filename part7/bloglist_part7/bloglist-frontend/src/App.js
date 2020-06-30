@@ -16,7 +16,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
- // const [notification, setNotification ] = useState(null)
+
   const currentUser = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
   const blogFormRef = React.createRef()
 
@@ -27,28 +27,14 @@ const App = () => {
          dispatch(initializeBlogs())  
        },[dispatch]) 
 
-       //    const notifyWith = (message, type='success') => {
-    const notifyWith = (message) => {
+  const notifyWith = (message, type='success') => {
+   // const notifyWith = (message) => {
         dispatch(setNotification(message, 10))
         setTimeout(() => {
           setNotification(null)
         }, 10000)
       }
-
-/*   const notifyWith = (message, type='success') => {
-    setNotification({ message, type })
-    setTimeout(() => {
-      setNotification(null)
-    }, 8000)
-  } */
-/*   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, []) */
+  
 
   useEffect(() => {
     const user = storage.loadUser()
@@ -68,24 +54,7 @@ const App = () => {
     }
 
   }
-/*   const increaseLikes = id => {
-    try{
-      const blog = blogs.find(n => n.id === id)
-      const changedBlog = {
-        title: blog.title,
-        author: blog.author,
-        url: blog.url,
-        likes: blog.likes + 1,
-        user: blog.user.id || blog.user
-      }
-      blogService
-        .update(id, changedBlog)
-        .then(setBlogs(blogs.map(b => (b.id !== id ? b : { ...b, likes: b.likes + 1 }))))
-    } catch (error){
-      console.log(error.message)
-    }
 
-  } */
   const removeBlog = id => {
     const blog = blogs.find(n => n.id === id)
     const ok = window.confirm(`Delete ${blog.title}`)

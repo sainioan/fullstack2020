@@ -24,7 +24,7 @@ const reducer = (state = [], action) => {
 
 export const createBlog = (blog) => {
   return async dispatch => {
-    const data = await blogService.createNew(blog)
+    const data = await blogService.create(blog)
     dispatch({
       type: 'CREATE',
       data
