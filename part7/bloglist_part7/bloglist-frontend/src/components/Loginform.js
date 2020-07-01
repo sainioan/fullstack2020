@@ -1,42 +1,33 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-import { useSelector, useDispatch } from 'react-redux'
-const LoginForm = ({
-  handleSubmit,
-  handleUsernameChange,
-  handlePasswordChange,
-  username,
-  password
-}) => {
-  return (
-    <div>
-      <h2>Login</h2>
+import React from 'react'
 
-      <form className="login-form" onSubmit={handleSubmit}>
-        <div className="login-form__ctrl">
-          <label htmlFor="username">Username: </label>
-          <input id="username" type="text" value={username}
-            onChange={handleUsernameChange}
+
+const LoginForm = ({ handleSubmit, username, password }) => {
+ 
+  return (
+    
+    <div className='loginForm'>
+      <h2>Log into application</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+        username
+          <input {...username}
           />
         </div>
-        <div className="login-form__ctrl">
-          <label htmlFor="password">Password: </label>
-          <input id="password" type="password" value={password}
-            onChange={handlePasswordChange}
+        <div>
+        password
+          <input
+          {...password}
           />
         </div>
-        <button id="login-button" type="submit">login</button>
+        <button id="login-button" type="submit">Login</button>
       </form>
     </div>
   )
 }
-
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  handleUsernameChange: PropTypes.func.isRequired,
-  handlePasswordChange: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired
 }
-
 export default LoginForm

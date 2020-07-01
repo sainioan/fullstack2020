@@ -11,11 +11,11 @@ const reducer = (state = null, action) => {
 
 let timeoutId
 
-export const setNotification = (content, time) => {
+export const setNotification = (content, time, type) => {
   return async dispatch => {
     dispatch({
       type: 'SET_NOTIFICATION',
-      content
+      content,
     })
 
     if (timeoutId) {
@@ -30,7 +30,7 @@ export const setNotification = (content, time) => {
   }
 }
 
-export const clearNotification = (id) => (
+export const clearNotification = () => (
   { type: 'CLEAR_NOTIFICATION' }
 )
 

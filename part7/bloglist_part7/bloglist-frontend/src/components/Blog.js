@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { likeBlog, deleteBlog } from '../reducers/blogReducer'
+import { likeBlog, deleteBlog, updateBlogs, emptyAction } from '../reducers/blogReducer'
 
 const Blog = ({ blog }) => {
 
@@ -12,14 +12,20 @@ const Blog = ({ blog }) => {
 
   const increaseLikes = async () => {
     dispatch(likeBlog(blog))
+    dispatch(updateBlogs())
   }
 
   const removeBlog = async(blog) => {
     const ok = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
     if (ok) {
-    dispatch(deleteBlog(blog))
+      dispatch(deleteBlog(blog))
+      setTimeout(() => {
+        //   dispatch(emptyAction())
+        dispatch(updateBlogs())
+      }, 5000)
     }
-}
+
+  }
   const [viewEverything, setViewEverything] = useState(false)
 
   const blogStyle = {
@@ -44,11 +50,11 @@ const Blog = ({ blog }) => {
             <p>Author: {blog.author}</p>
             <div>
             Likes: {blog.likes}{' '}
-              <button onClick={e => increaseLikes(blog)}>Like</button>
+              <button onClick={() => increaseLikes(blog)}>Like</button>
             </div>
           </div>
           <div>
-            <button onClick={e => removeBlog(blog)}>Remove</button>
+            <button onClick={() => removeBlog(blog)}>Remove</button>
           </div>
         </div>
       </div>

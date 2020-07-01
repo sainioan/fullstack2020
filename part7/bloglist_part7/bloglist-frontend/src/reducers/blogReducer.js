@@ -1,6 +1,7 @@
 
 import blogService from '../services/blogs'
-
+import { setNotification, clearNotification } from './notificationReducer'
+import { useDispatch } from 'react-redux'
 const byLikes = (a1, a2) => a2.likes - a1.likes
 
 const reducer = (state = [], action) => {
@@ -8,18 +9,21 @@ const reducer = (state = [], action) => {
   case 'INIT':
     return action.data.sort(byLikes)
   case 'LIKE':
-   // const blog = state.find(blog => blog.id === action.data.id)
+    // const blog = state.find(blog => blog.id === action.data.id)
     // return   state.map(blog => blog.id === action.data.id ? action.data : blog)
     // return state.map(a => a.id===liked.id ? liked : a).sort(byLikes)
   //  const liked_blog = { ...blog, likes: blog.likes +1 }
   //  return state.map(blog => blog.id!== action.data.id?blog: liked_blog)
-  return state.map(blog => blog.id=== action.data.id? action.data: blog)
+    return state.map(blog => blog.id=== action.data.id? action.data: blog)
 
   case 'CREATE':
     return [...state, action.data]
   case 'DELETE_BLOG':
-      const newState = state.filter( b => b.id !== action.data)
-      return newState
+    return state.filter( b => b.id !== action.data)
+  case 'UPDATE_BLOGS':
+    return action.data
+  case  'EMPTY_ACTION':
+    return null
   default:
     return state
   }
@@ -27,21 +31,45 @@ const reducer = (state = [], action) => {
 
 export const createBlog = (blog) => {
   return async dispatch => {
-    const data = await blogService.create(blog)
-    dispatch({
-      type: 'CREATE',
-      data
-    })
+    try {
+      const data = await blogService.create(blog)
+
+      dispatch({
+        type: 'CREATE',
+        data
+      })
+      // dispatch(setNotification(`New blog '${blog.title}' by ${blog.author} added`,10))
+    }
+    catch (error) {
+      console.log(error.message)
+    }
   }
 }
 export const deleteBlog = (blog) => {
 
   return async dispatch => {
-  const data = await blogService.remove(blog.id)
-   dispatch({
-     type: 'DELETE_BLOG',
-     data: blog
-   })
+    await blogService.remove(blog.id)
+    dispatch({
+      type: 'DELETE_BLOG',
+      data: blog
+    })
+  }
+}
+export const emptyAction = () => {
+
+  return dispatch => {
+    dispatch({
+      type: 'EMPTY_ACTION'
+    })
+  }
+}
+export const updateBlogs = () => {
+  return async dispatch => {
+    const blogs = await blogService.getAll()
+    dispatch({
+      type: 'UPDATE_BLOGS',
+      data: blogs
+    })
   }
 }
 export const initializeBlogs = () => {
