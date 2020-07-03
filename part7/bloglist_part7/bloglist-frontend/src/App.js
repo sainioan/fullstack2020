@@ -24,25 +24,6 @@ const Menu = () => {
   const padding = {
     paddingRight: 5
   }
-  const blogs = useSelector(({ blogs }) => {
-    return blogs
-  })
-  const users = useSelector(({ users }) => {
-    return users
-  })
-  // const users = useSelector(state => state.users)
-
-
-  console.log('blogs_in_the_menu ', blogs)
-  console.log('users_in_the_menu', users)
-
-  const userById = (id) => {
-    users.find(user => user.id)
-  }
-  const match = useRouteMatch('/users/:id')
-  const user = match
-    ?  userById(match.params.id)
-    : null
 
   return(
     <div>
@@ -132,6 +113,9 @@ const App = () => {
     setThisUser(null)
   }
 
+  const match = useRouteMatch('/users/:id')
+  const bloguser = match ? users.find(user => user.id === match.params.id) : null
+
   if (user === null) {
     return (
       <div>
@@ -160,7 +144,7 @@ const App = () => {
         <Switch>
 
           <Route path="/users/:id">
-            <User user={user} />
+            <User user={bloguser} />
           </Route>
           <Route path="/users">
             <UserList user = {user} users = {users}/>
