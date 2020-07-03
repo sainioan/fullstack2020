@@ -3,9 +3,9 @@ import React from 'react'
 
 
 const LoginForm = ({ handleSubmit, username, password }) => {
- 
+
   return (
-    
+
     <div className='loginForm'>
       <h2>Log into application</h2>
       <form onSubmit={handleSubmit}>
@@ -17,7 +17,7 @@ const LoginForm = ({ handleSubmit, username, password }) => {
         <div>
         password
           <input
-          {...password}
+            {...password}
           />
         </div>
         <button id="login-button" type="submit">Login</button>

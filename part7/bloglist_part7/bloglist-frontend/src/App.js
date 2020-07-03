@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import NewBlog from './components/Blogform'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -8,36 +8,82 @@ import { useField } from './hooks/index'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setNotification } from './reducers/notificationReducer'
 import Bloglist from './components/bloglist'
+import UserList from './components/userList'
+import User from './components/User'
 import storage from './utils/storage'
-import { initializeUsers, login, setUser, logOut } from './reducers/userReducer'
+import { login, setUser, logOut } from './reducers/userReducer'
+import { initializeUsers } from './reducers/usersReducer'
+import {
+  Switch,
+  Route,
+  Link,
+  useRouteMatch
+} from 'react-router-dom'
 
+const Menu = () => {
+  const padding = {
+    paddingRight: 5
+  }
+  const blogs = useSelector(({ blogs }) => {
+    return blogs
+  })
+  const users = useSelector(({ users }) => {
+    return users
+  })
+  // const users = useSelector(state => state.users)
+
+
+  console.log('blogs_in_the_menu ', blogs)
+  console.log('users_in_the_menu', users)
+
+  const userById = (id) => {
+    users.find(user => user.id)
+  }
+  const match = useRouteMatch('/users/:id')
+  const user = match
+    ?  userById(match.params.id)
+    : null
+
+  return(
+    <div>
+      <h4>Menu</h4>
+      <p></p>
+      <Link style={padding} to="/blogs">blogs</Link>
+      <Link style={padding} to="/users">users</Link>
+      <Link style={padding} to="/user/:id">user</Link>
+    </div>
+  )
+}
 const App = () => {
 
   const dispatch = useDispatch()
   const username = useField('text')
   const password = useField('password')
-  const [user, setUser] = useState(null)
+  const [thisuser, setThisUser] = useState(null)
+
   const blogFormRef = React.createRef()
 
   useEffect(() => {
     dispatch(initializeBlogs())
-    dispatch(initializeUsers)
+    dispatch(initializeUsers())
   },[dispatch])
 
+  const user = useSelector(state => state.user)
+  if(user){
+    console.log(user.user)
+  }
+  const users = useSelector(({ users }) => {
+    return users
+  })
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogsAppUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const currentUser = JSON.parse(loggedUserJSON)
       dispatch(setUser(currentUser))
-      setUser(currentUser)
+      console.log('line 40, currentuser', currentUser.username)
+      setThisUser(currentUser.username)
     }
-  }, [dispatch])
-
-  
-  useEffect(() => {
-    const user = storage.loadUser()
-    setUser(user)
   }, [dispatch])
 
   const notifyWith = (message, type='success') => {
@@ -60,26 +106,30 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = dispatch(login({username: username.value, password: password.value }))
+      const user = dispatch(login({ username: username.value, password: password.value }))
+      console.log('line 74, user, ',JSON.stringfy(user))
       storage.saveUser(user)
-      setUser(user)
+
+      dispatch(setUser(user))
       notifyWith(`${username} welcome back!`)
-  
-   //   username.reset()
-   //   password.reset()
+
+        username.reset()
+        password.reset()
 
     } catch(error) {
       notifyWith(`${error.message}`, error)
+      notifyWith('wrong username or password', 'error')
       console.log(error.message)
     }
   }
   const handleLogOut = async (event) => {
     window.localStorage.clear()
- 
+
     dispatch(logOut())
+    storage.logoutUser()
     username.reset()
     password.reset()
-    setUser(null)
+    setThisUser(null)
   }
 
   if (user === null) {
@@ -98,12 +148,28 @@ const App = () => {
     <div>
       <div>
         <h2>Blogs</h2>
-        <Notification />
-        <p>{JSON.stringify(user.name)} logged in</p>
+        <Menu/>
+         <Notification />
+        <p>{thisuser} logged in</p>
         <button onClick= {handleLogOut}>Logout</button>
-        <p></p>
+{/*         <p></p>
         {blogForm()}
-        <div><Bloglist  user = {storage.loadUser()} /> </div>
+        <div><Bloglist  user = {user} /> </div>  */}
+{/*         <div><User user = {user}/> </div>
+        <div><UserList/></div> */}
+        <Switch>
+
+          <Route path="/users/:id">
+            <User user={user} />
+          </Route>
+          <Route path="/users">
+            <UserList user = {user} users = {users}/>
+          </Route>
+
+          <Route path="/blogs">
+            <Bloglist   user = {user} />
+          </Route>
+        </Switch>
       </div>
     </div>
   )

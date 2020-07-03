@@ -1,30 +1,37 @@
 import React from 'react'
 import { addUser, setUser } from '../reducers/userReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 
-export const User = () => {
-const dispatch = useDispatch()
- /*  const add = async (event) => {
-    event.preventDefault()
-    const username = event.target.username.value
-    event.target.username.value = ''
-    dispatch(setUser(username))
-    dispatch(setNotification(`user '${username}' logged in`, 5))
-  } */
+export const User = ({ user }) => {
+
+
+  const allblogs = useSelector(state => state.blogs)
+
+  if(!allblogs) {
+    return null
+  }
+  console.log(allblogs)
+  if(!user) {
+    return null
+  }
+  const blogs = allblogs.filter(blog => blog.user_id === user.id)
 
   return (
     <div>
-      <h2>users</h2>
+      <h2>{user.username}</h2>
       <div>
-        <input name="user"/>
-        <p> username</p>
-      </div>
-      <button>create</button>
+        <p> blogs added </p>
+        <ul>
+          {blogs.map(blog =>
+            <li key={user.id}>{blog.title}</li>)}
+        </ul>
 
+      </div>
     </div>
   )
+
 }
 
 export default User

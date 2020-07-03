@@ -2,11 +2,12 @@
 import blogService from '../services/blogs'
 import { setNotification, clearNotification } from './notificationReducer'
 import { useDispatch } from 'react-redux'
+
 const byLikes = (a1, a2) => a2.likes - a1.likes
 
 const reducer = (state = [], action) => {
   switch (action.type) {
-  case 'INIT':
+  case 'INIT_BLOGS':
     return action.data.sort(byLikes)
   case 'LIKE':
     // const blog = state.find(blog => blog.id === action.data.id)
@@ -14,8 +15,7 @@ const reducer = (state = [], action) => {
     // return state.map(a => a.id===liked.id ? liked : a).sort(byLikes)
   //  const liked_blog = { ...blog, likes: blog.likes +1 }
   //  return state.map(blog => blog.id!== action.data.id?blog: liked_blog)
-    return state.map(blog => blog.id=== action.data.id? action.data: blog)
-
+    return state.map(blog => blog.id=== action.data.id? action.data: blog).sort(byLikes)
   case 'CREATE':
     return [...state, action.data]
   case 'DELETE_BLOG':
@@ -74,10 +74,10 @@ export const updateBlogs = () => {
 }
 export const initializeBlogs = () => {
   return async dispatch => {
-    const data = await blogService.getAll()
+    const blogs = await blogService.getAll()
     dispatch({
-      type: 'INIT',
-      data
+      type: 'INIT_BLOGS',
+      data: blogs
     })
   }
 }

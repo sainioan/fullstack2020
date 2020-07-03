@@ -1,29 +1,20 @@
 import userService from '../services/users'
 import loginService from '../services/login'
-import blogService from '../services/blogs'
 import storage from '../utils/storage'
 import { setNotification } from './notificationReducer'
 
-const reducer = (state = '', action) => {
+const reducer = (state = [], action) => {
   switch (action.type) {
   case 'SET_USER':
-    return  { ...state, user: action.data }
-  case 'INIT':
-    return action.data
+    return {
+      ...state,
+      user: action.payload,
+
+    }
   case 'LOGOUT':
     return null
   default:
     return state
-  }
-}
-
-export const initializeUsers = () => {
-  return async dispatch => {
-    const data = await userService.getAll()
-    dispatch({
-      type: 'INIT',
-      data
-    })
   }
 }
 
@@ -39,8 +30,7 @@ export const login = ({ username, password }) => {
       }, 5000)
     }
     storage.saveUser(user)
-    window.localStorage.setItem('loggedUser', JSON.stringify(user))
-  //  blogService.getConfig()
+    window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     await dispatch({
       type: 'SET_USER',
       data: user
@@ -49,7 +39,7 @@ export const login = ({ username, password }) => {
     dispatch(setNotification(`${user.name} welcome back`, 5, 'success'))
   }
 }
-export const setUser = (user) => {
+/* export const setUser = (user) => {
   return async dispatch => {
     window.localStorage.setItem('loggedUser', JSON.stringify(user))
     storage.saveUser(user)
@@ -57,9 +47,14 @@ export const setUser = (user) => {
       type: 'SET_USER',
       data: user
     })
+  } */
+//}
+export const setUser = (user) => {
+  return {
+    type: 'SET_USER',
+    payload: user
   }
 }
-
 
 export const logOut = () => {
   return async dispatch => {
