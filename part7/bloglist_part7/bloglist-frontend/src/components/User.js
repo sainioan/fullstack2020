@@ -2,8 +2,7 @@ import React from 'react'
 import { addUser, setUser } from '../reducers/userReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
-
-
+import { Link } from 'react-router-dom'
 export const User = ({ user }) => {
 
 
@@ -21,9 +20,9 @@ export const User = ({ user }) => {
   if(blogs.length===0) {
     return (
       <div>
-             <h3>{user.name}</h3>
-      <div>
-        <p> has not created any blogs </p>
+        <h3>{user.name}</h3>
+        <div>
+          <p> has not created any blogs </p>
         </div>
       </div>
     )
@@ -35,7 +34,9 @@ export const User = ({ user }) => {
         <p> blogs added </p>
         <ul>
           {blogs.map(blog =>
-            <li key={user.id}>{blog.title}</li>)}
+            <li key={user.id}>
+              
+          <Link to={`/blogs/${blog.id}`}>{blog.title} by {blog.author}</Link></li>)}
         </ul>
 
       </div>

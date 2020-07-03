@@ -22,7 +22,7 @@ const UserList = () => {
   return users ? (
     <div>
       <h2>Users</h2>
-      <p></p> 
+      <p></p>
       <h3>  blogs created</h3>
       <ul>{ users.map(user =>
         <li key={user.id}>

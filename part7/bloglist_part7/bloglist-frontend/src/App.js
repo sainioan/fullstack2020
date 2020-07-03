@@ -10,6 +10,7 @@ import { setNotification } from './reducers/notificationReducer'
 import Bloglist from './components/bloglist'
 import UserList from './components/userList'
 import User from './components/User'
+import Blog from './components/Blog'
 import storage from './utils/storage'
 import { login, setUser, logOut } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
@@ -31,7 +32,6 @@ const Menu = () => {
       <p></p>
       <Link style={padding} to="/blogs">blogs</Link>
       <Link style={padding} to="/users">users</Link>
-      <Link style={padding} to="/user/:id">user</Link>
     </div>
   )
 }
@@ -49,9 +49,12 @@ const App = () => {
     dispatch(initializeUsers())
   },[dispatch])
 
-  const user = useSelector(state => state.user)
+let user = useSelector(({ user }) => {
+    return user
+})
+  //const user useSelector(state => state.user)
   if(user){
-    console.log(user.user)
+    console.log('line 54, user.user', user.name)
   }
   const users = useSelector(({ users }) => {
     return users
@@ -115,6 +118,8 @@ const App = () => {
 
   const match = useRouteMatch('/users/:id')
   const bloguser = match ? users.find(user => user.id === match.params.id) : null
+  const match2 = useRouteMatch('/blogs/:id')
+  const blog = match2 ? users.find(b => b.id === match2.params.id) : null
 
   if (user === null) {
     return (
@@ -134,8 +139,10 @@ const App = () => {
         <h2>Blogs</h2>
         <Menu/>
          <Notification />
-        <p>{thisuser} logged in</p>
+        <p>{user.username} logged in</p>
         <button onClick= {handleLogOut}>Logout</button>
+        <p></p>
+        {blogForm()}
 {/*         <p></p>
         {blogForm()}
         <div><Bloglist  user = {user} /> </div>  */}
@@ -152,6 +159,9 @@ const App = () => {
 
           <Route path="/blogs">
             <Bloglist   user = {user} />
+          </Route>
+          <Route path =" /blogs/:id">
+            <Blog blog = {blog}/>
           </Route>
         </Switch>
       </div>

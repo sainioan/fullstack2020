@@ -1,16 +1,11 @@
-import userService from '../services/users'
 import loginService from '../services/login'
 import storage from '../utils/storage'
 import { setNotification } from './notificationReducer'
 
-const reducer = (state = [], action) => {
+const reducer = (state = null, action) => {
   switch (action.type) {
   case 'SET_USER':
-    return {
-      ...state,
-      user: action.payload,
-
-    }
+    return action.user
   case 'LOGOUT':
     return null
   default:
@@ -52,7 +47,7 @@ export const login = ({ username, password }) => {
 export const setUser = (user) => {
   return {
     type: 'SET_USER',
-    payload: user
+    user
   }
 }
 
