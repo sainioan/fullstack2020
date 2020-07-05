@@ -5,7 +5,7 @@ import { setNotification } from './notificationReducer'
 const reducer = (state = null, action) => {
   switch (action.type) {
   case 'SET_USER':
-    return action.user
+    return action.data
   case 'LOGOUT':
     return null
   default:
@@ -47,7 +47,7 @@ export const login = ({ username, password }) => {
 export const setUser = (user) => {
   return {
     type: 'SET_USER',
-    user
+    data: user
   }
 }
 
