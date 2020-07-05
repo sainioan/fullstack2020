@@ -1,0 +1,6 @@
+POST http://localhost:3001/api/blogs/5ee0bf26ff9529a3ca95ae95/comments 
+content-type: application/json
+
+{
+"content": "test comment on vegan runners"
+}
