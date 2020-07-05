@@ -3,10 +3,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import Blog from './Blog'
 const BlogList = ({ user }) => {
-  // console.log('bloglist line 6 user: ', JSON.stringify(user))
-  const loggedUser = useSelector(state => state.user)
-
-  console.log( loggedUser[0])
 
   const blogs = useSelector(state => state.blogs)
 

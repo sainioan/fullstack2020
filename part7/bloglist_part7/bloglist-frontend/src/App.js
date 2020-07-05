@@ -11,6 +11,7 @@ import Bloglist from './components/bloglist'
 import UserList from './components/userList'
 import User from './components/User'
 import Blog from './components/Blog'
+import SingleBlog from './components/SingleBlog'
 import storage from './utils/storage'
 import { login, setUser, logOut } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
@@ -40,7 +41,6 @@ const App = () => {
   const dispatch = useDispatch()
   const username = useField('text')
   const password = useField('password')
-  const [thisuser, setThisUser] = useState(null)
 
   const blogFormRef = React.createRef()
 
@@ -60,13 +60,14 @@ let user = useSelector(({ user }) => {
     return users
   })
 
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const currentUser = JSON.parse(loggedUserJSON)
       dispatch(setUser(currentUser))
       console.log('line 40, currentuser', currentUser.username)
-      setThisUser(currentUser.username)
+   //   setThisUser(currentUser.username)
     }
   }, [dispatch])
 
@@ -113,13 +114,17 @@ let user = useSelector(({ user }) => {
     storage.logoutUser()
     username.reset()
     password.reset()
-    setThisUser(null)
+  //  setThisUser(null)
   }
 
   const match = useRouteMatch('/users/:id')
   const bloguser = match ? users.find(user => user.id === match.params.id) : null
+  const blogs = useSelector(({ blogs }) => {
+    return blogs
+  })
+
   const match2 = useRouteMatch('/blogs/:id')
-  const blog = match2 ? users.find(b => b.id === match2.params.id) : null
+  const blog = match2 ? blogs.find(b => b.id === match2.params.id) : null
 
   if (user === null) {
     return (
@@ -156,13 +161,15 @@ let user = useSelector(({ user }) => {
           <Route path="/users">
             <UserList user = {user} users = {users}/>
           </Route>
-
+          <Route exact path='/blogs/:id'>
+          <Blog blog={blog}/>
+        </Route>
           <Route path="/blogs">
             <Bloglist   user = {user} />
           </Route>
-          <Route path =" /blogs/:id">
-            <Blog blog = {blog}/>
-          </Route>
+
+       
+         
         </Switch>
       </div>
     </div>

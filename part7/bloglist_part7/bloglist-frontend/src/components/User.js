@@ -34,9 +34,9 @@ export const User = ({ user }) => {
         <p> blogs added </p>
         <ul>
           {blogs.map(blog =>
-            <li key={user.id}>
-              
-          <Link to={`/blogs/${blog.id}`}>{blog.title} by {blog.author}</Link></li>)}
+            <li key={blog.id}>
+
+              <Link to={`/blogs/${blog.id}`}>{blog.title} by {blog.author}</Link></li>)}
         </ul>
 
       </div>

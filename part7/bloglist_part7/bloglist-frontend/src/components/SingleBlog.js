@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import { likeBlog, deleteBlog, updateBlogs } from '../reducers/blogReducer'
 
-const Blog = ({ blog }) => {
+const SingleBlog = ({ blog }) => {
 
-  const [viewEverything, setViewEverything] = useState(false)
   const dispatch = useDispatch()
 
   if(!blog){
@@ -21,13 +20,11 @@ const Blog = ({ blog }) => {
     if (ok) {
       dispatch(deleteBlog(blog))
       setTimeout(() => {
-        //   dispatch(emptyAction())
         dispatch(updateBlogs())
       }, 5000)
     }
 
   }
-
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -35,53 +32,35 @@ const Blog = ({ blog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  if (viewEverything) {
-    return (
-      <div  key={blog.id} style={blogStyle}>
-        <div className="blogPost">
-          <p>
+
+  return (
+    <div  key={blog.id} style={blogStyle}>
+      <div className="blogPost">
+        <p>
           Title: {blog.title}{' '}
-            <button onClick={() => setViewEverything(!viewEverything)}>
-              {viewEverything ? 'hide' : 'view'}
-            </button>
-          </p>
+        </p>
+        <div>
+          <p>Url: {blog.url}</p>
+          <p>Author: {blog.author}</p>
           <div>
-            <p>Url: {blog.url}</p>
-            <p>Author: {blog.author}</p>
-            <div>
             Likes: {blog.likes}{' '}
-              <button onClick={() => increaseLikes(blog)}>Like</button>
-            </div>
+            <button onClick={() => increaseLikes(blog)}>Like</button>
           </div>
-          {/*           <h3>comments</h3>
+        </div>
+        {/*           <h3>comments</h3>
       <Comment blog={blog}/>
       <ul>
         {blog.comments.map(comment => <li key={comment.id}>{comment.content}</li>)}
       </ul> */}
-          <div>
-            <button onClick={() => removeBlog(blog)}>Remove</button>
-          </div>
+        <div>
+          <button onClick={() => removeBlog(blog)}>Remove</button>
         </div>
       </div>
-    )
-  } else {
-    return (
-      <div style={blogStyle}>
-        <div className="blogPost">
-          <p>
-          Title: {blog.title}{' '}
-            <button onClick={() => setViewEverything(!viewEverything)}>
-              {viewEverything ? 'Hide' : 'View'}
-            </button>
-          </p>
-          <p>Author: {blog.author}</p>
-        </div>
-      </div>
-    )
-  }
-}
+    </div>
+  )
 
-Blog.propTypes = {
+}
+SingleBlog.propTypes = {
   blog: PropTypes.shape({
     title: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
@@ -93,4 +72,4 @@ Blog.propTypes = {
   })
 }
 
-export default Blog
+export default SingleBlog
