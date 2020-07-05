@@ -1,8 +1,6 @@
 
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { initializeUsers } from '../reducers/usersReducer'
-import User from './User'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const UserList = () => {
@@ -28,18 +26,6 @@ const UserList = () => {
         <li key={user.id}>
           <Link to={`/users/${user.id}`}>{user.username}</Link>, has {user.blogs.length} blogs.
         </li>)}</ul>
-
-      {/*     <div>
-       {users.map(user =>
-        <div key={user.id}>
-          <div>
-            {user.username} has {user.blogs.length} blogs
-          </div>
-
-
-
-        </div>
-      )} </div>  */}
     </div>
 
   ) : null

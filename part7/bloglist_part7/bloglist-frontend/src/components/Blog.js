@@ -1,16 +1,28 @@
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeComments } from '../reducers/commentReducer'
 import { likeBlog, deleteBlog, updateBlogs } from '../reducers/blogReducer'
+import Comment from './Comment'
+import CommentForm from './CommentForm'
 
 const Blog = ({ blog }) => {
 
-  const [viewEverything, setViewEverything] = useState(false)
   const dispatch = useDispatch()
 
+  const [viewEverything, setViewEverything] = useState(false)
+ 
+  const comments = useSelector (state => state.comments)
+  console.log(comments)
+ 
   if(!blog){
     return null
   }
+  console.log(blog.id)
+
+  const blogComments = comments.filter(comment => comment.blogId === blog.id)
+  console.log('blogComments', blogComments)
+
   const increaseLikes = async () => {
     dispatch(likeBlog(blog))
     dispatch(updateBlogs())
@@ -21,7 +33,6 @@ const Blog = ({ blog }) => {
     if (ok) {
       dispatch(deleteBlog(blog))
       setTimeout(() => {
-        //   dispatch(emptyAction())
         dispatch(updateBlogs())
       }, 5000)
     }
@@ -53,16 +64,19 @@ const Blog = ({ blog }) => {
               <button onClick={() => increaseLikes(blog)}>Like</button>
             </div>
           </div>
-          {/*           <h3>comments</h3>
-      <Comment blog={blog}/>
-      <ul>
-        {blog.comments.map(comment => <li key={comment.id}>{comment.content}</li>)}
-      </ul> */}
+      <div className="content">
+        <ul>
+          { blogComments.map(comment =>
+            <Comment key={blog.id}
+              comment={comment} />)}
+        </ul>
+      </div>
+      <CommentForm blog={blog} />
+    </div>
           <div>
             <button onClick={() => removeBlog(blog)}>Remove</button>
           </div>
         </div>
-      </div>
     )
   } else {
     return (

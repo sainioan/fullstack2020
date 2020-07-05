@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import NewBlog from './components/Blogform'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import LoginForm from './components/Loginform'
 import { useField } from './hooks/index'
-import { initializeBlogs } from './reducers/blogReducer'
 import { setNotification } from './reducers/notificationReducer'
 import Bloglist from './components/bloglist'
 import UserList from './components/userList'
 import User from './components/User'
 import Blog from './components/Blog'
-import SingleBlog from './components/SingleBlog'
 import storage from './utils/storage'
 import { login, setUser, logOut } from './reducers/userReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
+import { initializeComments } from './reducers/commentReducer'
 import {
   Switch,
   Route,
@@ -47,12 +47,13 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUsers())
+    dispatch(initializeComments())
   },[dispatch])
 
-let user = useSelector(({ user }) => {
+  let user = useSelector(({ user }) => {
     return user
-})
-  //const user useSelector(state => state.user)
+  })
+
   if(user){
     console.log('line 54, user.user', user.name)
   }
@@ -67,7 +68,6 @@ let user = useSelector(({ user }) => {
       const currentUser = JSON.parse(loggedUserJSON)
       dispatch(setUser(currentUser))
       console.log('line 40, currentuser', currentUser.username)
-   //   setThisUser(currentUser.username)
     }
   }, [dispatch])
 
@@ -98,8 +98,8 @@ let user = useSelector(({ user }) => {
       dispatch(setUser(user))
       notifyWith(`${username} welcome back!`)
 
-        username.reset()
-        password.reset()
+      username.reset()
+      password.reset()
 
     } catch(error) {
       notifyWith(`${error.message}`, error)
@@ -143,18 +143,12 @@ let user = useSelector(({ user }) => {
       <div>
         <h2>Blogs</h2>
         <Menu/>
-         <Notification />
+        <Notification />
         <p>{user.username} logged in</p>
         <button onClick= {handleLogOut}>Logout</button>
         <p></p>
         {blogForm()}
-{/*         <p></p>
-        {blogForm()}
-        <div><Bloglist  user = {user} /> </div>  */}
-{/*         <div><User user = {user}/> </div>
-        <div><UserList/></div> */}
         <Switch>
-
           <Route path="/users/:id">
             <User user={bloguser} />
           </Route>
@@ -162,14 +156,14 @@ let user = useSelector(({ user }) => {
             <UserList user = {user} users = {users}/>
           </Route>
           <Route exact path='/blogs/:id'>
-          <Blog blog={blog}/>
-        </Route>
+            <Blog blog={blog}/>
+          </Route>
           <Route path="/blogs">
             <Bloglist   user = {user} />
           </Route>
 
-       
-         
+
+
         </Switch>
       </div>
     </div>

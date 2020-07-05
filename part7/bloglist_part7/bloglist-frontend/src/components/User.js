@@ -16,7 +16,7 @@ export const User = ({ user }) => {
   }
   console.log('user component username', user.name)
   const blogs = allblogs.filter(blog => blog.user.id === user.id)
-  //const blogs = allblogs.filter(blog => blog.user_id === user.id)
+ 
   if(blogs.length===0) {
     return (
       <div>

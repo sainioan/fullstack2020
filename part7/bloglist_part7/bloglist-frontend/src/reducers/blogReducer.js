@@ -10,11 +10,6 @@ const reducer = (state = [], action) => {
   case 'INIT_BLOGS':
     return action.data.sort(byLikes)
   case 'LIKE':
-    // const blog = state.find(blog => blog.id === action.data.id)
-    // return   state.map(blog => blog.id === action.data.id ? action.data : blog)
-    // return state.map(a => a.id===liked.id ? liked : a).sort(byLikes)
-  //  const liked_blog = { ...blog, likes: blog.likes +1 }
-  //  return state.map(blog => blog.id!== action.data.id?blog: liked_blog)
     return state.map(blog => blog.id=== action.data.id? action.data: blog).sort(byLikes)
   case 'CREATE':
     return [...state, action.data]
@@ -38,7 +33,6 @@ export const createBlog = (blog) => {
         type: 'CREATE',
         data
       })
-      // dispatch(setNotification(`New blog '${blog.title}' by ${blog.author} added`,10))
     }
     catch (error) {
       console.log(error.message)
