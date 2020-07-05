@@ -5,6 +5,7 @@ const commentSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  blogId: String,
   blog:  {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Blog'
@@ -23,4 +24,4 @@ module.exports = mongoose.model('Comment', commentSchema)
 
 const Comment = mongoose.model('Comment', commentSchema)
 
-module.exports = Comment 
+module.exports = Comment

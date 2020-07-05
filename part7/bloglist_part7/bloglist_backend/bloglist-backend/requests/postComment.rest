@@ -1,6 +1,6 @@
-POST http://localhost:3001/api/blogs/5ee0bf26ff9529a3ca95ae95/comments 
+POST http://localhost:3001/api/blogs/5ee458337d5513ba94a4fd4b/comments 
 content-type: application/json
 
 {
-"content": "test comment on vegan runners"
+"content": "GOD CREATED EVERYONE EQUAL ", "blogId": "5ee458337d5513ba94a4fd4b"
 }

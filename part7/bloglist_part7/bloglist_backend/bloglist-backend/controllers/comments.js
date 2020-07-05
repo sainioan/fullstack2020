@@ -3,7 +3,11 @@ const Blog = require('../models/blog')
 const Comment = require('../models/comment')
 
 router.post('/:id/comments', async (request, response) => {
-  const comment = new Comment(request.body)
+ // const comment = new Comment(request.body)
+  const comment = new Comment({
+    content: request.body.content,
+    blogId: request.params.id
+  })
   const blog = await Blog.findById(request.params.id)
 
   if(!blog) {
