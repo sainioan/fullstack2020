@@ -10,11 +10,11 @@ const blogSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  comments: [
-    {
+  comments: [String
+/*     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Comment'
-    }
+    } */
   ],
 })
 

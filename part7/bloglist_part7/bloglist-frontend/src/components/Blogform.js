@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import  { useField } from '../hooks/index'
-import { setNotification, clearNotification } from '../reducers/notificationReducer'
+import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 

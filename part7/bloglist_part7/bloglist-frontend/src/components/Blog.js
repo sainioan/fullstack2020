@@ -11,17 +11,21 @@ const Blog = ({ blog }) => {
   const dispatch = useDispatch()
 
   const [viewEverything, setViewEverything] = useState(false)
- 
+
   const comments = useSelector (state => state.comments)
   console.log(comments)
- 
+
   if(!blog){
     return null
   }
   console.log(blog.id)
-
-  const blogComments = comments.filter(comment => comment.blogId === blog.id)
-  console.log('blogComments', blogComments)
+  if(!comments){
+    return null
+  }
+  try{
+    console.log(blog.comments)
+ // const blogComments = comments.filter(comment => comment.blogId === blog.id)
+  // console.log('blogComments', blogComments)
 
   const increaseLikes = async () => {
     dispatch(likeBlog(blog))
@@ -64,19 +68,19 @@ const Blog = ({ blog }) => {
               <button onClick={() => increaseLikes(blog)}>Like</button>
             </div>
           </div>
-      <div className="content">
-        <ul>
-          { blogComments.map(comment =>
-            <Comment key={blog.id}
-              comment={comment} />)}
-        </ul>
-      </div>
-      <CommentForm blog={blog} />
-    </div>
-          <div>
-            <button onClick={() => removeBlog(blog)}>Remove</button>
+          <div className="content">
+            <ul>
+              { blog.comments.map(comment =>
+                <Comment key={blog.id}
+                  comment={comment} />)}
+            </ul>
           </div>
+          <CommentForm blog={blog} />
         </div>
+        <div>
+          <button onClick={() => removeBlog(blog)}>Remove</button>
+        </div>
+      </div>
     )
   } else {
     return (
@@ -93,6 +97,9 @@ const Blog = ({ blog }) => {
       </div>
     )
   }
+} catch (error){
+  console.log(error)
+}
 }
 
 Blog.propTypes = {

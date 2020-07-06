@@ -1,5 +1,5 @@
 import commentService from  '../services/comments'
-
+import { setNotification } from './notificationReducer'
 const reducer = (state = [], action) => {
   switch (action.type) {
   case 'INIT_COMMENTS':
@@ -11,20 +11,14 @@ const reducer = (state = [], action) => {
   }
 }
 
-
-export const createComment = (blog, comment) => {
+export const createComment = (id, comment) => {
   return async dispatch => {
-    try {
-      const commentToDispatch = await commentService.create(blog.id, comment)
+    const newComment = await commentService.create(id, comment)
+    dispatch({
+      type: 'CREATE_COMMENT',
+      data: newComment
+    })
 
-      dispatch({
-        type: 'CREATE_COMMENT',
-        data: commentToDispatch
-      })
-    }
-    catch (error) {
-      console.log(error.message)
-    }
   }
 }
 
@@ -37,5 +31,7 @@ export const initializeComments = () => {
     })
   }
 }
+
+
 
 export default reducer

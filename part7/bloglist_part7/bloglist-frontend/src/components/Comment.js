@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-const Comment = ({comment}) => {
+const Comment = ({ comment }) => {
 
   if(!comment){
     return null
