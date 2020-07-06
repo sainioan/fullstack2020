@@ -23,7 +23,7 @@ const Blog = ({ blog }) => {
     return null
   }
   try{
-    console.log(blog.comments)
+  
     const blogComments = comments.filter(comment => comment.blogId === blog.id)
   // console.log('blogComments', blogComments)
 

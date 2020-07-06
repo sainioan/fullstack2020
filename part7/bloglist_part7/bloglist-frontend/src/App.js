@@ -128,7 +128,7 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
+      <div className="container">
         <Notification />
         <LoginForm
           handleSubmit={handleLogin}
@@ -139,7 +139,7 @@ const App = () => {
     )
   }
   return (
-    <div>
+    <div className="container">
       <div>
         <h2>Blogs</h2>
         <Menu/>

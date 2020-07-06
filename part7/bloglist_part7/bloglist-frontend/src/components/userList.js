@@ -2,7 +2,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
+import { ListGroup } from 'react-bootstrap'
 const UserList = () => {
   const loggedUser = useSelector(state => state.user)
   console.log('userList loggeduser...', loggedUser)
@@ -20,12 +20,14 @@ const UserList = () => {
   return users ? (
     <div>
       <h2>Users</h2>
+      <ListGroup>
       <p></p>
       <h3>  blogs created</h3>
       <ul>{ users.map(user =>
-        <li key={user.id}>
+        <ListGroup.Item key={user.id}>
           <Link to={`/users/${user.id}`}>{user.username}</Link>, has {user.blogs.length} blogs.
-        </li>)}</ul>
+          </ListGroup.Item>)}</ul>
+        </ListGroup>
     </div>
 
   ) : null

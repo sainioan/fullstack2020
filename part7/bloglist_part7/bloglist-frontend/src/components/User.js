@@ -3,6 +3,7 @@ import { addUser, setUser } from '../reducers/userReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 export const User = ({ user }) => {
 
 
@@ -30,16 +31,21 @@ export const User = ({ user }) => {
   return (
     <div>
       <h2>{user.name}</h2>
-      <div>
+
         <p> blogs added </p>
-        <ul>
+        <Table striped>
+
+        {/* <ul> */}
+        <tbody>
           {blogs.map(blog =>
-            <li key={blog.id}>
+            <tr key={blog.id}>
+               <td>
+              <Link to={`/blogs/${blog.id}`}>{blog.title} by {blog.author}</Link> </td></tr>)}
+        {/* </ul> */}
 
-              <Link to={`/blogs/${blog.id}`}>{blog.title} by {blog.author}</Link></li>)}
-        </ul>
-
-      </div>
+      
+      </tbody>
+      </Table>
     </div>
   )
 
