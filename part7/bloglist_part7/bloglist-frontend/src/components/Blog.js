@@ -24,7 +24,7 @@ const Blog = ({ blog }) => {
   }
   try{
     console.log(blog.comments)
- // const blogComments = comments.filter(comment => comment.blogId === blog.id)
+    const blogComments = comments.filter(comment => comment.blogId === blog.id)
   // console.log('blogComments', blogComments)
 
   const increaseLikes = async () => {
@@ -70,7 +70,7 @@ const Blog = ({ blog }) => {
           </div>
           <div className="content">
             <ul>
-              { blog.comments.map(comment =>
+              { blogComments.map(comment =>
                 <Comment key={blog.id}
                   comment={comment} />)}
             </ul>

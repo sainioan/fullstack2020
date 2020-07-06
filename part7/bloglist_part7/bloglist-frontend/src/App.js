@@ -92,7 +92,7 @@ const App = () => {
     event.preventDefault()
     try {
       const user = dispatch(login({ username: username.value, password: password.value }))
-      console.log('line 74, user, ',JSON.stringfy(user))
+      console.log('line 74, user, ',JSON.stringify(user))
       storage.saveUser(user)
 
       dispatch(setUser(user))
