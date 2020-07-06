@@ -9,15 +9,15 @@ const CommentList = ({ blog }) => {
 
   return comments ? (
     <div>
-        <ListGroup>
-      {comments.map(comment =>
-        <ListGroup.Item  key={comment.id}>
-        <Comment
-          key={comment.id}
-          comment={comment}
-          blog = {blog}
-        />
-      </ListGroup.Item>)}
+      <ListGroup>
+        {comments.map(comment =>
+          <ListGroup.Item  key={comment.id}>
+            <Comment
+              key={comment.id}
+              comment={comment}
+              blog = {blog}
+            />
+          </ListGroup.Item>)}
       </ListGroup>
     </div>
 

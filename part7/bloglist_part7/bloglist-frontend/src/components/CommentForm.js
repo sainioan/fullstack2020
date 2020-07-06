@@ -1,9 +1,12 @@
-import React, {useState} from 'react'
+import React from 'react'
 import  { useField } from '../hooks/index'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { createComment } from '../reducers/commentReducer'
-import { makeComment } from '../reducers/blogReducer'
+import { Form, Button } from 'react-bootstrap'
+
+
+
 const CommentForm = ({ blog }) => {
   const dispatch = useDispatch()
   const content = useField('text')
@@ -11,32 +14,28 @@ const CommentForm = ({ blog }) => {
   const handleSubmit = (e) => {
 
     e.preventDefault()
-  /*   {
-      "content": "Reading Rocks-- a big shout out to reading blogs! ", "blogId": "5ee25a61cc9ed0b2a451ca30"
-      } */
+
     const comment = {
       content:content.value,
-       blogId:blog.id
-  }
+      blogId:blog.id
+    }
 
-  console.log(comment)
-      dispatch(createComment(blog.id, comment))
+    dispatch(createComment(blog.id, comment))
 
 
-      content.reset()
-} 
+    content.reset()
+}
   return (
-
     <div className='commentForm'>
       <h4>Comments</h4>
-      <form onSubmit={handleSubmit}>
-        <div>
-        text
-          <input  id="content" type={content.type} value={content.value} onChange = {content.onChange} 
+      <Form onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label>Text</Form.Label>
+          <Form.Control id="content" type={content.type} value={content.value} onChange = {content.onChange} 
           />
-        </div>
-        <button id="login-button" type="submit">add comment</button>
-      </form>
+        </Form.Group>
+        <Button variant='primary' type='submit'>Add Comment</Button>
+      </Form>
     </div>
   )
 }

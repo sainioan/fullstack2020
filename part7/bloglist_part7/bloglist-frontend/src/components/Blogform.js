@@ -1,9 +1,9 @@
 import React from 'react'
-import  { useField } from '../hooks/index'
+import { useField } from '../hooks/index'
 import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
-
+import { Form, Button } from 'react-bootstrap'
 const BlogForm = () => {
   const dispatch = useDispatch()
 
@@ -29,9 +29,6 @@ const BlogForm = () => {
         likes: likes.value || 0, }
 
       dispatch(createBlog(blog))
-      // history.push('/')
-
-
       dispatch(setNotification(`New blog '${blog.title}' by ${blog.author} added`,10, 'success'))
     }
     title.reset()
@@ -40,37 +37,22 @@ const BlogForm = () => {
     likes.reset()
 
   }
-  /* } catch (error){
-  dispatch(setNotification(`${error.message}`))
-}
- */
   return (
-    <div className="formDiv">
-      <div>
-        <h3>Create a new blog</h3>
-        <form  onSubmit={handleSubmit}>
-          <p className="formDiv">
-            Title:
-            <input id="title" type={title.type} value={title.value} onChange = {title.onChange}  />
-          </p>
-          <p className="formDiv">
-            Author:
-            <input id="author" type={author.type} value={author.value} onChange = {author.onChange}  />
-          </p>
-          <p className="formDiv">
-           Url:
-
-            <input id="url" type={url.type} value={url.value} onChange = {url.onChange}  />
-          </p>
-          <p className="formDiv">
-            Likes:
-            <input id="likes" type={likes.type} value={likes.value} onChange = {likes.onChange}  />
-          </p>
-          <p>
-            <button id="createButton">Create</button>
-          </p>
-        </form>
-      </div>
+    <div>
+      <h3>Create a new blog</h3>
+      <Form  onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label>title</Form.Label>
+          <Form.Control id="title" type={title.type} value={title.value} onChange = {title.onChange}  />
+          <Form.Label>author</Form.Label>
+          <Form.Control id="author" type={author.type} value={author.value} onChange = {author.onChange}  />
+          <Form.Label>url</Form.Label>
+          <Form.Control id="url" type={url.type} value={url.value} onChange = {url.onChange}  />
+          <Form.Label>Likes</Form.Label>
+          <Form.Control id="likes" type={likes.type} value={likes.value} onChange = {likes.onChange}  />
+          <Button variant='primary' type='submit'>Create</Button>
+        </Form.Group>
+      </Form>
     </div>
   )
 }

@@ -21,13 +21,12 @@ const UserList = () => {
     <div>
       <h2>Users</h2>
       <ListGroup>
-      <p></p>
-      <h3>  blogs created</h3>
-      <ul>{ users.map(user =>
-        <ListGroup.Item key={user.id}>
-          <Link to={`/users/${user.id}`}>{user.username}</Link>, has {user.blogs.length} blogs.
-          </ListGroup.Item>)}</ul>
-        </ListGroup>
+        <h3>  blogs created</h3>
+        { users.map(user =>
+          <ListGroup.Item key={user.id}>
+            <Link to={`/users/${user.id}`}>{user.username}</Link>, has {user.blogs.length} blogs.
+          </ListGroup.Item>)}
+      </ListGroup>
     </div>
 
   ) : null
