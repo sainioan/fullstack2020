@@ -1,15 +1,14 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { Alert } from 'react-bootstrap'
 
 const Notification = () => {
   const notification = useSelector(state => state.notification)
   if(!notification){
     return null
   }
-  /*   const notification = useSelector(({ notification }) => {
-    return notification
-  }) */
-  const style = {
+
+/*   const style = {
     background: 'lightgrey',
     color: notification.type === 'error' ? 'red' : 'green',
     fontSize: 20,
@@ -18,12 +17,14 @@ const Notification = () => {
     padding: 5,
     marginBottom: 10
 
-  }
+  } */
 
   if(notification)
     return (
-      <div style ={style} className={notification.type}>
-        {notification}
+      <div className="container">
+        <Alert variant="primary" show={true}>
+          {notification}
+        </Alert>
       </div>
     )
   else {

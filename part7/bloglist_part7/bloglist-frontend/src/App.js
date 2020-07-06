@@ -15,6 +15,7 @@ import { login, setUser, logOut } from './reducers/userReducer'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { initializeComments } from './reducers/commentReducer'
+import { Navbar, Nav } from 'react-bootstrap'
 import {
   Switch,
   Route,
@@ -29,10 +30,22 @@ const Menu = () => {
 
   return(
     <div>
-      <h4>Menu</h4>
-      <p></p>
-      <Link style={padding} to="/blogs">blogs</Link>
-      <Link style={padding} to="/users">users</Link>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/">Home</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/blogs">Blogs</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/users">Users</Link>
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     </div>
   )
 }
