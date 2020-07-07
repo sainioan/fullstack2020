@@ -28,10 +28,6 @@ let authors = [
   },
 ]
 
-/*
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
-*/
 
 let books = [
   {
@@ -95,6 +91,7 @@ type Book {
   }
   type Author {
     name: String!
+    bookCount: Int
     id: ID! 
   }
   enum YesNo {
@@ -105,6 +102,7 @@ type Book {
     bookCount: Int!
     authorCount: Int!
     allBooks: [Book!]!
+    allAuthors: [Author!]!
   }
 `
 
@@ -114,7 +112,14 @@ const resolvers = {
     authorCount: () => authors.length,
     allBooks: (root, args) => {
           return books
-        }
+        },
+        allAuthors: (root, args) => {
+          return authors
+        } 
+  },
+  Author: {
+    bookCount: (root) => books.filter(b => b.author === root.name).length
+    
   }
 }
 
