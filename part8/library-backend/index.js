@@ -1,6 +1,6 @@
-2.28 KB
-  
 const { ApolloServer, gql } = require('apollo-server')
+
+const uuid = require('uuid/v1')
 
 let authors = [
   {
@@ -28,10 +28,7 @@ let authors = [
   },
 ]
 
-/*
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
-*/
+
 
 let books = [
   {
@@ -86,14 +83,19 @@ let books = [
 ]
 
 const typeDefs = gql`
-  type Query {
-  }
-`
 
+type Query {
+    bookCount: Int!
+    authorCount: Int!
+  }
+  `
 const resolvers = {
   Query: {
+    bookCount: () => books.length,
+    authorCount: () => authors.length
   }
 }
+
 
 const server = new ApolloServer({
   typeDefs,
