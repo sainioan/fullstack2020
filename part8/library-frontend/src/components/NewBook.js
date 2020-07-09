@@ -1,30 +1,22 @@
 import React, { useState } from 'react'
-import { gql, useMutation } from '@apollo/client';
-const CREATE_BOOK = gql`
-mutation createPerson($name: String!, $street: String!, $city: String!, $phone: String) {
-  addBook(
-    title: $title,
-    author: $author,
-    published: $published,
-    genres: $genres
-    genre: $genre
-    id: $id
-
-  ) {
-    title
-    author
-    published
-    genres
-  }
-}
-`
+import { useMutation } from '@apollo/client'
+import { CREATE_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../queries'
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
-  const [ createBook ] = useMutation(CREATE_BOOK)
+  const [ createBook ] = useMutation(CREATE_BOOK, {
+    refetchQueries: [ { query: ALL_AUTHORS } ],
+    onError: (error) => {
+      console.log(error)
+     // props.setError(error.graphQLErrors[0].message)
+    }
+  })
+  
+
+
   if (!props.show) {
     return null
   }
@@ -70,7 +62,7 @@ const NewBook = (props) => {
           <input
             type='number'
             value={published}
-            onChange={({ target }) => setPublished(target.value)}
+            onChange={({ target }) => setPublished(parseInt(target.value))}
           />
         </div>
         <div>

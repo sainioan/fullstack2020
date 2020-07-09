@@ -1,13 +1,20 @@
   
 import React from 'react'
-
-
+import { EDIT_AUTHOR, ALL_AUTHORS } from '../queries'
+import { useMutation } from '@apollo/client'
 const Authors = (props) => {
 
-  if (!props.show) {
-    return null
-  } 
+
  const authors = props.authors
+/*  const [ createBook ] = useMutation(CREATE_BOOK, {
+  refetchQueries: [ { query: ALL_AUTHORS } ],
+  onError: (error) => {
+    props.setError(error.graphQLErrors[0].message)
+  }
+}) */
+if (!props.show) {
+  return null
+} 
 console.log(authors)
   return (
     <div>
