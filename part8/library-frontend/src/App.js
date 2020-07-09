@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
-import {  useQuery, useMutation } from '@apollo/client';
-import { ALL_AUTHORS, CREATE_BOOK, ALL_BOOKS }  from './queries.js'
+import {  useQuery } from '@apollo/client';
+import { ALL_AUTHORS, ALL_BOOKS }  from './queries.js'
 
 
 const Notify = ({errorMessage}) => {
@@ -57,6 +57,7 @@ const App = () => {
       <Notify errorMessage={errorMessage} />
       <Authors authors = {resultAuthors.data.allAuthors}
         show={page === 'authors'}
+        notify={notify}
       />
 
       <Books books = {resultBooks.data.allBooks}
