@@ -20,14 +20,20 @@ const Notify = ({errorMessage}) => {
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
 
-  const result = useQuery(ALL_AUTHORS, ALL_BOOKS, {
+  const resultAuthors = useQuery(ALL_AUTHORS, {
+    pollInterval: 2000
+  })
+  const resultBooks = useQuery(ALL_BOOKS, {
     pollInterval: 2000
   })
 
-  const [page, setPage] = useState('authors', 'books')
+  const [page, setPage] = useState('authors')
 
-  if (result.loading)  {
-    return <div>loading...</div>
+  if (resultAuthors.loading)  {
+    return <div>loading authors...</div>
+  }
+  if (resultBooks.loading)  {
+    return <div>loading books...</div>
   }
 
 
@@ -49,11 +55,11 @@ const App = () => {
         <button onClick={() => setPage('add')}>add book</button>
       </div>
       <Notify errorMessage={errorMessage} />
-      <Authors authors = {result.data.allAuthors}
+      <Authors authors = {resultAuthors.data.allAuthors}
         show={page === 'authors'}
       />
 
-      <Books books = {result.data.allBooks}
+      <Books books = {resultBooks.data.allBooks}
         show={page === 'books'}
       />
 
