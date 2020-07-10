@@ -116,13 +116,8 @@ type Book {
       id: ID
       genres: [String]
     ): Book      editAuthor(
-      name: String
-      bookCount: Int
-      born:Int
-      id: ID
-      setBornTo:Int
-  
-      
+      name: String!
+      born:Int!   
     ): Author    
   }  
 `
