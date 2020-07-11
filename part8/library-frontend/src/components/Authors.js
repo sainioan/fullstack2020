@@ -21,7 +21,6 @@ const Authors = (props) => {
     }
   }
 }) 
-// const [editAuthor] = useMutation(EDIT_AUTHOR)
 const result = useQuery(ALL_AUTHORS)
 let authors
 if (result.loading) {
@@ -43,8 +42,8 @@ if (!props.show) {
 
 const submit = async (event) => {
   event.preventDefault()
-  
-  await editAuthor({ variables: { name: name.value, born: parseInt(born) } })
+ // await editAuthor({ variables: { name: name, born: parseInt(born) } })
+await editAuthor({ variables: { name: name.value, born: parseInt(born) } })
   console.log(born)
   setName('')
   setBorn('')
@@ -76,6 +75,11 @@ console.log(authors)
       <h2>Set birth year</h2>
    <form onSubmit={submit}>
         <div>
+          Name 
+{/*           <input
+          value ={name}
+          onChange = {({target}) => setName(target.value)}
+          /> */}
           <Select
             value={name}
             onChange={setName}
