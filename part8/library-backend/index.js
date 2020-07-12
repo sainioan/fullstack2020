@@ -155,23 +155,21 @@ const resolvers = {
        } if((!args.genre) && args.author){
          return books.filter(b => b.author ===args.author)
         }
-        return Book.find({})
-        /////const books = await Book.find({}).populate('Authors')
-       //// return books
-       // return books
+        return Book.find({}).populate('author')
       }
     
         ,
         allAuthors: (root, args) => {
-          return Author.find({})
-          //return authors
+          return Author.find({}).populate('book')
         } 
   },
   Author: {
-    bookCount: (root) => books.filter(b => b.author === root.name).length
-    
-  }
-,    
+    bookCount: async (root) => {
+      const author = await Author.findOne({ name: root.name })
+      const booksByAuthor = await Book.find({ author: author.id})
+      return  booksByAuthor.length
+    }
+  },  
 Mutation: {
   addBook: async (root, args) => {
  
