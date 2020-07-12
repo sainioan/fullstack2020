@@ -141,10 +141,9 @@ type Book {
 
 const resolvers = {
   Query: {
-   // bookCount: () => books.length,
    bookCount: () => Book.collection.countDocuments(),
    authorCount:() => Author.collection.countDocuments(),
-  //  authorCount: () => authors.length,
+ 
     allBooks: (root, args) => {
   
       if(args.author && args.genre){
@@ -182,8 +181,9 @@ Mutation: {
       })
      await author.save()
     }
-    const book = new Book({ ...args, author: author })
+    const book = new Book({ ...args, author: author, published: args.published })
     const newBook = await book.save()
+    console.log(newBook)
     return newBook
   }, 
 editAuthor: async (root, args) => {

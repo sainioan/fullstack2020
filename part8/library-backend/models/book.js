@@ -8,7 +8,7 @@ const bookSchema = new mongoose.Schema({
     required: true,
   },
   published: {
-    typer: Number
+    type: Number
   },
    author: {
     type: mongoose.Schema.Types.ObjectId,
@@ -18,13 +18,4 @@ const bookSchema = new mongoose.Schema({
   }]
 })
 
-/* 
-bookSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-  },
-})
- */
 module.exports = mongoose.model('Book', bookSchema)
