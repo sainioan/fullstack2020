@@ -1,36 +1,43 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { ME } from '../queries'
 import {  useQuery} from '@apollo/client'
-const filteredBooks = ({filter, books}) =>{
-  return books.filter(b => b.genres.includes(filter))
-}
+
 
 
 const Books = (props) => {
-
+  const[filter, setFilter] = useState('')
   const books = props.books
-  const { data: user } = useQuery(ME, {
-    skip: !props.show, 
-  }) 
-  if(user){
-    console.log(user)
-    console.log(user.me.favoriteGenre)
- // const favoriteGenre = user.data.favoriteGenre
- // console.log(favoriteGenre)
+ 
+ let genres = books.map(b => b.genres).map(item => item)
+  function removeDups(genres) {
+    let unique = {};
+    genres.forEach(function(i) {
+      if(!unique[i]) {
+        unique[i] = true;
+      }
+    });
+    return Object.keys(unique);
   }
+  
+genres = removeDups(genres)
   if (!props.show) {
     return null
   }
-/*   const { data: books } = useQuery(FIND_BOOK, {
-    skip: !me || !me.favoriteGenre,
-    fetchPolicy: 'cache-and-network',
-    variables: { genreToSearch: me ? me.favoriteGenre : null },
-  }); */
-
-
+  const filteredBooks = ({filter}) =>{
+    return books.filter(b => b.genres.includes(filter))
+  }
+  let booksToShow
+  if (filter !== '') {
+   booksToShow= books.filter(b => b.genres.includes(filter))
+  } else {
+    booksToShow = books
+  }
   return (
     <div>
       <h2>Books:</h2>
+      {  genres.map(item => <button key={item} onClick={() =>  setFilter(item)}>
+        {item}
+      </button>)}
 
       <table  style={{ marginTop: '16px'}}>
         <tbody>
@@ -45,7 +52,7 @@ const Books = (props) => {
             Published
             </th>
           </tr>
-          {books.map(a =>
+          {booksToShow.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
