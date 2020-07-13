@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -30,6 +30,12 @@ const App = () => {
   })
 
   const [page, setPage] = useState('authors')
+  useEffect(() => {
+    const token = localStorage.getItem('user-token')
+    if ( token ) {
+      setToken(token)
+    }
+  }, [])
   const res = useQuery(BOOK_COUNT)
   let totalBooks
   if(res.data) {
@@ -80,6 +86,7 @@ const App = () => {
       <Notify errorMessage={errorMessage} />
       <Authors authors = {resultAuthors.data.allAuthors}
         show={page === 'authors'}
+        token={token}
         notify={notify}
         setError={notify}
       />
@@ -90,6 +97,7 @@ const App = () => {
 
       <NewBook 
         show={page === 'add'}
+        token={token}
         setError={notify}
       />
 

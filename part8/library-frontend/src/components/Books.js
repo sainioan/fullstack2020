@@ -9,17 +9,19 @@ const Books = (props) => {
 
   return (
     <div>
-      <h2>books</h2>
+      <h2>Books:</h2>
 
-      <table>
+      <table  style={{ marginTop: '16px'}}>
         <tbody>
           <tr>
-            <th></th>
             <th>
-              author
+            Title
             </th>
             <th>
-              published
+            Author
+            </th>
+            <th>
+            Published
             </th>
           </tr>
           {books.map(a =>
