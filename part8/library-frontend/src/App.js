@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
-import {  useQuery } from '@apollo/client';
+import LoginForm from './components/LoginForm'
+import {  useQuery,  useApolloClient } from '@apollo/client';
 import { ALL_AUTHORS, ALL_BOOKS, BOOK_COUNT }  from './queries.js'
 
 
@@ -19,7 +20,8 @@ const Notify = ({errorMessage}) => {
 }
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
-
+  const [token, setToken] = useState(null)
+  const client = useApolloClient()
   const resultAuthors = useQuery(ALL_AUTHORS, {
     pollInterval: 2000
   })
@@ -39,6 +41,11 @@ const App = () => {
   if (resultBooks.loading)  {
     return <div>loading books...</div>
   }
+  const logout = () => {
+    setToken(null)
+    localStorage.clear()
+    client.resetStore()
+  }
 
 
   const notify = (message) => {
@@ -49,11 +56,23 @@ const App = () => {
   }
 
  
-
+  if (!token) {
+    return (
+      <div>
+        <Notify errorMessage={errorMessage} />
+        <h2>Login</h2>
+        <LoginForm
+          setToken={setToken}
+          setError={notify}
+        />
+      </div>
+    )
+  }
 
   return (
     <div>
       <div>
+        <button onClick={logout} >logout</button>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
