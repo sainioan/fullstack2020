@@ -1,12 +1,16 @@
 import React, {useState} from 'react'
 
 
-
-
 const Books = (props) => {
   const[filter, setFilter] = useState('all')
   const books = props.books
- 
+ const thisFilter = (filter) => {
+   return (
+     <div>
+       in genre <b>{filter}</b>
+     </div>
+   )
+ }
  let genres = books.map(b => b.genres).map(item => item)
   function removeDups(genres) {
     let unique = {};
@@ -37,8 +41,9 @@ genres = removeDups(genres)
         {item}
       </button>)}
       <button type="button" onClick={() => setFilter('all')}>all</button>
+      {thisFilter(filter)}
       <table>
-        <tbody>
+        <tbody>    
           <tr>
             <th>
             Title
@@ -50,8 +55,6 @@ genres = removeDups(genres)
             Published
             </th>
           </tr>
-          in genre <b>{filter}</b>
-          <p></p>
           {booksToShow.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
