@@ -5,8 +5,8 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommendations from './components/Recommendations'
-import {  useQuery,  useApolloClient } from '@apollo/client';
-import { ALL_AUTHORS, ALL_BOOKS, ME }  from './queries.js'
+import {  useQuery,  useSubscription, useApolloClient } from '@apollo/client';
+import { ALL_AUTHORS, ALL_BOOKS, ME, BOOK_ADDED }  from './queries.js'
 
 
 const Notify = ({errorMessage}) => {
@@ -23,6 +23,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [token, setToken] = useState(null)
   const client = useApolloClient()
+  const [page, setPage] = useState('authors')
   const resultAuthors = useQuery(ALL_AUTHORS, {
     pollInterval: 2000
   })
@@ -32,19 +33,38 @@ const App = () => {
   const resultMe = useQuery(ME, {
     pollInterval:2000
   })
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
 
-  const [page, setPage] = useState('authors')
+      const addedBook = subscriptionData.data.bookAdded
+      console.log(subscriptionData)
+
+      window.alert(`${subscriptionData.data.bookAdded.title} was added`)
+      updateCacheWith(addedBook)
+    }
+  })
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) => 
+      set.map(p => p.id).includes(object.id)  
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks : dataInStore.allBooks.concat(addedBook) }
+      })
+    }   
+  }
+
+  
+
   useEffect(() => {
     const token = localStorage.getItem('user-token')
     if ( token ) {
       setToken(token)
     }
   }, [])
-/*   const res = useQuery(BOOK_COUNT)
-  let totalBooks
-  if(res.data) {
-  totalBooks = res.data.bookCount
-  } */
+
   if (resultAuthors.loading)  {
     return <div>loading authors...</div>
   }
@@ -105,6 +125,7 @@ const App = () => {
 
       <NewBook 
         show={page === 'add'}
+        updateCacheWith={updateCacheWith}
         token={token}
         setError={notify}
       />

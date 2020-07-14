@@ -33,11 +33,10 @@ genres = removeDups(genres)
   return (
     <div>
       <h2>Books:</h2>
-      {  genres.map(item => <button key={item} onClick={() =>  setFilter(item)}>
+      {genres.map(item => <button key={item} onClick={() => setFilter(item)}>
         {item}
-
       </button>)}
-      <button type = "button" onClick={() =>  setFilter('all')}>all</button>
+      <button type="button" onClick={() => setFilter('all')}>all</button>
       <table>
         <tbody>
           <tr>
@@ -55,7 +54,6 @@ genres = removeDups(genres)
           <p></p>
           {booksToShow.map(a =>
             <tr key={a.title}>
-            
               <td>{a.title}</td>
               <td>{a.author.name}</td>
               <td>{a.published}</td>
