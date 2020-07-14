@@ -6,7 +6,7 @@ import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommendations from './components/Recommendations'
 import {  useQuery,  useApolloClient } from '@apollo/client';
-import { ALL_AUTHORS, ALL_BOOKS, BOOK_COUNT }  from './queries.js'
+import { ALL_AUTHORS, ALL_BOOKS, ME }  from './queries.js'
 
 
 const Notify = ({errorMessage}) => {
@@ -29,6 +29,9 @@ const App = () => {
   const resultBooks = useQuery(ALL_BOOKS, {
     pollInterval: 2000
   })
+  const resultMe = useQuery(ME, {
+    pollInterval:2000
+  })
 
   const [page, setPage] = useState('authors')
   useEffect(() => {
@@ -37,16 +40,19 @@ const App = () => {
       setToken(token)
     }
   }, [])
-  const res = useQuery(BOOK_COUNT)
+/*   const res = useQuery(BOOK_COUNT)
   let totalBooks
   if(res.data) {
   totalBooks = res.data.bookCount
-  }
+  } */
   if (resultAuthors.loading)  {
     return <div>loading authors...</div>
   }
   if (resultBooks.loading)  {
     return <div>loading books...</div>
+  }
+  if (resultMe.loading)  {
+    return <div>loading user...</div>
   }
   const logout = () => {
     setToken(null)
@@ -83,7 +89,7 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
-        <button onClick={() => setPage('recommendations')}>recommendations</button>
+        <button onClick={() => setPage('recommendations')}>recommend</button>
       </div>
       <Notify errorMessage={errorMessage} />
       <Authors authors = {resultAuthors.data.allAuthors}
@@ -105,6 +111,7 @@ const App = () => {
 
       <Recommendations
       books = {resultBooks.data.allBooks}
+      user = {resultMe.data.me}
       show ={page ==='recommendations'}
       />
 

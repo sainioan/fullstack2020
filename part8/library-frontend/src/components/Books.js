@@ -22,34 +22,7 @@ genres = removeDups(genres)
   if (!props.show) {
     return null
   }
-  const allBooks = () =>{
-    return (
-      <div>
-        <h2>Books:</h2>
-        <table>
-          <tbody>
-            <tr>
-              <th>
-              Title
-              </th>
-              <th>
-              Author
-              </th>
-              <th>
-              Published
-              </th>
-            </tr>
-            {books.map(a =>
-              <tr key={a.title}>
-                <td>{a.title}</td>
-                <td>{a.author.name}</td>
-                <td>{a.published}</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>)
-  }
+
   let booksToShow
   if (filter !== 'all') {
    booksToShow= books.filter(b => b.genres.includes(filter))
@@ -78,8 +51,11 @@ genres = removeDups(genres)
             Published
             </th>
           </tr>
+          in genre <b>{filter}</b>
+          <p></p>
           {booksToShow.map(a =>
             <tr key={a.title}>
+            
               <td>{a.title}</td>
               <td>{a.author.name}</td>
               <td>{a.published}</td>
