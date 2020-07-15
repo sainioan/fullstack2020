@@ -9,9 +9,9 @@ const pubsub = new PubSub()
 require('dotenv').config();
 const JWT_SECRET = 'ASECRET'
 const DataLoader = require('dataloader')
-const _countBy = require("lodash.countby");
+//const _countBy = require("lodash.countby");
 
-const BookCountLoader = () => {
+/* const BookCountLoader = () => {
   return new DataLoader(async (authorIds) => {
     const books = await Book.find({});
     const bookCount = books.map(book => book.author);
@@ -19,7 +19,7 @@ const BookCountLoader = () => {
 
     return authorIds.map((id) => authorIdCount[id] || 0);
   });
-};
+}; */
 
 mongoose.set('useFindAndModify', false)
 const MONGODB_URI=process.env.MONGODB_URI
@@ -202,14 +202,8 @@ const resolvers = {
         }
   },
   Author: {
-    bookCount: ({ id }, args, { bookCountLoader }) => {
-      return bookCountLoader.load(id.toString());
-     
-   // bookCount: async (root, args, { loaders }) => {
-  // const author = await Author.findOne({ name: root.name })
-  // const booksByAuthor = await Book.find({ author: author.id})
-  //  return  booksByAuthor.length
-    
+    bookCount: async (root, args, { loaders }) => {      
+     return await loaders.book.load(root._id)
     }
   },
   
@@ -301,18 +295,17 @@ login: async (root, args) => {
 
  const batchBooks = async (keys, models) => {  
   const books = await models.Book.find({}) 
-  console.log('books...:', books) 
    return keys.map(key => books.filter(
      book => book.author.toString() === key.toString()).length) 
 } 
-console.log('batchBooks', batchBooks)
+
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,  
   context: async ({ req }) => {
     models = { Book, Author }
-    const bookCountLoader = BookCountLoader();
+  //  const bookCountLoader = BookCountLoader();
     const auth = req ? req.headers.authorization : null
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
       const decodedToken = jwt.verify(
@@ -320,11 +313,18 @@ const server = new ApolloServer({
       )
       const currentUser = await User.findById(decodedToken.id)
       return { 
+        models,
         currentUser,
-        bookCountLoader
+        //bookCountLoader
+        loaders: {
+          book: new DataLoader(keys => batchBooks(keys, models)),
+         },
       }
     }
-    return {bookCountLoader}
+    return { loaders: {
+      book: new DataLoader(keys => batchBooks(keys, models)),
+     },}
+    //{bookCountLoader}
   }
 })
 server.listen().then(({ url, subscriptionsUrl }) => {
