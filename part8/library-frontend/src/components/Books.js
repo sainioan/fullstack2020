@@ -1,25 +1,10 @@
-import React, {useState, useEffect} from 'react'
-import { ALL_BOOKS  } from '../queries'
-import {  useApolloClient } from '@apollo/client';
+import React, { useState } from 'react'
 
 const Books = (props) => {
 const[filter, setFilter] = useState('all')
-const [genre, setGenre] = useState(null);
-const [filteredBooks, setFilteredBooks] = useState([])
-const client = useApolloClient(ALL_BOOKS)
 
-useEffect(() => {
-  const setBooks = async genre => {
-    const { data } = await client.query({
-      query: ALL_BOOKS,
-      variables: genre ? { genre: genre } : {}
-    })
-    setFilteredBooks(data.allBooks)
-  }
-  setBooks(genre)
-}, [ client, genre])
 
-//const books = props.books
+const books = props.books
 const thisFilter = (filter) => {
    return (
      <div>
@@ -27,8 +12,8 @@ const thisFilter = (filter) => {
      </div>
    )
  }
-
- let genres = filteredBooks.map(b => b.genres).map(item => item)
+ let genres = books.map(b => b.genres).map(item => item)
+ //let genres = filteredBooks.map(b => b.genres).map(item => item)
   function removeDups(genres) {
     let unique = {};
     genres.forEach(function(i) {
@@ -46,10 +31,12 @@ genres = removeDups(genres)
 
   let booksToShow
   if (filter !== 'all') {
-   booksToShow= filteredBooks.filter(b => b.genres.includes(filter))
+  // booksToShow= filteredBooks.filter(b => b.genres.includes(filter))
 
+   booksToShow= books.filter(b => b.genres.includes(filter))
   } else {
-    booksToShow = filteredBooks
+   // booksToShow = filteredBooks
+    booksToShow = books
   }
 
   return (

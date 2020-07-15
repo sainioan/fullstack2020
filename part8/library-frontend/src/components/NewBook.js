@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { CREATE_BOOK } from '../queries'
+import { CREATE_BOOK, BOOK_ADDED, ALL_BOOKS } from '../queries'
+import { useSubscription, useApolloClient } from '@apollo/client';
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
+  const client = useApolloClient()
   const [ createBook ] = useMutation(CREATE_BOOK, {
     //refetchQueries: [ { query: ALL_AUTHORS }, { query: ALL_BOOKS} ],
     onError: (error) => {
@@ -15,12 +17,33 @@ const NewBook = (props) => {
       } 
     },
     update: (store, response) => {
-      props.updateCacheWith(response.data.addBook)
+      updateCacheWith(response.data.addBook)
     }
   })
   
+  useSubscription(BOOK_ADDED,{
+    onSubscriptionData: ({subscriptionData }) => {
+      console.log(subscriptionData);
+      const bookAdded = subscriptionData.data.bookAdded
+     // window.alert(`${bookAdded.title} was added!`)
+      updateCacheWith(bookAdded)
+    }
+  })
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) => 
+      set.map(p => p.id).includes(object.id)  
 
-
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      const newData = [...dataInStore.allBooks, addedBook]
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: {
+          allBooks: newData
+        }
+      })
+    }   
+  }
   if (!props.show) {
     return null
   }
