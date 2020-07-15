@@ -8,6 +8,18 @@ const { PubSub } = require('apollo-server')
 const pubsub = new PubSub()
 require('dotenv').config();
 const JWT_SECRET = 'ASECRET'
+const DataLoader = require('dataloader')
+const _countBy = require("lodash.countby");
+
+const BookCountLoader = () => {
+  return new DataLoader(async (authorIds) => {
+    const books = await Book.find({});
+    const bookCount = books.map(book => book.author);
+    const authorIdCount = _countBy(bookCount, (id) => id);
+
+    return authorIds.map((id) => authorIdCount[id] || 0);
+  });
+};
 
 mongoose.set('useFindAndModify', false)
 const MONGODB_URI=process.env.MONGODB_URI
@@ -15,7 +27,7 @@ const MONGODB_URI=process.env.MONGODB_URI
 console.log('connecting to', MONGODB_URI)
 mongoose.set('useCreateIndex', true)
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true,  useUnifiedTopology: true })
   .then(() => {
     console.log('connected to MongoDB')
   })
@@ -119,10 +131,6 @@ type Book {
     born:Int
     id: ID
   }
-  enum YesNo {
-    YES
-    NO
-  }
   type User {
     username: String!
     favoriteGenre: String!
@@ -186,7 +194,7 @@ const resolvers = {
   },
     allAuthors: async (root, args) => {
       const authors = await Author.find({}).populate('book')
-      console.log("third print", authors)
+     
           return authors
         }, 
         me: (root, args, context) => {
@@ -194,10 +202,14 @@ const resolvers = {
         }
   },
   Author: {
-    bookCount: async (root) => {
-      const author = await Author.findOne({ name: root.name })
-      const booksByAuthor = await Book.find({ author: author.id})
-      return  booksByAuthor.length
+    bookCount: ({ id }, args, { bookCountLoader }) => {
+      return bookCountLoader.load(id.toString());
+     
+   // bookCount: async (root, args, { loaders }) => {
+  // const author = await Author.findOne({ name: root.name })
+  // const booksByAuthor = await Book.find({ author: author.id})
+  //  return  booksByAuthor.length
+    
     }
   },
   
@@ -283,21 +295,36 @@ login: async (root, args) => {
 },  Subscription: {
   bookAdded: {
     subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
-  },
-},
+  }
 }
+}
+
+ const batchBooks = async (keys, models) => {  
+  const books = await models.Book.find({}) 
+  console.log('books...:', books) 
+   return keys.map(key => books.filter(
+     book => book.author.toString() === key.toString()).length) 
+} 
+console.log('batchBooks', batchBooks)
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,  
   context: async ({ req }) => {
+    models = { Book, Author }
+    const bookCountLoader = BookCountLoader();
     const auth = req ? req.headers.authorization : null
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
       const decodedToken = jwt.verify(
         auth.substring(7), JWT_SECRET
       )
       const currentUser = await User.findById(decodedToken.id)
-      return { currentUser }
+      return { 
+        currentUser,
+        bookCountLoader
+      }
     }
+    return {bookCountLoader}
   }
 })
 server.listen().then(({ url, subscriptionsUrl }) => {
