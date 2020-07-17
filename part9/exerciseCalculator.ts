@@ -1,5 +1,5 @@
 
-interface TrainingResult {
+export interface TrainingResult {
      periodLength: number;
         trainingDays: number;
         success: boolean;
@@ -10,15 +10,13 @@ interface TrainingResult {
      
 }
 
-function createCalculator(config:TrainingResult) {
-    console.log()
-}
-interface Numbers2 {
+
+export interface Numbers2 {
     target: number;
     numberOfDays: number[];
   }
 
-  const parseArguments2 = (args: Array<string>): Numbers2 => {
+ export const parseArguments2 = (args: Array<string>): Numbers2 => {
     if (args.length < 4) throw new Error('Not enough arguments');
  
     if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
@@ -80,7 +78,6 @@ rating = 3;
 ratingDescription = "meets";
 }
 
-let myExerciseLog = createCalculator({periodLength:periodLength, trainingDays:trainingDays,success:success, rating:rating, ratingDescription:ratingDescription, target:target, average:average})
 return ({periodLength:periodLength, trainingDays:trainingDays,success:success, rating:rating, ratingDescription:ratingDescription, target:target, average:average});
 }
 
@@ -93,3 +90,4 @@ try {
       console.log('Error, something bad happened, message: ', e.message);
     }
   
+    export default exerciseCalculator 
