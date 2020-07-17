@@ -1,11 +1,11 @@
 import express from 'express';
 const app = express();
 // import { exerciseCalculator,  TrainingResult,  Numbers2 , } from './exerciseCalculator'
-// import { calculateBmi, parseArguments } from './calculateBmi'
+import calculateBmi from './calculateBmi'
 
 
-app.get('/ping', (_req, res) => {
-  res.send('pong');
+app.get('/bmi', (_req, res) => {
+  res.send(calculateBmi(Number(_req.query.height), Number(_req.query.weight)));
 });  
 
 app.get('/hello', (_req, res) => {

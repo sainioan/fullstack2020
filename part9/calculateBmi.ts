@@ -1,5 +1,5 @@
 type Result = string;
-type bmi = number;
+export type bmi = number;
 
  interface Numbers {
   height: number;
