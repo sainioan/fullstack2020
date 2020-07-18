@@ -14,18 +14,18 @@ export const parseArguments = (args: Array<string>): Numbers => {
     return {
       height: Number(args[2]),
       weight: Number(args[3])
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
-} 
+}; 
 
 const calculateBmi = (height: number, weight: number ) : Result => {
-    if(weight<= 0 || height <= 0 || weight===NaN || height === NaN)
+    if(weight<= 0 || height <= 0 || isNaN(weight) || isNaN(height))
     throw new Error('invalid arguments!');
     
     const bmi =weight/((height/100)*(height/100));
-    console.log('bmi:', bmi)
+    console.log('bmi:', bmi);
     let value ='';
     if(  (bmi > 18) && (bmi<26)) {
      value = "Normal (healthy weight)";
@@ -37,7 +37,7 @@ const calculateBmi = (height: number, weight: number ) : Result => {
      value =   "Overweight (unehealthy weight)";
     }
     return value;
-  }
+  };
  
   if (require.main === module) {
   try {
@@ -45,7 +45,8 @@ const calculateBmi = (height: number, weight: number ) : Result => {
   const { height, weight } = parseArguments(process.argv);
   console.log(calculateBmi(height, weight));
   } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     console.log('Error, something bad happened, message: ', e.message);
   }
 }
-  export default calculateBmi
+  export default calculateBmi;

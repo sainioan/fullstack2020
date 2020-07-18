@@ -1,6 +1,6 @@
 
 export interface TrainingResult {
-     periodLength: number;
+        periodLength: number;
         trainingDays: number;
         success: boolean;
         rating: number,
@@ -29,20 +29,21 @@ export interface Numbers2 {
         
         target:  Number(args[2])
 
-      }
+      };
     } else {
       throw new Error('Provided values were not numbers!');
     }
-  } 
+  };
    
 
 const exerciseCalculator = (numberOfDays: number[], target:number) :TrainingResult=> {
 
     let rating = 0;
    // let trainingDays;
-    let average;
+    
     let success =false;
-    let percentage;
+
+    //let percentage;
     let ratingDescription = '';
     //let totalHours;
 
@@ -50,12 +51,12 @@ const exerciseCalculator = (numberOfDays: number[], target:number) :TrainingResu
     const trainingDays = numberOfTrainingDays.length;
     const periodLength = numberOfDays.length;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const reducer = (accumulator: any, currentValue: any) => accumulator + currentValue;
 
-    const totalHours = numberOfDays.reduce(reducer);
-  
-    average = totalHours/periodLength;
-    percentage = average/target;
+
+    const totalHours = numberOfDays.reduce((a, b) => a + b, 0);
+
+    const average = totalHours/periodLength; 
+    const percentage = average/target;
 if (percentage === 1 || percentage >1) {
     rating = 3;
     success = true;
@@ -77,11 +78,8 @@ ratingDescription = "meets";
 success = false;
 }
 
-if (numberOfDays === null) {
-numberOfDays === [0]
-}
-return ({periodLength:periodLength,trainingDays,success:success, rating:rating, ratingDescription:ratingDescription, target:target, average:average});
-}
+return ({periodLength:periodLength,trainingDays:trainingDays,success:success,rating:rating, ratingDescription:ratingDescription, target:target, average:average});
+};
 
 //console.log(exerciseCalculator([3, 0, 2, 4.5, 0, 3, 1],2))
 if (require.main === module) {
@@ -95,4 +93,4 @@ if (require.main === module) {
       console.log('Error in module exerciseCalculator, something bad happened, message: ', e.message);
     }
 }
-    export default exerciseCalculator 
+    export default exerciseCalculator; 
