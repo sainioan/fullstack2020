@@ -27,8 +27,9 @@ const Part: React.FC<{part: CoursePart}> = ({part}) => {
             <div>
             <p>
              <b>name: </b> {part.name} {' ' }
-             <b>number of exercises:</b>  {part.exerciseCount}  {' ' }{part.description}
-             <b>exercise submission link:</b> {part.exerciseSubmissionLink}
+             <b>number of exercises: </b>  {part.exerciseCount}  {' ' }
+             <b>description: </b>{part.description} {' ' }
+             <b>exercise submission link:</b> <a href={part.exerciseSubmissionLink}>{part.exerciseSubmissionLink}</a>
            </p>
             </div>
           );
@@ -80,18 +81,18 @@ const App: React.FC = () => {
         exerciseCount: 7,
         description: "Fourth Part"
          } ];
-    interface HeaderProps {
+/*     interface HeaderProps {
         name: string;
-      }
+      } */
 
 const Header: React.FC<{ name: string }> = ({ name }) => (
      <h1>{name}</h1>
 );
-  
+/*   
 interface Part {
     name: string;
     exerciseCount: number;
-}
+} */
 
  
 
