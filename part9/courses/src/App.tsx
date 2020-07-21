@@ -49,12 +49,10 @@ const Part: React.FC<{part: CoursePart}> = ({part}) => {
     }
 }
 
-const Content: React.FC<{ parts: CoursePart[] }> = ({ parts }) => {
+const Content: React.FC<{ courseParts: CoursePart[] }> = ({ courseParts }) => {
     return (
-      <div>
-        {parts.map((part) => (
-          <Part key={part.name} part={part} />
-        ))}
+      <div>  {courseParts.map((part) => (
+          <Part key={part.name} part={part} /> ))}
       </div>
     )
   }
@@ -99,7 +97,7 @@ const Total: React.FC<{  }> = () => {
     return (
       <div>
          <Header name={courseName} />
-         <Content parts={courseParts} />
+         <Content courseParts={courseParts} />
          <Total  />
       </div>
     );
