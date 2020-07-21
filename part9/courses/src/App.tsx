@@ -81,42 +81,23 @@ const App: React.FC = () => {
         exerciseCount: 7,
         description: "Fourth Part"
          } ];
-/*     interface HeaderProps {
-        name: string;
-      } */
 
 const Header: React.FC<{ name: string }> = ({ name }) => (
      <h1>{name}</h1>
 );
-/*   
-interface Part {
-    name: string;
-    exerciseCount: number;
-} */
-
- 
 
 const Total: React.FC<{  }> = () => {
     const sum = courseParts[0].exerciseCount + courseParts[1].exerciseCount+ courseParts[2].exerciseCount
- 
     return(
         <div>
-    <p><b>Number of exercises: </b>{  sum } </p>
-    </div>
+           <p><b>Number of exercises: </b>{  sum } </p>
+         </div>
 );
     }
-
-
-
-
     return (
       <div>
          <Header name={courseName} />
-         <Content parts={courseParts} />{/* 
-         <Part part = {courseParts[0]}  />
-         <Part part = {courseParts[1]}  />
-         <Part part = {courseParts[2]}  />
-         <Part part = {courseParts[3]}  /> */}
+         <Content parts={courseParts} />
          <Total  />
       </div>
     );
