@@ -27,6 +27,7 @@ export interface CoursePartThree extends CoursePartWithDescription {
 }
 export interface CoursePartFour extends CoursePartWithDescription {
   name: "coursePartFour";
+  professor: string
 }
 
 export type CoursePart = CoursePartOne | CoursePartTwo | CoursePartThree| CoursePartFour;

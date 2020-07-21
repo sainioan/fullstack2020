@@ -40,6 +40,7 @@ const Part: React.FC<{part: CoursePart}> = ({part}) => {
                 <b>name: </b> {part.name} {' ' }
                  <b>number of exercises:</b>  {part.exerciseCount}  {' ' }
                  <b>description: </b> {part.description} {' ' }
+                 <b>professor: </b> {part.professor} {' ' }
                 </p>
                 </div>
               );
@@ -79,7 +80,8 @@ const App: React.FC = () => {
 
         {name: "coursePartFour",
         exerciseCount: 7,
-        description: "Fourth Part"
+        description: "Fourth Part",
+        professor: "Dr. AbsentMinded"
          } ];
 
 const Header: React.FC<{ name: string }> = ({ name }) => (
