@@ -6,6 +6,7 @@ const diagnoses: Array<DiagnosisEntry> = diagnosisData as Array<DiagnosisEntry>;
 const getEntries = (): Array<DiagnosisEntry> => {
   return diagnoses;
 };
+
   const addEntry = () => {
     return null;
   };

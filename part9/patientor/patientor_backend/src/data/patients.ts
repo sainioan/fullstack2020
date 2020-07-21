@@ -1,4 +1,7 @@
-[
+import toNewPatientEntry from "../utils";
+import { PatientEntry } from "../types";
+    
+const patients = [
     {
         "id": "d2773336-f723-11e9-8f0b-362b9e155667",
         "name": "John McClane",
@@ -39,7 +42,14 @@
         "gender": "male",
         "occupation": "Digital evangelist"
     }
-]
+];
 
 
-
+const patientEntries: PatientEntry [] = patients.map(obj => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    const object = toNewPatientEntry(obj) as PatientEntry;
+    object.id = obj.id;
+    return object;
+  });
+  
+  export default patientEntries;

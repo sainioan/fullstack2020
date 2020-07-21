@@ -1,4 +1,10 @@
-[
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = __importDefault(require("../utils"));
+const patients = [
     {
         "id": "d2773336-f723-11e9-8f0b-362b9e155667",
         "name": "John McClane",
@@ -39,4 +45,11 @@
         "gender": "male",
         "occupation": "Digital evangelist"
     }
-]
+];
+const patientEntries = patients.map(obj => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    const object = utils_1.default(obj);
+    object.id = obj.id;
+    return object;
+});
+exports.default = patientEntries;
