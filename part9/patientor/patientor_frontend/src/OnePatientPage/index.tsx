@@ -4,7 +4,7 @@ import { Container, Icon } from "semantic-ui-react";
 import React, { useState, useEffect } from "react";
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
-import { Patient, Entry } from "../types";
+import { Patient, Entry, Diagnosis } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
 import { useStateValue, updatePatient } from "../state";
@@ -35,7 +35,6 @@ const OnePatientPage: React.FC = () => {
   }, [patients]);
  
 
-
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const openModal = (): void => setModalOpen(true);
   const closeModal = (): void => {
@@ -44,7 +43,10 @@ const OnePatientPage: React.FC = () => {
   };
 
 
- if(patient){
+ if(patient){  
+  
+   console.log(patient)
+   console.log(patient.entries)
   let sex = "";
   switch (patient.gender) {
       case "male":
@@ -73,8 +75,17 @@ const OnePatientPage: React.FC = () => {
         <strong>Occupation: </strong> {patient.occupation}
         </p>
         <p>
-        <strong>Entries: </strong> {patient.entries}
+        <strong>Entries: </strong> 
         </p>
+    <div>
+      {patient.entries.map(entry =>
+        <div key={entry.id} >
+          <p>date: {entry.date}</p>
+          <p>description: {entry.description}</p>
+         <p>diagnosis codes: {JSON.stringify(entry.diagnosisCodes).split(" ") }</p> 
+        </div>
+      )}
+      </div>
     </Container>
     </div>
   );
