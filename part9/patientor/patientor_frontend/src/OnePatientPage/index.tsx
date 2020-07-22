@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Container, Table, Icon } from "semantic-ui-react";
+import { Container, Icon } from "semantic-ui-react";
 import React, { useState, useEffect } from "react";
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
