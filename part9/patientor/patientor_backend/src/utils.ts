@@ -13,7 +13,8 @@ const toNewPatientEntry = (object:any): NewPatientEntry => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         gender: parseGender(object.gender),
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        occupation: parseOccupation(object.occupation)
+        occupation: parseOccupation(object.occupation),
+        entries: []
       };
       return newEntry;
 };
