@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Container, Icon, Table, TableCell, List} from "semantic-ui-react";
+import { Container, Icon, Table, TableCell, List, Segment} from "semantic-ui-react";
 import React, { useState, useEffect } from "react";
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
@@ -62,13 +62,33 @@ const OnePatientPage: React.FC = () => {
 
   const HospitalEntryType: React.FC<{ entry: HospitalEntry }> = ({ entry }) => {
   return (
-    <Icon className ="hospital outline icon"  size="large"/>
-  )
-  } 
+    <Segment>
+      Hospital Entry <Icon className ="hospital outline icon"  size="large"/>
+      <Table.Row>Reason for Hospital Discharge : {entry.discharge.criteria} </Table.Row>
+      <Table.Row>Date of Discharge: {entry.discharge.date}</Table.Row>
+    </Segment>
+  );
+  }; 
   const OccupationalHealthcareEntryType: React.FC<{ entry: OccupationalHealthCare}> = ({ entry }) => {
+    if(entry.sickLeave){
  return (
+   <Segment>
+     Occupational Healthcare
   <Icon className ="user md icon"  size="large"/>
- );
+  <TableCell>Employer: {entry.employerName}</TableCell>
+  <TableCell>Sick leave: START: {entry.sickLeave.startDate} END: {entry.sickLeave.endDate}</TableCell>
+  </Segment>
+  );
+    } else {
+      return (
+        <Segment>
+          Occupational Healthcare
+       <Icon className ="user md icon"  size="large"/>
+       <Table.Row> Employer: {entry.employerName}</Table.Row>
+       </Segment>
+       );
+    }
+ 
 
   };
   const  HealthCheckEntryType: React.FC<{ entry:  HealthCheck}> = ({ entry }) => {
@@ -87,10 +107,11 @@ const OnePatientPage: React.FC = () => {
       }
     };
  return (
-   <div>
+   <Segment>
+     Health Check-up
   <Icon className ="stethoscope icon" size="large"  />
   <HealthCheckRating entry={entry} />
- </div>
+ </Segment>
  );
   };
 
@@ -113,7 +134,6 @@ const OnePatientPage: React.FC = () => {
     }
   };
   return (
-    <div className="App">
       <Container textAlign="left" >
         <h2>{patient.name} 
        <Icon className={sex}/>
@@ -130,19 +150,19 @@ const OnePatientPage: React.FC = () => {
         <h3>Entries: </h3> 
         <Table celled >
         <Table.Body>
-      {patient.entries.map(entry =>
+      {patient.entries.map((entry,i )=>
       <Table.Row key={entry.id}>
-       <TableCell style={{ padding: "10px" }}> {entry.date}   <EntryDetails  entry={entry}/>   </TableCell>  
-       <TableCell>  {entry.description}</TableCell>  
+        {i + 1}
+       <TableCell style={{ padding: "10px" }}> <b>Entry date:</b> {entry.date}   <EntryDetails  entry={entry}/>   </TableCell>  
+      <TableCell> <strong>Description:</strong> {entry.description}</TableCell>  
        <List bulleted> {entry.diagnosisCodes?.map(code => 
-      <List.Item  key = {code} style={{ padding: "10px" }}>{code} { diagnoses?.find(d =>d.code === code)?.name} </List.Item>  
-        )}    </List>
+      <List.Item  key = {code} style={{ padding: "10px" }}> <b>Diagnosis code: </b>{code} <b>Diagnosis: </b>{ diagnoses?.find(d =>d.code === code)?.name} </List.Item>  
+        )}    </List> 
       </Table.Row>
       )}
          </Table.Body>
          </Table>
     </Container>
-    </div>
   );
 } else {
   return <div>{error}</div>;
