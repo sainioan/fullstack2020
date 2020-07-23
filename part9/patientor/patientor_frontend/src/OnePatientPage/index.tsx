@@ -74,15 +74,19 @@ const OnePatientPage: React.FC = () => {
          <p>
         <strong>Occupation: </strong> {patient.occupation}
         </p>
-        <p>
-        <strong>Entries: </strong> 
-        </p>
+        <h3>Entries: </h3> 
+   
     <div>
       {patient.entries.map(entry =>
         <div key={entry.id} >
-          <p>date: {entry.date}</p>
-          <p>description: {entry.description}</p>
-         <p>diagnosis codes: {JSON.stringify(entry.diagnosisCodes).split(" ") }</p> 
+          <p>date:<b></b> {entry.date}</p>
+          <p><b>description:</b> {entry.description}</p>
+         <p><b>diagnosis codes:</b></p> 
+      <div>{entry.diagnosisCodes?.map(code => 
+        <ul key = {code}>
+          <li>{code}</li>
+        </ul>
+        )}</div>
         </div>
       )}
       </div>
