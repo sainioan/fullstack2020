@@ -14,7 +14,7 @@ const OnePatientPage: React.FC = () => {
  // const [, dispatch] = useStateValue();
 
  const [patient, setPatient] = useState<Patient | null>(null);
-  const [{ patients }, dispatch] = useStateValue();
+  const [{ patients, diagnoses }, dispatch] = useStateValue();
   const [error, setError] = React.useState<string | undefined>();
   const [entries, setEntries] = React.useState<Entry[]>();
   useEffect(() => {
@@ -84,7 +84,7 @@ const OnePatientPage: React.FC = () => {
          <p><b>diagnosis codes:</b></p> 
       <div>{entry.diagnosisCodes?.map(code => 
         <ul key = {code}>
-          <li>{code}</li>
+          <li>{code} {diagnoses?.find(d =>d.code === code)?.name}</li>
         </ul>
         )}</div>
         </div>
