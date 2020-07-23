@@ -42,11 +42,12 @@ const OnePatientPage: React.FC = () => {
     setError(undefined);
   };
 
-
+ 
  if(patient){  
   
    console.log(patient)
    console.log(patient.entries)
+   console.log(diagnoses)
   let sex = "";
   switch (patient.gender) {
       case "male":
@@ -84,7 +85,7 @@ const OnePatientPage: React.FC = () => {
          <p><b>diagnosis codes:</b></p> 
       <div>{entry.diagnosisCodes?.map(code => 
         <ul key = {code}>
-          <li>{code} {diagnoses?.find(d =>d.code === code)?.name}</li>
+          <li>{code} { diagnoses?.find(d =>d.code === code)?.name}</li>
         </ul>
         )}</div>
         </div>

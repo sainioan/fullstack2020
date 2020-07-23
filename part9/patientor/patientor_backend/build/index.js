@@ -15,7 +15,7 @@ app.get('/api/ping', (_req, res) => {
     console.log('someone pinged here');
     res.send('pong');
 });
-app.use('/api/diagnoses', diagnoses_1.default);
+app.use('/api/diagnosis', diagnoses_1.default);
 app.use('/api/patients', patients_1.default);
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
