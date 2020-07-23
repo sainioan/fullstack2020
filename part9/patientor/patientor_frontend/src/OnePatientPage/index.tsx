@@ -1,12 +1,11 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Container, Icon } from "semantic-ui-react";
+import { Container, Icon, Table, TableCell, List} from "semantic-ui-react";
 import React, { useState, useEffect } from "react";
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
-import { Patient, Entry, Diagnosis } from "../types";
+import { HospitalEntry, Patient, Entry, OccupationalHealthCare, HealthCheck } from "../types";
 import { apiBaseUrl } from "../constants";
-import HealthRatingBar from "../components/HealthRatingBar";
 import { useStateValue, updatePatient } from "../state";
 
 const OnePatientPage: React.FC = () => {
@@ -60,9 +59,62 @@ const OnePatientPage: React.FC = () => {
         sex = "transgender";
           break;
   }
+
+  const HospitalEntryType: React.FC<{ entry: HospitalEntry }> = ({ entry }) => {
+  return (
+    <Icon className ="hospital outline icon"  size="large"/>
+  )
+  } 
+  const OccupationalHealthcareEntryType: React.FC<{ entry: OccupationalHealthCare}> = ({ entry }) => {
+ return (
+  <Icon className ="user md icon"  size="large"/>
+ );
+
+  };
+  const  HealthCheckEntryType: React.FC<{ entry:  HealthCheck}> = ({ entry }) => {
+    const HealthCheckRating: React.FC<{ entry: HealthCheck }> = ({ entry }) => {
+      switch (entry.healthCheckRating) {
+        case 0:
+          return <Icon color="green" className="heart" />;
+        case 1:
+          return <Icon color="yellow" className="heart" />;
+        case 2:
+          return <Icon color="teal" className="heart" />;
+        case 3:
+          return <Icon color="red" className="heart" />;
+        default:
+          return <div></div>;
+      }
+    };
+ return (
+   <div>
+  <Icon className ="stethoscope icon" size="large"  />
+  <HealthCheckRating entry={entry} />
+ </div>
+ );
+  };
+
+  const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
+    const assertNever = (value: never): never => {
+      throw new Error(
+        `error, 'value: ${value} not defined`
+      );
+    };
+  
+    switch (entry.type) {
+      case "Hospital":
+        return <HospitalEntryType entry={entry} />;
+      case "OccupationalHealthcare":
+        return <OccupationalHealthcareEntryType entry={entry} />;
+      case "HealthCheck":
+        return <HealthCheckEntryType entry={entry} />;
+      default:
+        return assertNever(entry);
+    }
+  };
   return (
     <div className="App">
-      <Container textAlign="left">
+      <Container textAlign="left" >
         <h2>{patient.name} 
        <Icon className={sex}/>
         </h2>
@@ -76,21 +128,19 @@ const OnePatientPage: React.FC = () => {
         <strong>Occupation: </strong> {patient.occupation}
         </p>
         <h3>Entries: </h3> 
-   
-    <div>
+        <Table celled >
+        <Table.Body>
       {patient.entries.map(entry =>
-        <div key={entry.id} >
-          <p>date:<b></b> {entry.date}</p>
-          <p><b>description:</b> {entry.description}</p>
-         <p><b>diagnosis codes:</b></p> 
-      <div>{entry.diagnosisCodes?.map(code => 
-        <ul key = {code}>
-          <li>{code} { diagnoses?.find(d =>d.code === code)?.name}</li>
-        </ul>
-        )}</div>
-        </div>
+      <Table.Row key={entry.id}>
+       <TableCell style={{ padding: "10px" }}> {entry.date}   <EntryDetails  entry={entry}/>   </TableCell>  
+       <TableCell>  {entry.description}</TableCell>  
+       <List bulleted> {entry.diagnosisCodes?.map(code => 
+      <List.Item  key = {code} style={{ padding: "10px" }}>{code} { diagnoses?.find(d =>d.code === code)?.name} </List.Item>  
+        )}    </List>
+      </Table.Row>
       )}
-      </div>
+         </Table.Body>
+         </Table>
     </Container>
     </div>
   );

@@ -1,17 +1,19 @@
 
-export type Entry = OccupationalHealthCare | HospitalEntry | HealthCheck;
-export interface Diagnosis {
-  code: string;
-  name: string;
-  latin?: string;
-}
-interface BaseEntry { 
+export interface BaseEntry { 
   id: string; 
   date: string; 
   specialist: string; 
   description: string; 
   diagnosisCodes?: Array<Diagnosis['code']>;
 }
+
+export interface Diagnosis {
+  code: string;
+  name: string;
+  latin?: string;
+}
+
+
 export interface OccupationalHealthCare extends BaseEntry { 
   type: "OccupationalHealthcare"; 
   employerName: string; 
@@ -39,6 +41,7 @@ export interface HealthCheck extends BaseEntry {
   healthCheckRating: HealthCheckRating;
 }
 
+export type Entry = OccupationalHealthCare | HospitalEntry | HealthCheck;
 export enum Gender {
   Male = "male",
   Female = "female",
@@ -58,4 +61,3 @@ export interface SickLeave {
   startDate: string; 
   endDate: string;
 }
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
