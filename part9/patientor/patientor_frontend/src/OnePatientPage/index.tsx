@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Container, Icon, Table, TableCell, List, Segment} from "semantic-ui-react";
+import { Container, Icon, Table, TableCell, List, Segment, Button} from "semantic-ui-react";
 import React, { useState, useEffect } from "react";
-import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
-import AddPatientModal from "../AddPatientModal";
+import { EntryFormValues, HospitalEntryFormValues, HealthCheckEntryFormValues,OccupationalHealthCareEntryFormValues  } from "../AddEntryModal/AddEntryForm";
+import AddEntryModal from "../AddEntryModal";
 import { HospitalEntry, Patient, Entry, OccupationalHealthCare, HealthCheck } from "../types";
 import { apiBaseUrl } from "../constants";
-import { useStateValue, updatePatient } from "../state";
+import { useStateValue, updatePatient, addEntry } from "../state";
 
 const OnePatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +16,33 @@ const OnePatientPage: React.FC = () => {
   const [{ patients, diagnoses }, dispatch] = useStateValue();
   const [error, setError] = React.useState<string | undefined>();
   const [entries, setEntries] = React.useState<Entry[]>();
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+  const submitNewEntry = async (values: HospitalEntryFormValues|HealthCheckEntryFormValues|OccupationalHealthCareEntryFormValues ) => {
+    try {  
+      if (patient) {
+
+      const { data: newEntry } = await axios.post<Entry>(
+        `${apiBaseUrl}/patients/${patient.id}/entries`,
+        values
+      );
+      closeModal();
+      dispatch(addEntry(newEntry));
+     // dispatch(addEntry(patient, newEntry));
+      }
+  
+    } catch (e) {
+      console.error(e.response.data);
+      setError(e.response.data.error);
+      window.alert(e.response.data);
+    }
+  };
   useEffect(() => {
     const patient = Object.values(patients).find(p => p.id === id);
     if (patient) {
@@ -26,6 +53,8 @@ const OnePatientPage: React.FC = () => {
         .then(response => {
           dispatch(updatePatient(response.data));
           setPatient(response.data);
+
+				setEntries(response.data.entries);
         });
       } else {
         setPatient(patient);
@@ -33,14 +62,6 @@ const OnePatientPage: React.FC = () => {
     }
   }, [patients]);
  
-
-  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
-  const openModal = (): void => setModalOpen(true);
-  const closeModal = (): void => {
-    setModalOpen(false);
-    setError(undefined);
-  };
-
  
  if(patient){  
   
@@ -134,6 +155,7 @@ const OnePatientPage: React.FC = () => {
     }
   };
   return (
+    <div>
       <Container textAlign="left" >
         <h2>{patient.name} 
        <Icon className={sex}/>
@@ -163,6 +185,14 @@ const OnePatientPage: React.FC = () => {
          </Table.Body>
          </Table>
     </Container>
+    <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
+      <Button onClick={() => openModal()}>Add New Entry</Button>
+    </div>
   );
 } else {
   return <div>{error}</div>;
