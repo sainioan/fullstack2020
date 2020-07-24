@@ -52,7 +52,6 @@ const OnePatientPage: React.FC = () => {
         .then(response => {
           dispatch(updatePatient(response.data));
           setPatient(response.data);
-			//	setEntries(response.data.entries);
         });
       } else {
         setPatient(patient);
