@@ -6,10 +6,9 @@ import {  HealthCheck, HospitalEntry, OccupationalHealthCare } from "../types";
 import { Grid, Button } from "semantic-ui-react";
 
 /*
- * use type Entry, but omit id and entries,
- * because those are irrelevant for new patient object.
+ * use type HospitalEntry, HealthCheck, or Occupational HealthCare, but omit id,
+ * because those are irrelevant for new entry object.
  */
-
 
 export type HospitalEntryFormValues = Omit<HospitalEntry, "id">;
 export type HealthCheckEntryFormValues = Omit<HealthCheck, "id">;
@@ -48,9 +47,17 @@ interface OccupationalHealthCareProps {
         onSubmit={onSubmit}
         validate={values => {
           const requiredError = "Field is required";
+          const formattingError = "Date formatting error";
           const errors: { [field: string]: string } = {};
-          if (!values.date) {
+          function isValidDate(date:string) {
+            let regEx = /^\d{4}-\d{2}-\d{2}$/;
+            return date.match(regEx) != null;
+          }
+          if (!values.date){
             errors.date = requiredError;
+          }
+            if(!isValidDate(values.date)) {
+           errors.date = formattingError; 
           }
           if (!values.specialist) {
             errors.specialist = requiredError;
@@ -148,10 +155,20 @@ interface OccupationalHealthCareProps {
         onSubmit={onSubmit}
         validate={values => {
           const requiredError = "Field is required";
+          const formattingError = "Date formatting error";
           const errors: { [field: string]: string } = {};
-          if (!values.date) {
+          function isValidDate(date:string) {
+            var regEx = /^\d{4}-\d{2}-\d{2}$/;
+            return date.match(regEx) != null;
+          }
+          if (!values.date){
             errors.date = requiredError;
           }
+            if(!isValidDate(values.date)) {
+           errors.date = formattingError;
+            
+          }
+       
           if (!values.specialist) {
             errors.specialist = requiredError;
           }
@@ -245,9 +262,17 @@ interface OccupationalHealthCareProps {
         onSubmit={onSubmit}
         validate={values => {
           const requiredError = "Field is required";
+          const formattingError = "Date formatting error";
           const errors: { [field: string]: string } = {};
+          function isValidDate(date:string) {
+            var regEx = /^\d{4}-\d{2}-\d{2}$/;
+            return date.match(regEx) != null;
+          }
           if (!values.date) {
-            errors.date = requiredError;
+          errors.date = requiredError;
+          }
+          if (!isValidDate(values.date)) {
+            errors.date = formattingError;
           }
           if (!values.specialist) {
             errors.specialist = requiredError;
