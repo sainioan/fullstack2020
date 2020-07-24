@@ -28,118 +28,6 @@ interface OccupationalHealthCareProps {
     onSubmit: (values: OccupationalHealthCareEntryFormValues) => void;
     onCancel: () => void;
 }
-  
-  export const AddHospitalEntryForm: React.FC<HospitalProps> = ({ onSubmit, onCancel }) => {
-    const [{ diagnoses }] = useStateValue();
-    return (
-      <Formik
-        initialValues={{
-            date: "",
-            specialist: "",
-            description: "",
-            diagnosisCodes: [],
-            discharge: {
-                date: "",
-                criteria: ""
-              },
-            type: "Hospital",
-        }}
-        onSubmit={onSubmit}
-        validate={values => {
-          const requiredError = "Field is required";
-          const formattingError = "Date formatting error";
-          const errors: { [field: string]: string } = {};
-          function isValidDate(date:string) {
-            let regEx = /^\d{4}-\d{2}-\d{2}$/;
-            return date.match(regEx) != null;
-          }
-          if (!values.date){
-            errors.date = requiredError;
-          }
-            if(!isValidDate(values.date)) {
-           errors.date = formattingError; 
-          }
-          if (!values.specialist) {
-            errors.specialist = requiredError;
-          }
-          if (!values.discharge.date || !values.discharge.criteria) {
-            errors.date = requiredError;
-            errors.criteria = requiredError;
-          }
-          if (!values.description) {
-            errors.description = requiredError;
-          }
-          return errors;
-        }}
-      >
-        {({ isValid, dirty, setFieldValue, setFieldTouched  }) => {
-          return (
-            <Form className="form ui">
-             <Field
-                label="Type"
-                placeholder="type"
-                name="type"
-                component={TextField}
-              />
-              <Field
-                label="Date"
-                placeholder="YYYY-MM-DD"
-                name="date"
-                component={TextField}
-              />
-              <Field
-                label="Specialist"
-                placeholder="specialist"
-                name="specialist"
-                component={TextField}
-              />         
-              <Field
-              label="Discharge Date"
-              placeholder="YYYY-MM-DD"
-              name="discharge.date"
-              component={TextField}
-            />
-            <Field
-              label="Discharge Criteria"
-              placeholder="Criteria"
-              name="discharge.criteria"
-              component={TextField}
-            />
-              <Field
-                label="Description"
-                placeholder="Description"
-                name="description"
-                component={TextField}
-              />     
-               <DiagnosisSelection
-              diagnoses={diagnoses}
-              setFieldValue={setFieldValue}
-              setFieldTouched={setFieldTouched}
-            />
-              <Grid>
-                <Grid.Column floated="left" width={5}>
-                  <Button type="button" onClick={onCancel} color="red">
-                    Cancel
-                  </Button>
-                </Grid.Column>
-                <Grid.Column floated="right" width={5}>
-                <Button
-                  type="submit"
-                  floated="right"
-                  color="green"
-                  disabled={!dirty || !isValid}
-                >
-                  Add
-                </Button>
-                </Grid.Column>
-              </Grid>
-            </Form>
-          );
-        }}
-      </Formik>
-    );
-  };
-
   export const AddHealthCheckEntryForm: React.FC<HealthCheckProps> = ({ onSubmit, onCancel }) => {
     const [{ diagnoses }] = useStateValue();
     return (
@@ -360,3 +248,117 @@ interface OccupationalHealthCareProps {
       </Formik>
     );
   };
+
+
+  
+  export const AddHospitalEntryForm: React.FC<HospitalProps> = ({ onSubmit, onCancel }) => {
+    const [{ diagnoses }] = useStateValue();
+    return (
+      <Formik
+        initialValues={{
+            date: "",
+            specialist: "",
+            description: "",
+            diagnosisCodes: [],
+            discharge: {
+                date: "",
+                criteria: ""
+              },
+            type: "Hospital",
+        }}
+        onSubmit={onSubmit}
+        validate={values => {
+          const requiredError = "Field is required";
+          const formattingError = "Date formatting error";
+          const errors: { [field: string]: string } = {};
+          function isValidDate(date:string) {
+            let regEx = /^\d{4}-\d{2}-\d{2}$/;
+            return date.match(regEx) != null;
+          }
+          if (!values.date){
+            errors.date = requiredError;
+          }
+            if(!isValidDate(values.date)) {
+           errors.date = formattingError; 
+          }
+          if (!values.specialist) {
+            errors.specialist = requiredError;
+          }
+          if (!values.discharge.date || !values.discharge.criteria) {
+            errors.date = requiredError;
+            errors.criteria = requiredError;
+          }
+          if (!values.description) {
+            errors.description = requiredError;
+          }
+          return errors;
+        }}
+      >
+        {({ isValid, dirty, setFieldValue, setFieldTouched  }) => {
+          return (
+            <Form className="form ui">
+             <Field
+                label="Type"
+                placeholder="type"
+                name="type"
+                component={TextField}
+              />
+              <Field
+                label="Date"
+                placeholder="YYYY-MM-DD"
+                name="date"
+                component={TextField}
+              />
+              <Field
+                label="Specialist"
+                placeholder="specialist"
+                name="specialist"
+                component={TextField}
+              />         
+              <Field
+              label="Discharge Date"
+              placeholder="YYYY-MM-DD"
+              name="discharge.date"
+              component={TextField}
+            />
+            <Field
+              label="Discharge Criteria"
+              placeholder="Criteria"
+              name="discharge.criteria"
+              component={TextField}
+            />
+              <Field
+                label="Description"
+                placeholder="Description"
+                name="description"
+                component={TextField}
+              />     
+               <DiagnosisSelection
+              diagnoses={diagnoses}
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+            />
+              <Grid>
+                <Grid.Column floated="left" width={5}>
+                  <Button type="button" onClick={onCancel} color="red">
+                    Cancel
+                  </Button>
+                </Grid.Column>
+                <Grid.Column floated="right" width={5}>
+                <Button
+                  type="submit"
+                  floated="right"
+                  color="green"
+                  disabled={!dirty || !isValid}
+                >
+                  Add
+                </Button>
+                </Grid.Column>
+              </Grid>
+            </Form>
+          );
+        }}
+      </Formik>
+    );
+  };
+
