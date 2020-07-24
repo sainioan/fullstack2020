@@ -2,7 +2,7 @@ import React from "react";
 import { Field, Formik, Form } from "formik";
 import { useStateValue } from "../state";
 import { TextField, DiagnosisSelection, NumberField } from "../AddPatientModal/FormField";
-import {  HealthCheck, HealthCheckRating, HospitalEntry, OccupationalHealthCare } from "../types";
+import {  HealthCheck, HospitalEntry, OccupationalHealthCare } from "../types";
 import { Grid, Button } from "semantic-ui-react";
 
 /*
@@ -13,7 +13,7 @@ import { Grid, Button } from "semantic-ui-react";
 
 export type HospitalEntryFormValues = Omit<HospitalEntry, "id">;
 export type HealthCheckEntryFormValues = Omit<HealthCheck, "id">;
-export type OccupationalHealthCareEntryFormValues = Omit<OccupationalHealthCare, "id">
+export type OccupationalHealthCareEntryFormValues = Omit<OccupationalHealthCare, "id">;
 
 interface HospitalProps {
     onSubmit: (values: HospitalEntryFormValues) => void;

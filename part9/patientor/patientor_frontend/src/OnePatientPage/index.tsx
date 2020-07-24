@@ -64,9 +64,6 @@ const OnePatientPage: React.FC = () => {
  
  if(patient){  
   
-   console.log(patient)
-   console.log(patient.entries)
-   console.log(diagnoses)
   let sex = "";
   switch (patient.gender) {
       case "male":
