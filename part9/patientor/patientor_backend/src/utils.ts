@@ -1,7 +1,121 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewPatientEntry, Gender } from './types';
+import { NewPatientEntry, Gender, Entry, HealthCheckRating, SickLeave, Discharge } from './types';
+import { v4 as uuidv4 } from "uuid";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
+const isString = (text: any): text is string => {
+  return typeof text === 'string' || text instanceof String;
+};
+
+const parseDate = (date: any): string => {
+    if (!date || !isString(date)) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      throw new Error(`Incorrect or missing ${date}`);
+    }
+  return date;
+};
+
+const isRating = (param: any): param is HealthCheckRating => {
+    return Object.values(HealthCheckRating).includes(param);
+};
+
+const parseRating = (rating: any): HealthCheckRating=> {
+    if (!rating || !isRating(rating)) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      throw new Error(`Incorrect or missing ${rating}`);
+    }
+  
+  return rating;
+};
+  
+const parseDescription = (description: any): string => {
+    if (!description || !isString(description)) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      throw new Error(`Incorrect or missing ${description}`);
+    }
+  
+  return description;
+};
+
+const parseSpecialist = (specialist: any): string => {
+    if (!specialist || !isString(specialist)) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      throw new Error(`Incorrect or missing ${specialist}`);
+    }
+  
+  return specialist;
+};
+
+const parseSickLeave = (sickleave: any ): SickLeave => {
+if(!sickleave) {
+  throw new Error(`Incorrect or missing ${sickleave}`)
+}
+return sickleave
+}
+const parseDischarge = (discharge: any ): Discharge => {
+  if(!discharge) {
+    throw new Error(`Incorrect or missing ${discharge}`)
+  }
+  return discharge
+  }
+const parseDiagnosisCodes = (codes: any): string[] | undefined => {
+    if (!codes) return;
+  
+    if (!Array.isArray(codes) || !codes.every(c => isString(c))) {
+      throw new Error(`Incorrect or missing ${codes}`);
+    }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return codes;
+};
+
+const parseEmployerName = (name: any): string => {
+    if (!name || !isString(name)) {
+      throw new Error(`Incorrect or missing ${name}`);
+    }
+    return name;
+  };
+
+
+export const toNewEntry = (object: any): Entry | undefined => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  switch (object.type) {
+    case "HealthCheck":
+      return {
+        id: uuidv4(),
+        description: parseDescription(object.description),
+        date: parseDate(object.date),
+        specialist: parseSpecialist(object.specialist),
+        diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
+        type: "HealthCheck",
+        healthCheckRating: parseRating(object.healthCheckRating)
+      };
+    case "OccupationalHealthcare":
+      return {
+        id: uuidv4(),
+        description: parseDescription(object.description),
+        date: parseDate(object.date),
+        specialist: parseSpecialist(object.specialist),
+        diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
+        type: "OccupationalHealthcare",
+        employerName: parseEmployerName(object.employerName),
+        sickLeave: parseSickLeave(object.sickLeave)
+      };
+      case "Hospital":
+        return {
+          id: uuidv4(),
+          description: parseDescription(object.description),
+          date: parseDate(object.date),
+          specialist: parseSpecialist(object.specialist),
+          diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
+          type: "Hospital",
+          discharge: parseDischarge(object.discharge)
+        };
+        default:
+          throw new Error('Invalid type - choose "Hospital, HealthCheck OR OccupationalHealthcare"');
+      }
+  }
+
 const toNewPatientEntry = (object:any): NewPatientEntry => {
   const newEntry = {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -15,13 +129,13 @@ const toNewPatientEntry = (object:any): NewPatientEntry => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         occupation: parseOccupation(object.occupation),
         entries: []
-      };
+      }
       return newEntry;
 };
 const parseName = (name: any): string => {
     if (!name || !isString(name)) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      throw new Error( `Incorrect or missing name:  ${name}`);
+      throw new Error( `Incorrect or missing ${name}`);
     }
   
     return name;
@@ -30,7 +144,7 @@ const parseName = (name: any): string => {
   const parseOccupation = (occupation: any): string => {
     if (!occupation || !isString(occupation)) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      throw new Error(`Incorrect or missing name:  ${occupation}`);;
+      throw new Error(`Incorrect or missing ${occupation}`);;
     }
   
     return occupation;
@@ -39,7 +153,7 @@ const parseName = (name: any): string => {
   const parseDateOfBirth = (dateOfBirth: any): string => {
     if (!dateOfBirth || !isString(dateOfBirth)) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      throw new Error(`Incorrect or missing name:  ${dateOfBirth}`);
+      throw new Error(`Incorrect or missing ${dateOfBirth}`);
     }
   
     return dateOfBirth;
@@ -48,7 +162,7 @@ const parseName = (name: any): string => {
   const parseSsn = (ssn: any): string => {
     if (!ssn || !isString(ssn)) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      throw new Error(`Incorrect or missing name:  ${ssn}`);
+      throw new Error(`Incorrect or missing ${ssn}`);
     }
   
     return ssn;
@@ -56,30 +170,14 @@ const parseName = (name: any): string => {
   const parseGender = (gender: any): Gender => {
     if (!gender || !isGender(gender)) {
         // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-        throw new Error('Incorrect or missing gender: ' + gender);
+        throw new Error('Incorrect or missing' + gender);
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return gender;
   };
 
-  const isString = (text: any): text is string => {
-    return typeof text === 'string' || text instanceof String;
-  };
-
-
   const isGender = (param: any): param is Gender => {
 	return Object.values(Gender).includes(param);
 };
 
-/* const isDate = (date: string): boolean => {
-    return Boolean(Date.parse(date));
-  };
-  
-  const parseDate = (date: any): string => {
-    if (!date || !isString(date) || !isDate(date)) {
-        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-        throw new Error('Incorrect or missing date: ' + date);
-    }
-    return date;
-  }; */
 export default toNewPatientEntry;

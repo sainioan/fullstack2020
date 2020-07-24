@@ -32,9 +32,26 @@ const addEntry = (entry) => {
     console.log(newPatientEntry);
     return newPatientEntry;
 };
+/* const addNewEntry = (entry: Entry |undefined, id: string): Entry|undefined => {
+
+  const patient = findById(id);
+  if(entry) patient?.entries.push(entry);
+  return entry;
+}; */
+const addNewEntry = (entry, id) => {
+    const patient = patients.find((p) => p.id === id);
+    if (patient && entry) {
+        const entries = patient.entries;
+        const newEntry = Object.assign(Object.assign({}, entry), { id: uuid_1.v4() });
+        entries.push(newEntry);
+        return newEntry;
+    }
+    return undefined;
+};
 exports.default = {
     getEntries,
     getNonSensitiveEntries,
     findById,
-    addEntry
+    addEntry,
+    addNewEntry
 };

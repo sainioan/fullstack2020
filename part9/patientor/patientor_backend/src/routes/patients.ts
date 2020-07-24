@@ -1,6 +1,8 @@
 import express from 'express';
 import patientService from '../services/patientService';
-import toNewPatientEntry from '../utils';
+import toNewPatientEntry, {toNewEntry} from '../utils';
+import { Entry } from '../types';
+
 const router = express.Router();
 
 router.get('/', (_req, res) => {
@@ -28,5 +30,15 @@ router.post('/', (_req, res) => {
     res.status(400).send(e.message);
   }
 });
+router.post('/:id/entries', (_req, res) => {
 
+  try {
+    const entry = toNewEntry(_req.body)  as Entry;
+    const newEntry = patientService.addNewEntry(entry, _req.params.id);
+    res.json(newEntry);
+   } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    res.status(400).send(e.message);
+   }
+  });
 export default router;

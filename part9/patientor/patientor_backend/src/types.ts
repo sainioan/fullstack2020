@@ -1,11 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export type Entry = OccupationalHealthCare | HospitalEntry | HealthCheck;
+export type Entry = |OccupationalHealthCare | HospitalEntry | HealthCheck;
 
-/* export enum Entry {
-  HealthCheck = "HealthCheck",
-  OccupationalHealthCare = "OccupationalHealthcare",
-  Hospital = "Hospital",
-}  */
 interface BaseEntry {
   id: string;
   date: string;
@@ -54,12 +49,9 @@ export interface PatientEntry {
     entries: Entry[]
   }
   export type NonSensitivePatientEntry = Omit<PatientEntry, 'ssn'>;
-  export interface DiagnosisEntry {
-    code: string;
-    name: string;
-    latin?: string;
-  }
+
   export type NewPatientEntry = Omit<PatientEntry, 'id'>;
+
   export interface Diagnosis {
     code: string;
     name: string;
