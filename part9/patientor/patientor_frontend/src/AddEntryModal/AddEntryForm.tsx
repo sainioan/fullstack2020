@@ -2,7 +2,7 @@ import React from "react";
 import { Field, Formik, Form } from "formik";
 import { useStateValue } from "../state";
 import { TextField, DiagnosisSelection, NumberField } from "../AddPatientModal/FormField";
-import { Gender, Patient, Entry, HealthCheck, HealthCheckRating, HospitalEntry, OccupationalHealthCare } from "../types";
+import {  HealthCheck, HealthCheckRating, HospitalEntry, OccupationalHealthCare } from "../types";
 import { Grid, Button } from "semantic-ui-react";
 
 /*
@@ -14,14 +14,23 @@ import { Grid, Button } from "semantic-ui-react";
 export type HospitalEntryFormValues = Omit<HospitalEntry, "id">;
 export type HealthCheckEntryFormValues = Omit<HealthCheck, "id">;
 export type OccupationalHealthCareEntryFormValues = Omit<OccupationalHealthCare, "id">
-export type EntryFormValues = Omit<Entry, "id">;
+
 interface HospitalProps {
     onSubmit: (values: HospitalEntryFormValues) => void;
     onCancel: () => void;
-  }
+}
 
+interface HealthCheckProps {
+    onSubmit: (values: HealthCheckEntryFormValues) => void;
+    onCancel: () => void;
+}
+
+interface OccupationalHealthCareProps {
+    onSubmit: (values: OccupationalHealthCareEntryFormValues) => void;
+    onCancel: () => void;
+}
   
-  export const AddEntryForm: React.FC<HospitalProps> = ({ onSubmit, onCancel }) => {
+  export const AddHospitalEntryForm: React.FC<HospitalProps> = ({ onSubmit, onCancel }) => {
     const [{ diagnoses }] = useStateValue();
     return (
       <Formik
@@ -34,7 +43,6 @@ interface HospitalProps {
                 date: "",
                 criteria: ""
               },
-            //healthCheckRating: HealthCheckRating.Healthy
             type: "Hospital",
         }}
         onSubmit={onSubmit}
@@ -85,7 +93,7 @@ interface HospitalProps {
               component={TextField}
             />
             <Field
-              label="Criteria"
+              label="Discharge Criteria"
               placeholder="Criteria"
               name="discharge.criteria"
               component={TextField}
@@ -124,4 +132,206 @@ interface HospitalProps {
       </Formik>
     );
   };
-export default AddEntryForm;
+
+  export const AddHealthCheckEntryForm: React.FC<HealthCheckProps> = ({ onSubmit, onCancel }) => {
+    const [{ diagnoses }] = useStateValue();
+    return (
+      <Formik
+        initialValues={{
+            date: "",
+            specialist: "",
+            description: "",
+            diagnosisCodes: [],
+            healthCheckRating:3,
+            type: "HealthCheck",
+        }}
+        onSubmit={onSubmit}
+        validate={values => {
+          const requiredError = "Field is required";
+          const errors: { [field: string]: string } = {};
+          if (!values.date) {
+            errors.date = requiredError;
+          }
+          if (!values.specialist) {
+            errors.specialist = requiredError;
+          }
+          if (!values.healthCheckRating) {
+            errors.healthCheckRating = requiredError;
+          }
+          if (!values.description) {
+            errors.description = requiredError;
+          }
+          return errors;
+        }}
+      >
+        {({ isValid, dirty, setFieldValue, setFieldTouched  }) => {
+          return (
+            <Form className="form ui">
+             <Field
+                label="Type"
+                placeholder="type"
+                name="type"
+                component={TextField}
+              />
+              <Field
+                label="Date"
+                placeholder="YYYY-MM-DD"
+                name="date"
+                component={TextField}
+              />
+              <Field
+                label="Specialist"
+                placeholder="specialist"
+                name="specialist"
+                component={TextField}
+              />         
+            <Field
+                label="healthCheckRating"
+                name="healthCheckRating"
+                component={NumberField}
+                min={0}
+                max={3}
+            />
+              <Field
+                label="Description"
+                placeholder="Description"
+                name="description"
+                component={TextField}
+              />     
+               <DiagnosisSelection
+              diagnoses={diagnoses}
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+            />
+              <Grid>
+                <Grid.Column floated="left" width={5}>
+                  <Button type="button" onClick={onCancel} color="red">
+                    Cancel
+                  </Button>
+                </Grid.Column>
+                <Grid.Column floated="right" width={5}>
+                <Button
+                  type="submit"
+                  floated="right"
+                  color="green"
+                  disabled={!dirty || !isValid}
+                >
+                  Add
+                </Button>
+                </Grid.Column>
+              </Grid>
+            </Form>
+          );
+        }}
+      </Formik>
+    );
+  };
+  export const AddOccupationalEntryForm: React.FC<OccupationalHealthCareProps > = ({ onSubmit, onCancel }) => {
+    const [{ diagnoses }] = useStateValue();
+    return (
+      <Formik
+        initialValues={{
+            date: "",
+            specialist: "",
+            description: "",
+            diagnosisCodes: [],
+            employerName: "",
+            sickLeave: {
+                startDate: "",
+                endDate: ""
+            },
+            type: "OccupationalHealthcare",
+        }}
+        onSubmit={onSubmit}
+        validate={values => {
+          const requiredError = "Field is required";
+          const errors: { [field: string]: string } = {};
+          if (!values.date) {
+            errors.date = requiredError;
+          }
+          if (!values.specialist) {
+            errors.specialist = requiredError;
+          }
+          if (!values.employerName) {
+            errors.employerName = requiredError;
+          }
+
+          if (!values.description) {
+            errors.description = requiredError;
+          }
+          return errors;
+        }}
+      >
+        {({ isValid, dirty, setFieldValue, setFieldTouched  }) => {
+          return (
+            <Form className="form ui">
+             <Field
+                label="Type"
+                placeholder="type"
+                name="type"
+                component={TextField}
+              />
+              <Field
+                label="Date"
+                placeholder="YYYY-MM-DD"
+                name="date"
+                component={TextField}
+              />
+              <Field
+                label="Specialist"
+                placeholder="specialist"
+                name="specialist"
+                component={TextField}
+              />         
+              <Field
+                label="Description"
+                placeholder="Description"
+                name="description"
+                component={TextField}
+              />    
+                <Field
+                label="Employer Name"
+                placeholder="Employer Name"
+                name="employerName"
+                component={TextField}
+              />         
+              <Field
+              label="Sick Leave Start Date"
+              placeholder="YYYY-MM-DD"
+              name="sickLeave.startDate"
+              component={TextField}
+            />
+            <Field
+              label="Sick Leave End Date"
+              placeholder="YYYY-MM-DD"
+              name="sickLeave.endDate"
+              component={TextField}
+            />
+               <DiagnosisSelection
+              diagnoses={diagnoses}
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+            />
+              <Grid>
+                <Grid.Column floated="left" width={5}>
+                  <Button type="button" onClick={onCancel} color="red">
+                    Cancel
+                  </Button>
+                </Grid.Column>
+                <Grid.Column floated="right" width={5}>
+                <Button
+                  type="submit"
+                  floated="right"
+                  color="green"
+                  disabled={!dirty || !isValid}
+                >
+                  Add
+                </Button>
+                </Grid.Column>
+              </Grid>
+            </Form>
+          );
+        }}
+      </Formik>
+    );
+  };

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Container, Icon, Table, TableCell, List, Segment, Button} from "semantic-ui-react";
 import React, { useState, useEffect } from "react";
-import { EntryFormValues, HospitalEntryFormValues, HealthCheckEntryFormValues,OccupationalHealthCareEntryFormValues  } from "../AddEntryModal/AddEntryForm";
+import { HospitalEntryFormValues, HealthCheckEntryFormValues,OccupationalHealthCareEntryFormValues } from "../AddEntryModal/AddEntryForm";
 import AddEntryModal from "../AddEntryModal";
 import { HospitalEntry, Patient, Entry, OccupationalHealthCare, HealthCheck } from "../types";
 import { apiBaseUrl } from "../constants";
@@ -33,8 +33,7 @@ const OnePatientPage: React.FC = () => {
         values
       );
       closeModal();
-      dispatch(addEntry(newEntry));
-     // dispatch(addEntry(patient, newEntry));
+      dispatch(addEntry(patient, newEntry));
       }
   
     } catch (e) {
