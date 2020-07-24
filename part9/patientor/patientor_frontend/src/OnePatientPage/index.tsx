@@ -15,7 +15,7 @@ const OnePatientPage: React.FC = () => {
  const [patient, setPatient] = useState<Patient | null>(null);
   const [{ patients, diagnoses }, dispatch] = useStateValue();
   const [error, setError] = React.useState<string | undefined>();
-  const [entries, setEntries] = React.useState<Entry[]>();
+  //const [entries, setEntries] = React.useState<Entry[]>();
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
 
   const openModal = (): void => setModalOpen(true);
@@ -52,14 +52,13 @@ const OnePatientPage: React.FC = () => {
         .then(response => {
           dispatch(updatePatient(response.data));
           setPatient(response.data);
-
-				setEntries(response.data.entries);
+			//	setEntries(response.data.entries);
         });
       } else {
         setPatient(patient);
       }
     }
-  }, [patients]);
+  }, [patients, dispatch, id]);
  
  
  if(patient){  
